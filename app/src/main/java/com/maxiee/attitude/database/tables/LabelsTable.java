@@ -13,6 +13,6 @@ public class LabelsTable {
     public static final String CREATE = "create table " + NAME
             + "("
             + ID + " integer primary key autoincrement,"
-            + LABEL + " text,"
+            + LABEL + " text"
             + ");";
 }
