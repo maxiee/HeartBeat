@@ -1,16 +1,34 @@
-package com.maxiee.attitude;
+package com.maxiee.attitude.ui;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.maxiee.attitude.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_MAIN);
+                i.setClass(MainActivity.this, AddEventActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
