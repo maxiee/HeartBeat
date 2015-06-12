@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.ui.fragments.EventListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.nested_content, new EventListFragment()).commit();
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
