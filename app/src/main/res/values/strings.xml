@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="add_event">心动瞬间\t\t(喜/怒/哀/乐)</string>
+    <string name="first_thought">此刻感想</string>
 </resources>
