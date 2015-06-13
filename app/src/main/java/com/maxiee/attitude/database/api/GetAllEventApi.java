@@ -68,6 +68,8 @@ public class GetAllEventApi extends BaseDBApi {
 
         } while (cursor.moveToNext());
 
+        cursor.close();
+
         return eventList;
     }
 }
