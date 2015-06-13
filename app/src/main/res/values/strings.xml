@@ -6,4 +6,6 @@
     <string name="add_event">心动瞬间\t\t(喜/怒/哀/乐)</string>
     <string name="first_thought">此刻感想</string>
     <string name="notempty">内容不能为空...</string>
+    <string name="firtime">初刻</string>
+    <string name="sectime">次刻</string>
 </resources>
