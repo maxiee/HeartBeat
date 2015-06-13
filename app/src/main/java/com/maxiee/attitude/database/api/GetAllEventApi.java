@@ -41,6 +41,9 @@ public class GetAllEventApi extends BaseDBApi {
         cursor.moveToFirst();
         ArrayList<Event> eventList = new ArrayList<>();
         do {
+            int id = cursor.getInt(
+                    cursor.getColumnIndex(EventsTable.ID)
+            );
             String event = cursor.getString(
                     cursor.getColumnIndex(EventsTable.EVENT)
             );
@@ -56,6 +59,7 @@ public class GetAllEventApi extends BaseDBApi {
                     cursor.getColumnIndex(EventsTable.TIMESTAMP)
             );
             eventList.add(new Event(
+                    id,
                     event,
                     thoughtsList,
                     labelsList,
