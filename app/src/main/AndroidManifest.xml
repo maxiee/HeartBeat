@@ -19,7 +19,9 @@
 
         <activity
             android:name=".ui.AddEventActivity"
-            android:parentActivityName=".ui.MainActivity"/>
+            android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.EventDetailActivity"
+            android:parentActivityName=".ui.MainActivity" />
     </application>
 
 </manifest>
