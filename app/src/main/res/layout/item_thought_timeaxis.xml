@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="order" />
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="200dp"
+        android:layout_toRightOf="@id/tv_order"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <View
+        android:id="@+id/time_point"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/circle_timeaxis"
+        android:layout_toRightOf="@id/tv_order"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="14dp" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/time_point"
+        android:layout_alignBaseline="@id/tv_order"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/tv_thought"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Thought."/>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
