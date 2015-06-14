@@ -12,6 +12,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="order" />
 
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv_order"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
     <View
         android:layout_width="2dp"
         android:layout_height="200dp"
