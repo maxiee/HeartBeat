@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.database.api.AddEventApi;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 /**
@@ -50,11 +52,16 @@ public class AddEventActivity extends AppCompatActivity{
                 labels.add("label1");
                 labels.add("label2");
                 labels.add("label3");
-                new AddEventApi(
-                        AddEventActivity.this,
-                        event,
-                        thought,
-                        labels).exec();
+
+                try {
+                    new AddEventApi(
+                            AddEventActivity.this,
+                            event,
+                            thought,
+                            labels).exec();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
