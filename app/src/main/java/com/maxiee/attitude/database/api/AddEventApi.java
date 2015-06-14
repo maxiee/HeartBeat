@@ -7,6 +7,8 @@ import android.util.Log;
 import com.maxiee.attitude.database.tables.EventsTable;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 public class AddEventApi extends BaseDBApi {
 
     private String mEvent;
-    private ArrayList<String> mThought;
+    private String mThought;
     private ArrayList<String> mLabels;
 
     public AddEventApi(Context context,
@@ -25,8 +27,7 @@ public class AddEventApi extends BaseDBApi {
                        final ArrayList<String> labels) {
         super(context);
         mEvent = event;
-        mThought = new ArrayList<>();
-        mThought.add(thought);
+        mThought = thought;
         mLabels = labels;
     }
 
@@ -35,10 +36,19 @@ public class AddEventApi extends BaseDBApi {
         return array.toString();
     }
 
-    public boolean exec() {
+    private String convertThought(final String thought) throws JSONException{
+        JSONObject thoughtObject = new JSONObject();
+        thoughtObject.put(THOUGHT, thought);
+        thoughtObject.put(TIMESTAMP, System.currentTimeMillis());
+        JSONArray ret = new JSONArray();
+        ret.put(thoughtObject);
+        return ret.toString();
+    }
+
+    public boolean exec() throws JSONException{
         ContentValues values = new ContentValues();
         values.put(EventsTable.EVENT, mEvent);
-        values.put(EventsTable.THOUGHTS, convertJSONString(mThought));
+        values.put(EventsTable.THOUGHTS, convertThought(mThought));
         values.put(EventsTable.LABELS, convertJSONString(mLabels));
         values.put(EventsTable.TIMESTAMP, System.currentTimeMillis());
         add(EventsTable.NAME, values);

@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.database.api.BaseDBApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -49,8 +51,11 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         holder.tvOrder.setText(order);
 
         try {
-            String thought = mThoughtList.get(position).toString();
+            JSONObject thoughtObject = (JSONObject) mThoughtList.get(position);
+            String thought = thoughtObject.getString(BaseDBApi.THOUGHT);
+            String time = String.valueOf(thoughtObject.get(BaseDBApi.TIMESTAMP));
             holder.tvThought.setText(thought);
+            holder.tvTime.setText(time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -63,7 +68,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvOrder, tvThought;
+        public TextView tvOrder, tvThought, tvTime;
         public Context mContext;
 
         public ViewHolder(View itemView) {
@@ -71,6 +76,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
             mContext = itemView.getContext();
             tvOrder = (TextView) itemView.findViewById(R.id.tv_order);
             tvThought = (TextView) itemView.findViewById(R.id.tv_thought);
+            tvTime = (TextView) itemView.findViewById(R.id.tv_time);
         }
     }
 }

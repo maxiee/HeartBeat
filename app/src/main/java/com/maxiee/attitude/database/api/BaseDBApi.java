@@ -12,6 +12,10 @@ import java.util.ArrayList;
  * Created by maxiee on 15-6-11.
  */
 public abstract class BaseDBApi {
+
+    public static final String THOUGHT = "thought";
+    public static final String TIMESTAMP = "timestamp";
+
     protected DatabaseHelper mDatabaseHelper;
 
     public BaseDBApi(Context context) {
