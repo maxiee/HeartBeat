@@ -11,4 +11,7 @@
     <string name="minute_ago">分钟前</string>
     <string name="hour_ago">小时前</string>
     <string name="day_ago">天前</string>
+    <string name="add">添加</string>
+    <string name="add_thought">新想法</string>
+    <string name="adding">正在添加, 请稍后...</string>
 </resources>
