@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.common.TimeUtils;
 import com.maxiee.attitude.database.api.BaseDBApi;
 
 import org.json.JSONArray;
@@ -53,9 +54,9 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         try {
             JSONObject thoughtObject = (JSONObject) mThoughtList.get(position);
             String thought = thoughtObject.getString(BaseDBApi.THOUGHT);
-            String time = String.valueOf(thoughtObject.get(BaseDBApi.TIMESTAMP));
+            long time = (long) thoughtObject.get(BaseDBApi.TIMESTAMP);
             holder.tvThought.setText(thought);
-            holder.tvTime.setText(time);
+            holder.tvTime.setText(TimeUtils.parseTime(holder.mContext, time));
         } catch (JSONException e) {
             e.printStackTrace();
         }

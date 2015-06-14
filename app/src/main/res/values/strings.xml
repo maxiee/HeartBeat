@@ -8,4 +8,7 @@
     <string name="notempty">内容不能为空...</string>
     <string name="firtime">初刻</string>
     <string name="sectime">次刻</string>
+    <string name="minute_ago">分钟前</string>
+    <string name="hour_ago">小时前</string>
+    <string name="day_ago">天前</string>
 </resources>
