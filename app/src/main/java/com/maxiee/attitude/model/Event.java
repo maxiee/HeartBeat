@@ -11,7 +11,7 @@ public class Event {
     private String mEvent;
     private JSONArray mThoughts;
     private JSONArray mLabels;
-    private int timestamp;
+    private long timestamp;
     private int mId;
 
     public Event(
@@ -19,7 +19,7 @@ public class Event {
             String mEvent,
             JSONArray mThoughts,
             JSONArray mLabels,
-            int timestamp) {
+            long timestamp) {
         this.mId = id;
         this.mEvent = mEvent;
         this.mThoughts = mThoughts;
@@ -39,7 +39,7 @@ public class Event {
         return mLabels;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

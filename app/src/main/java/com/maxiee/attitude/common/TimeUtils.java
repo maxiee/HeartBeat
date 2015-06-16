@@ -24,8 +24,6 @@ public class TimeUtils {
         Long timeNow = System.currentTimeMillis();
         Long delta = timeNow - timestamp;
 
-        Log.d("time", String.valueOf(delta));
-
         if (delta > SEC_TEN_DAYS) {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timestamp);
