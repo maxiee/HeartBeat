@@ -31,14 +31,10 @@ public class AddThoughtApi extends BaseDBApi{
 
     public boolean exec() throws JSONException {
         Event event = new GetOneEventApi(mContext, mEventKey).exec();
-        JSONArray thoughts = event.getmThoughts();
-        JSONObject newThought = new JSONObject();
-        newThought.put(AddEventApi.THOUGHT, mThought);
-        newThought.put(AddEventApi.TIMESTAMP, System.currentTimeMillis());
-        thoughts.put(newThought);
+        event.addThought(mThought);
 
         ContentValues values = new ContentValues();
-        values.put(EventsTable.THOUGHTS, thoughts.toString());
+        values.put(EventsTable.THOUGHTS, event.getmThoughts().toString());
 
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         db.beginTransaction();

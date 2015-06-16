@@ -2,13 +2,12 @@ package com.maxiee.attitude.database.api;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
 
 import com.maxiee.attitude.database.tables.EventsTable;
+import com.maxiee.attitude.model.Thoughts;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -37,12 +36,11 @@ public class AddEventApi extends BaseDBApi {
     }
 
     private String convertThought(final String thought) throws JSONException{
-        JSONObject thoughtObject = new JSONObject();
-        thoughtObject.put(THOUGHT, thought);
-        thoughtObject.put(TIMESTAMP, System.currentTimeMillis());
-        JSONArray ret = new JSONArray();
-        ret.put(thoughtObject);
-        return ret.toString();
+        Thoughts thoughtObject = new Thoughts();
+        thoughtObject.addThought(
+                thought
+        );
+        return thoughtObject.getmThoughts().toString();
     }
 
     public boolean exec() throws JSONException{
