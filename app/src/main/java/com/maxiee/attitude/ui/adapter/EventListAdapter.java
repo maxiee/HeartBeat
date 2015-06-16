@@ -3,12 +3,14 @@ package com.maxiee.attitude.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.common.TimeUtils;
 import com.maxiee.attitude.model.Event;
 import com.maxiee.attitude.ui.EventDetailActivity;
 
@@ -37,6 +39,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         Event event = mEventList.get(position);
 
         holder.tvEvent.setText(event.getmEvent());
+        holder.tvTime.setText(
+                TimeUtils.parseTime(
+                        holder.mView.getContext(),
+                        event.getTimestamp()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
