@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.common.DialogAsyncTask;
+import com.maxiee.attitude.common.tagview.Tag;
+import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.AddEventApi;
 
 import org.json.JSONException;
@@ -30,6 +32,8 @@ public class AddEventActivity extends AppCompatActivity{
     private String mStrEvent;
     private String mStrFirstThought;
     private ArrayList<String> mLabels;
+    private TagView mTagViewAdded;
+    private TagView mTagViewToAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,10 @@ public class AddEventActivity extends AppCompatActivity{
 
         mEditEvent = (EditText) findViewById(R.id.edit_event);
         mEditFirstThought = (EditText) findViewById(R.id.first_thought);
+        mTagViewAdded = (TagView) findViewById(R.id.tagview_added);
+        mTagViewToAdd = (TagView) findViewById(R.id.tagview_to_add);
+
+        initTagsToAdd();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +70,11 @@ public class AddEventActivity extends AppCompatActivity{
             }
         });
 
+    }
+
+    public void initTagsToAdd() {
+        Tag newTag = new Tag(getString(R.string.new_tag) + " +");
+        mTagViewToAdd.addTag(newTag);
     }
 
     private class AddEventTask extends DialogAsyncTask {

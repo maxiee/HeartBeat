@@ -80,6 +80,30 @@
                             android:hint="@string/first_thought"/>
                     </android.support.design.widget.TextInputLayout>
 
+                    <com.maxiee.attitude.common.tagview.TagView
+                        android:id="@+id/tagview_added"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:lineMargin="5dp"
+                        app:tagMargin="3dp"
+                        app:textPaddingBottom="3dp"
+                        app:textPaddingTop="3dp"
+                        app:textPaddingLeft="10dp"
+                        app:textPaddingRight="10dp"/>
+
+                    <com.maxiee.attitude.common.tagview.TagView
+                        android:id="@+id/tagview_to_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:lineMargin="5dp"
+                        app:tagMargin="3dp"
+                        app:textPaddingBottom="3dp"
+                        app:textPaddingTop="3dp"
+                        app:textPaddingLeft="10dp"
+                        app:textPaddingRight="10dp"/>
+
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
