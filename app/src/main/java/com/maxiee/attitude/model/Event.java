@@ -1,15 +1,14 @@
 package com.maxiee.attitude.model;
 
 import org.json.JSONArray;
-
-import java.util.ArrayList;
+import org.json.JSONException;
 
 /**
  * Created by maxiee on 15-6-12.
  */
 public class Event {
     private String mEvent;
-    private JSONArray mThoughts;
+    private Thoughts mThoughts;
     private JSONArray mLabels;
     private long timestamp;
     private int mId;
@@ -17,21 +16,26 @@ public class Event {
     public Event(
             int id,
             String mEvent,
-            JSONArray mThoughts,
-            JSONArray mLabels,
+            JSONArray thoughts,
+            JSONArray labels,
             long timestamp) {
         this.mId = id;
         this.mEvent = mEvent;
-        this.mThoughts = mThoughts;
-        this.mLabels = mLabels;
+        this.mThoughts = new Thoughts(thoughts);
+        this.mLabels = labels;
         this.timestamp = timestamp;
     }
+
+    public void addThought(String thought) throws JSONException {
+        mThoughts.addThought(thought);
+    }
+
 
     public String getmEvent() {
         return mEvent;
     }
 
-    public JSONArray getmThoughts() {
+    public Thoughts getmThoughts() {
         return mThoughts;
     }
 
