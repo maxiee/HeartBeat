@@ -24,17 +24,23 @@ import java.util.ArrayList;
  */
 public class EventListFragment extends Fragment {
 
+    private RecyclerView mRecyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView rv = (RecyclerView) inflater.inflate(
+        mRecyclerView = (RecyclerView) inflater.inflate(
                 R.layout.fragment_event_list, container, false);
-        rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        updateEventList();
+        return mRecyclerView;
+    }
+
+    public void updateEventList() {
         try {
             ArrayList<Event> eventList = new GetAllEventApi(getActivity()).exec();
             if (eventList != null) {
-                rv.setAdapter(new EventListAdapter(eventList));
+                mRecyclerView.setAdapter(new EventListAdapter(eventList));
             }
         } catch (JSONException e) {e.printStackTrace();}
-        return rv;
     }
 }
