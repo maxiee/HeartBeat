@@ -93,17 +93,12 @@ public class AddEventActivity extends AppCompatActivity{
 
         @Override
         protected String doInBackground(Void... params) {
-            mLabels = new ArrayList<String>();
-            mLabels.add("label1");
-            mLabels.add("label2");
-            mLabels.add("label3");
 
             try {
                 new AddEventApi(
                         AddEventActivity.this,
                         mStrEvent,
-                        mStrFirstThought,
-                        mLabels).exec();
+                        mStrFirstThought).exec();
                 mTaskSuccess = true;
                 return getmContext().getString(R.string.add_ok);
             } catch (JSONException e) {

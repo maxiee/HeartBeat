@@ -12,8 +12,6 @@ public class EventsTable {
 
     public static final String THOUGHTS = "thoughts";
 
-    public static final String LABELS = "labels";
-
     public static final String TIMESTAMP = "timestamp";
 
     public static final String CREATE = "create table " + NAME
@@ -21,7 +19,6 @@ public class EventsTable {
             + ID + " integer primary key autoincrement,"
             + EVENT + " text,"
             + THOUGHTS + " text,"
-            + LABELS + " text,"
             + TIMESTAMP + " integer"
             + ");";
 }

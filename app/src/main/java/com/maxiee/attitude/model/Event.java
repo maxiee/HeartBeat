@@ -9,7 +9,6 @@ import org.json.JSONException;
 public class Event {
     private String mEvent;
     private Thoughts mThoughts;
-    private JSONArray mLabels;
     private long timestamp;
     private int mId;
 
@@ -17,12 +16,10 @@ public class Event {
             int id,
             String mEvent,
             JSONArray thoughts,
-            JSONArray labels,
             long timestamp) {
         this.mId = id;
         this.mEvent = mEvent;
         this.mThoughts = new Thoughts(thoughts);
-        this.mLabels = labels;
         this.timestamp = timestamp;
     }
 
@@ -37,10 +34,6 @@ public class Event {
 
     public Thoughts getmThoughts() {
         return mThoughts;
-    }
-
-    public JSONArray getmLabels() {
-        return mLabels;
     }
 
     public long getTimestamp() {

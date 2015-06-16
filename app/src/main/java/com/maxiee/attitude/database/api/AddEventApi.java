@@ -18,16 +18,13 @@ public class AddEventApi extends BaseDBApi {
 
     private String mEvent;
     private String mThought;
-    private ArrayList<String> mLabels;
 
     public AddEventApi(Context context,
                        final String event,
-                       final String thought,
-                       final ArrayList<String> labels) {
+                       final String thought) {
         super(context);
         mEvent = event;
         mThought = thought;
-        mLabels = labels;
     }
 
     private String convertJSONString(final ArrayList<String> list) {
@@ -47,7 +44,6 @@ public class AddEventApi extends BaseDBApi {
         ContentValues values = new ContentValues();
         values.put(EventsTable.EVENT, mEvent);
         values.put(EventsTable.THOUGHTS, convertThought(mThought));
-        values.put(EventsTable.LABELS, convertJSONString(mLabels));
         values.put(EventsTable.TIMESTAMP, System.currentTimeMillis());
         add(EventsTable.NAME, values);
         return true;
