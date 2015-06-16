@@ -46,7 +46,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
                 order = holder.mContext.getString(R.string.sectime);
                 break;
             default:
-                order = String.valueOf(position) + ".";
+                order = String.valueOf(position + 1) + ".";
                 break;
         }
         holder.tvOrder.setText(order);
