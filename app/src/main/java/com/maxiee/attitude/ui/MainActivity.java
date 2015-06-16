@@ -14,14 +14,17 @@ import com.maxiee.attitude.ui.fragments.EventListFragment;
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton mFab;
+    private EventListFragment mEventListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mEventListFragment = new EventListFragment();
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.nested_content, new EventListFragment()).commit();
+                .add(R.id.nested_content, mEventListFragment).commit();
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_MAIN);
                 i.setClass(MainActivity.this, AddEventActivity.class);
-                startActivity(i);
+                startActivityForResult(i, AddEventActivity.ADD_EVENT_REQUEST);
             }
         });
     }
@@ -55,5 +58,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == AddEventActivity.ADD_EVENT_RESULT_OK) {
+            mEventListFragment.updateEventList();
+        }
     }
 }

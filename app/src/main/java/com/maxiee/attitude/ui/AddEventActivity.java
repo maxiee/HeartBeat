@@ -21,6 +21,10 @@ import java.util.ArrayList;
  * Created by maxiee on 15-6-11.
  */
 public class AddEventActivity extends AppCompatActivity{
+
+    public final static int ADD_EVENT_REQUEST = 100;
+    public final static int ADD_EVENT_RESULT_OK = 101;
+
     private EditText mEditEvent;
     private EditText mEditFirstThought;
     private String mStrEvent;
@@ -68,6 +72,9 @@ public class AddEventActivity extends AppCompatActivity{
 
         @Override
         public void onFinish() {
+            if (mTaskSuccess) {
+                setResult(ADD_EVENT_RESULT_OK);
+            }
             finish();
         }
 
