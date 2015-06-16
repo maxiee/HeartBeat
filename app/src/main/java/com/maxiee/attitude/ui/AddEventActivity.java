@@ -1,5 +1,6 @@
 package com.maxiee.attitude.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.common.DialogAsyncTask;
 import com.maxiee.attitude.database.api.AddEventApi;
 
 import org.json.JSONException;
@@ -21,6 +23,9 @@ import java.util.ArrayList;
 public class AddEventActivity extends AppCompatActivity{
     private EditText mEditEvent;
     private EditText mEditFirstThought;
+    private String mStrEvent;
+    private String mStrFirstThought;
+    private ArrayList<String> mLabels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,34 +43,55 @@ public class AddEventActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String event = mEditEvent.getText().toString();
-                String thought = mEditFirstThought.getText().toString();
-                ArrayList<String> labels = new ArrayList<String>();
+                mStrEvent = mEditEvent.getText().toString();
+                mStrFirstThought = mEditFirstThought.getText().toString();
 
-                if (event.isEmpty() || thought.isEmpty()) {
+                if (mStrEvent.isEmpty() || mStrFirstThought.isEmpty()) {
                     Toast.makeText(AddEventActivity.this,
                             getString(R.string.notempty),
                             Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                labels.add("label1");
-                labels.add("label2");
-                labels.add("label3");
+                new AddEventTask(AddEventActivity.this).execute();
 
-                try {
-                    new AddEventApi(
-                            AddEventActivity.this,
-                            event,
-                            thought,
-                            labels).exec();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
     }
 
+    private class AddEventTask extends DialogAsyncTask {
+
+        public AddEventTask(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onFinish() {
+            finish();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            mLabels = new ArrayList<String>();
+            mLabels.add("label1");
+            mLabels.add("label2");
+            mLabels.add("label3");
+
+            try {
+                new AddEventApi(
+                        AddEventActivity.this,
+                        mStrEvent,
+                        mStrFirstThought,
+                        mLabels).exec();
+                mTaskSuccess = true;
+                return getmContext().getString(R.string.add_ok);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                mTaskSuccess = false;
+                return getmContext().getString(R.string.add_failed);
+            }
+        }
+    }
 
 }

@@ -65,5 +65,9 @@ public abstract class DialogAsyncTask extends AsyncTask<Void, Integer, String>{
                 .show();
     }
 
+    public Context getmContext() {
+        return mContext;
+    }
+
     public abstract void onFinish();
 }

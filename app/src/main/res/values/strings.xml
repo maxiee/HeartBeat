@@ -14,4 +14,6 @@
     <string name="add">添加</string>
     <string name="add_thought">新想法</string>
     <string name="adding">正在添加, 请稍后...</string>
+    <string name="add_ok">添加成功</string>
+    <string name="add_failed">添加失败</string>
 </resources>
