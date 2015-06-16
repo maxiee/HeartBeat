@@ -1,59 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tv_order"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text="order" />
 
-    <View
-        android:layout_width="2dp"
-        android:layout_height="200dp"
-        android:layout_toRightOf="@id/tv_order"
-        android:background="?attr/colorPrimaryDark"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-
-    <View
-        android:id="@+id/time_point"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:background="@drawable/circle_timeaxis"
-        android:layout_toRightOf="@id/tv_order"
-        android:layout_marginTop="18dp"
-        android:layout_marginLeft="14dp" />
-
-    <TextView
-        android:id="@+id/tv_time"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/tv_order"
-        android:layout_toRightOf="@id/time_point"
-        android:layout_marginLeft="20dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:layout_height="match_parent" >
 
-    <android.support.v7.widget.CardView
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimaryDark"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <View
+            android:id="@+id/time_point"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/circle_timeaxis"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="14dp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/time_point"
-        android:layout_below="@id/tv_time"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_thought"
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Thought."/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
-    </android.support.v7.widget.CardView>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/tv_thought"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Thought."/>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>
