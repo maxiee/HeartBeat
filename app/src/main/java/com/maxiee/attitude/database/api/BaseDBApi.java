@@ -17,9 +17,11 @@ public abstract class BaseDBApi {
     public static final String TIMESTAMP = "timestamp";
 
     protected DatabaseHelper mDatabaseHelper;
+    protected Context mContext;
 
     public BaseDBApi(Context context) {
         mDatabaseHelper = DatabaseHelper.instance(context);
+        mContext = context;
     }
 
     protected void add(String table, ContentValues values) {
