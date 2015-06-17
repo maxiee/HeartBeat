@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import com.maxiee.attitude.common.DialogAsyncTask;
 import com.maxiee.attitude.common.tagview.Tag;
 import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.AddEventApi;
+import com.maxiee.attitude.database.api.AddEventLabelRelationApi;
+import com.maxiee.attitude.database.api.AddLabelsApi;
 import com.maxiee.attitude.ui.dialog.NewLabelDialog;
 
 import org.json.JSONException;
@@ -134,10 +137,23 @@ public class AddEventActivity extends AppCompatActivity{
         protected String doInBackground(Void... params) {
 
             try {
-                new AddEventApi(
+                AddEventApi addEventApi = new AddEventApi(
                         AddEventActivity.this,
                         mStrEvent,
-                        mStrFirstThought).exec();
+                        mStrFirstThought);
+                addEventApi.exec();
+                int eventKey = (int) addEventApi.getLatestKey();
+                ArrayList<Integer> labelsKey = new AddLabelsApi(
+                        AddEventActivity.this,
+                        mLabels
+                ).exec();
+                for (int labelkey: labelsKey) {
+                    new AddEventLabelRelationApi(
+                            AddEventActivity.this,
+                            eventKey,
+                            labelkey
+                    ).exec();
+                }
                 mTaskSuccess = true;
                 return getmContext().getString(R.string.add_ok);
             } catch (JSONException e) {
