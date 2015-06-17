@@ -2,6 +2,7 @@ package com.maxiee.attitude.database.api;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.DatabaseUtils;
 
 import com.maxiee.attitude.database.tables.EventsTable;
 import com.maxiee.attitude.model.Thoughts;
@@ -38,6 +39,12 @@ public class AddEventApi extends BaseDBApi {
                 thought
         );
         return thoughtObject.getmThoughts().toString();
+    }
+
+    public long getLatestKey() {
+        return DatabaseUtils.queryNumEntries(
+                mDatabaseHelper.getReadableDatabase(),
+                EventsTable.NAME) -1;
     }
 
     public boolean exec() throws JSONException{
