@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.maxiee.attitude.database.tables.EventLabelRelationTable;
 import com.maxiee.attitude.database.tables.EventsTable;
 import com.maxiee.attitude.database.tables.LabelsTable;
 
@@ -25,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(EventsTable.CREATE);
         db.execSQL(LabelsTable.CREATE);
+        db.execSQL(EventLabelRelationTable.CREATE);
     }
 
     @Override
