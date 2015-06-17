@@ -337,6 +337,12 @@ public class TagView extends RelativeLayout {
         }
     }
 
+    public void clear() {
+        if (mTags != null) {
+            mTags.clear();
+        }
+    }
+
     /**
      * get tag list
      *
