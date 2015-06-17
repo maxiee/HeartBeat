@@ -14,6 +14,7 @@ import com.maxiee.attitude.common.DialogAsyncTask;
 import com.maxiee.attitude.common.tagview.Tag;
 import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.AddEventApi;
+import com.maxiee.attitude.ui.dialog.NewLabelDialog;
 
 import org.json.JSONException;
 
@@ -51,6 +52,35 @@ public class AddEventActivity extends AppCompatActivity{
 
         initTagsToAdd();
 
+        mTagViewToAdd.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(Tag tag, int position) {
+                if (tag.text.equals(getString(R.string.new_tag))) {
+                    NewLabelDialog dialog = new NewLabelDialog(AddEventActivity.this);
+                    dialog.setOnAddFinishedListener(new NewLabelDialog.OnAddFinishedListener() {
+                        @Override
+                        public void addLabel(String label) {
+                            if (mLabels == null) {
+                                mLabels = new ArrayList<String>();
+                            }
+                            mLabels.add(label);
+                            initTagsToAdd();
+                        }
+                    });
+                    dialog.show();
+                }
+            }
+        });
+
+        mTagViewToAdd.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
+            @Override
+            public void onTagDeleted(Tag tag, int position) {
+                if (mLabels != null) {
+                    mLabels.remove(tag.text);
+                }
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +103,17 @@ public class AddEventActivity extends AppCompatActivity{
     }
 
     public void initTagsToAdd() {
-        Tag newTag = new Tag(getString(R.string.new_tag) + " +");
+        final Tag newTag = new Tag(getString(R.string.new_tag));
+        mTagViewToAdd.clear();
         mTagViewToAdd.addTag(newTag);
+        if (mLabels == null) {
+            return;
+        }
+        for (String tag: mLabels) {
+            Tag useTag = new Tag(tag);
+            useTag.isDeletable = true;
+            mTagViewToAdd.addTag(useTag);
+        }
     }
 
     private class AddEventTask extends DialogAsyncTask {
