@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.common.TimeUtils;
+import com.maxiee.attitude.common.tagview.Tag;
+import com.maxiee.attitude.common.tagview.TagView;
+import com.maxiee.attitude.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.attitude.model.Event;
 import com.maxiee.attitude.ui.EventDetailActivity;
 
@@ -43,6 +46,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 TimeUtils.parseTime(
                         holder.mView.getContext(),
                         event.getTimestamp()));
+        ArrayList<String> labels = new GetLabelsByEventKeyApi(
+                holder.mContext,
+                event.getmId()
+        ).exec();
+        for (String label: labels) {
+            holder.tagView.addTag(new Tag(label));
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +75,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvEvent, tvTime,tvThoughtCount;
         public final View mView;
+        public TagView tagView;
+        public Context mContext;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +84,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             this.tvEvent = (TextView) itemView.findViewById(R.id.tv_event);
             this.tvTime = (TextView) itemView.findViewById(R.id.tv_time);
             this.tvThoughtCount = (TextView) itemView.findViewById(R.id.tv_thought_count);
+            this.tagView = (TagView) itemView.findViewById(R.id.tagview);
+            mContext = itemView.getContext();
         }
     }
 }
