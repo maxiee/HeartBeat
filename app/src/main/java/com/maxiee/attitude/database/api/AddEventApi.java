@@ -44,7 +44,7 @@ public class AddEventApi extends BaseDBApi {
     public long getLatestKey() {
         return DatabaseUtils.queryNumEntries(
                 mDatabaseHelper.getReadableDatabase(),
-                EventsTable.NAME) -1;
+                EventsTable.NAME);
     }
 
     public boolean exec() throws JSONException{
