@@ -17,4 +17,5 @@
     <string name="add_ok">添加成功</string>
     <string name="add_failed">添加失败</string>
     <string name="new_tag">新标签</string>
+    <string name="recent_label">常用:</string>
 </resources>
