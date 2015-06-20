@@ -17,11 +17,17 @@ import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.AddEventApi;
 import com.maxiee.attitude.database.api.AddEventLabelRelationApi;
 import com.maxiee.attitude.database.api.AddLabelsApi;
+import com.maxiee.attitude.database.api.GetLabelsAndFreqApi;
+import com.maxiee.attitude.database.api.GetOneLabelApi;
 import com.maxiee.attitude.ui.dialog.NewLabelDialog;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by maxiee on 15-6-11.
@@ -36,7 +42,7 @@ public class AddEventActivity extends AppCompatActivity{
     private String mStrEvent;
     private String mStrFirstThought;
     private ArrayList<String> mLabels;
-    private TagView mTagViewAdded;
+    private TagView mTagViewRecent;
     private TagView mTagViewToAdd;
 
     @Override
@@ -50,10 +56,11 @@ public class AddEventActivity extends AppCompatActivity{
 
         mEditEvent = (EditText) findViewById(R.id.edit_event);
         mEditFirstThought = (EditText) findViewById(R.id.first_thought);
-        mTagViewAdded = (TagView) findViewById(R.id.tagview_added);
+        mTagViewRecent = (TagView) findViewById(R.id.tagview_added);
         mTagViewToAdd = (TagView) findViewById(R.id.tagview_to_add);
 
         initTagsToAdd();
+        initTagsRecent();
 
         mTagViewToAdd.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
@@ -116,6 +123,30 @@ public class AddEventActivity extends AppCompatActivity{
             Tag useTag = new Tag(tag);
             useTag.isDeletable = true;
             mTagViewToAdd.addTag(useTag);
+        }
+    }
+
+    public void initTagsRecent() {
+        Map<Integer, Integer> recentLabels =
+                new GetLabelsAndFreqApi(this).exec();
+        if (recentLabels == null) {
+            return;
+        }
+        ArrayList<Map.Entry<Integer,Integer>> list = new ArrayList<>(recentLabels.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Integer> lhs, Map.Entry<Integer, Integer> rhs) {
+                return rhs.getValue() - lhs.getValue();
+            }
+        });
+        for (Map.Entry<Integer,Integer> labelId : list) {
+            Tag tag = new Tag(
+                    new GetOneLabelApi(this, labelId.getKey()).exec()
+                    + " x" + String.valueOf(labelId.getValue())
+            );
+            tag.layoutColor = getResources().getColor(R.color.tag_gray);
+            tag.tagTextSize = 10.0f;
+            mTagViewRecent.addTag(tag);
         }
     }
 
