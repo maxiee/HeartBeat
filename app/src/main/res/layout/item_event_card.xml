@@ -22,30 +22,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/tv_event" />
-
-        <com.maxiee.attitude.common.tagview.TagView
-            android:id="@+id/tagview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:lineMargin="5dp"
-            app:tagMargin="3dp"
-            app:textPaddingBottom="3dp"
-            app:textPaddingTop="3dp"
-            app:textPaddingLeft="10dp"
-            app:textPaddingRight="10dp"
-            android:gravity="right"
-            android:layout_below="@id/tv_event"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"/>
+            android:id="@+id/tv_event"
+            android:layout_marginBottom="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tv_time"
-            android:layout_below="@id/tagview"
+            android:layout_below="@id/tv_event"
             android:layout_alignParentLeft="true"/>
 
         <TextView
@@ -53,14 +38,14 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tv_thought_count"
-            android:layout_below="@id/tagview"
+            android:layout_below="@id/tv_event"
             android:layout_alignParentRight="true"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_messenger"
-            android:layout_below="@id/tagview"
+            android:layout_below="@id/tv_event"
             android:layout_toLeftOf="@id/tv_thought_count"/>
 
     </RelativeLayout>

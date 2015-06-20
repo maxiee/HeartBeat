@@ -24,6 +24,8 @@ import java.util.ArrayList;
  */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
+    private static final String TAG = EventListAdapter.class.getSimpleName();
+
     private ArrayList<Event> mEventList;
 
     public EventListAdapter(ArrayList<Event> mEventList) {
@@ -50,9 +52,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 holder.mContext,
                 event.getmId()
         ).exec();
-        for (String label: labels) {
-            holder.tagView.addTag(new Tag(label));
-        }
+
+        Log.d(TAG, "事件列表项目");
+        Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
+        Log.d(TAG, "名称:" + event.getmEvent());
+        Log.d(TAG, "标签:" + labels.toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +79,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvEvent, tvTime,tvThoughtCount;
         public final View mView;
-        public TagView tagView;
         public Context mContext;
 
         public ViewHolder(View itemView) {
@@ -84,7 +87,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             this.tvEvent = (TextView) itemView.findViewById(R.id.tv_event);
             this.tvTime = (TextView) itemView.findViewById(R.id.tv_time);
             this.tvThoughtCount = (TextView) itemView.findViewById(R.id.tv_thought_count);
-            this.tagView = (TagView) itemView.findViewById(R.id.tagview);
             mContext = itemView.getContext();
         }
     }
