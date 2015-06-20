@@ -34,6 +34,8 @@ import java.util.Map;
  */
 public class AddEventActivity extends AppCompatActivity{
 
+    private final static String TAG = AddEventActivity.class.getSimpleName();
+
     public final static int ADD_EVENT_REQUEST = 100;
     public final static int ADD_EVENT_RESULT_OK = 101;
 
@@ -185,6 +187,11 @@ public class AddEventActivity extends AppCompatActivity{
                             labelkey
                     ).exec();
                 }
+
+                Log.d(TAG, "添加事件");
+                Log.d(TAG, "id: " + String.valueOf(eventKey));
+                Log.d(TAG, "labels: " + mLabels.toString());
+                Log.d(TAG, "labels_key: " + labelsKey.toString());
                 mTaskSuccess = true;
                 return getmContext().getString(R.string.add_ok);
             } catch (JSONException e) {

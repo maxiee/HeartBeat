@@ -24,6 +24,10 @@ public class GetLabelsAndFreqApi extends BaseDBApi {
     public Map<Integer, Integer> exec() {
         ArrayList<Integer> labelIds = new GetAllLabelApi(mContext).exec();
 
+        if (labelIds == null) {
+            return  null;
+        }
+
         Map<Integer, Integer> ret = new TreeMap<>();
         for (int labelId : labelIds) {
             Cursor cursor = mDatabaseHelper.getReadableDatabase().query(

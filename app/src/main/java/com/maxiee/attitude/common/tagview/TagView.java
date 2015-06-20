@@ -40,7 +40,7 @@ public class TagView extends RelativeLayout {
     /**
      * System Service
      */
-    private LayoutInflater mInflater;
+    private Context mContext;
     private ViewTreeObserver mViewTreeObserber;
 
     /**
@@ -75,48 +75,23 @@ public class TagView extends RelativeLayout {
         void onTagDeleted(Tag tag, int position);
     }
 
-    /**
-     * constructor
-     *
-     * @param ctx
-     */
     public TagView(Context ctx) {
         super(ctx, null);
         initialize(ctx, null, 0);
     }
 
-    /**
-     * constructor
-     *
-     * @param ctx
-     * @param attrs
-     */
     public TagView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
         initialize(ctx, attrs, 0);
     }
 
-    /**
-     * constructor
-     *
-     * @param ctx
-     * @param attrs
-     * @param defStyle
-     */
     public TagView(Context ctx, AttributeSet attrs, int defStyle) {
         super(ctx, attrs, defStyle);
         initialize(ctx, attrs, defStyle);
     }
 
-    /**
-     * initalize instance
-     *
-     * @param ctx
-     * @param attrs
-     * @param defStyle
-     */
     private void initialize(Context ctx, AttributeSet attrs, int defStyle) {
-        mInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = ctx;
         mViewTreeObserber = getViewTreeObserver();
         mViewTreeObserber.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -139,14 +114,6 @@ public class TagView extends RelativeLayout {
         typeArray.recycle();
     }
 
-    /**
-     * onSizeChanged
-     *
-     * @param w
-     * @param h
-     * @param oldw
-     * @param oldh
-     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w,h,oldw,oldh);
@@ -185,20 +152,19 @@ public class TagView extends RelativeLayout {
         int listIndex = 1;// List Index
         int index_bottom=1;// The Tag to add below
         int index_header=1;// The header tag of this line
-        Tag tag_pre=null;
+        Tag tag_pre = null;
         for (Tag item : mTags) {
             final int position = listIndex-1;
             final Tag tag = item;
 
             // inflate tag layout
-            View tagLayout = (View) mInflater.inflate(R.layout.tagview_item, null);
+            View tagLayout = (View) LayoutInflater.from(mContext).inflate(R.layout.tagview_item, this, false);
             tagLayout.setId(listIndex);
             tagLayout.setBackground(getSelector(tag));
 
             // tag text
             TextView tagView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_contain);
             tagView.setText(tag.text);
-            //tagView.setPadding(textPaddingLeft, textPaddingTop, textPaddingRight, texPaddingBottom);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tagView.getLayoutParams();
             params.setMargins(textPaddingLeft, textPaddingTop, textPaddingRight, texPaddingBottom);
             tagView.setLayoutParams(params);
@@ -215,7 +181,6 @@ public class TagView extends RelativeLayout {
 
             // calculate　of tag layout width
             float tagWidth = tagView.getPaint().measureText(tag.text) + textPaddingLeft + textPaddingRight;
-            // tagView padding (left & right)
 
             // deletable text
             TextView deletableView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_delete);
@@ -224,9 +189,6 @@ public class TagView extends RelativeLayout {
                 deletableView.setText(tag.deleteIcon);
                 int offset = dipToPx(getContext(), 2f);
                 deletableView.setPadding(offset, textPaddingTop, textPaddingRight+offset, texPaddingBottom);
-				/*params = (LinearLayout.LayoutParams) deletableView.getLayoutParams();
-				params.setMargins(offset, textPaddingTop, textPaddingRight+offset, texPaddingBottom);
-				deletableView.setLayoutParams(params);*/
                 deletableView.setTextColor(tag.deleteIndicatorColor);
                 deletableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, tag.deleteIndicatorSize);
                 deletableView.setOnClickListener(new OnClickListener() {
@@ -234,19 +196,16 @@ public class TagView extends RelativeLayout {
                     public void onClick(View v) {
                         TagView.this.remove(position);
                         if (mDeleteListener != null) {
-                            Tag targetTag = tag;
-                            mDeleteListener.onTagDeleted(targetTag, position);
+                            mDeleteListener.onTagDeleted(tag, position);
                         }
                     }
                 });
                 tagWidth += deletableView.getPaint().measureText(tag.deleteIcon) +textPaddingLeft + textPaddingRight;
-                // deletableView Padding (left & right)
             } else {
                 deletableView.setVisibility(View.GONE);
             }
 
             LayoutParams tagParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            //tagParams.setMargins(0, 0, 0, 0);
 
             //add margin of each line
             tagParams.bottomMargin = lineMargin;
@@ -266,21 +225,16 @@ public class TagView extends RelativeLayout {
                     tagParams.addRule(RelativeLayout.RIGHT_OF, listIndex - 1);
                     tagParams.leftMargin = tagMargin;
                     total += tagMargin;
-                    if (tag_pre!=null&&tag_pre.tagTextSize<tag.tagTextSize) {
+                    if (tag_pre.tagTextSize < tag.tagTextSize) {
                         index_bottom = listIndex;
                     }
                 }
-
-
-
             }
             total += tagWidth;
             addView(tagLayout, tagParams);
             tag_pre=tag;
             listIndex++;
-
         }
-
     }
 
     private Drawable getSelector(Tag tag) {
@@ -307,6 +261,10 @@ public class TagView extends RelativeLayout {
 
     //public methods
     //----------------- separator  -----------------//
+
+    public boolean isEmpty() {
+        return mTags.isEmpty();
+    }
 
     /**
      *
