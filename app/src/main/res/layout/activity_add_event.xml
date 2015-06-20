@@ -81,18 +81,6 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <com.maxiee.attitude.common.tagview.TagView
-                        android:id="@+id/tagview_added"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:lineMargin="5dp"
-                        app:tagMargin="3dp"
-                        app:textPaddingBottom="3dp"
-                        app:textPaddingTop="3dp"
-                        app:textPaddingLeft="10dp"
-                        app:textPaddingRight="10dp"/>
-
-                    <com.maxiee.attitude.common.tagview.TagView
                         android:id="@+id/tagview_to_add"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,6 +91,32 @@
                         app:textPaddingTop="3dp"
                         app:textPaddingLeft="10dp"
                         app:textPaddingRight="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/recent_label"
+                            android:layout_marginRight="5dp"/>
+
+                        <com.maxiee.attitude.common.tagview.TagView
+                            android:id="@+id/tagview_added"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:lineMargin="5dp"
+                            app:tagMargin="3dp"
+                            app:textPaddingBottom="2dp"
+                            app:textPaddingTop="2dp"
+                            app:textPaddingLeft="7dp"
+                            app:textPaddingRight="7dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
