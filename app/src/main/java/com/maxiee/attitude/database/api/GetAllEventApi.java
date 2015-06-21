@@ -26,7 +26,6 @@ public class GetAllEventApi extends BaseDBApi {
                 new String[] {
                         EventsTable.ID,
                         EventsTable.EVENT,
-                        EventsTable.THOUGHTS,
                         EventsTable.TIMESTAMP
                 },
                 null,
@@ -46,17 +45,13 @@ public class GetAllEventApi extends BaseDBApi {
             String event = cursor.getString(
                     cursor.getColumnIndex(EventsTable.EVENT)
             );
-            String thoughts = cursor.getString(
-                    cursor.getColumnIndex(EventsTable.THOUGHTS)
-            );
-            JSONArray thoughtsList = new JSONArray(thoughts);
+
             long timestamp = cursor.getLong(
                     cursor.getColumnIndex(EventsTable.TIMESTAMP)
             );
             eventList.add(new Event(
                     id,
                     event,
-                    thoughtsList,
                     timestamp
             ));
 
