@@ -52,15 +52,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         holder.mView.getContext(),
                         event.getTimestamp()));
 
-        try {
-            holder.tvThoughtCount.setText(
-                    String.valueOf(
-                            new ThoughtCountByEventApi(holder.mContext, event.getmId()).exec()
-                    )
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        holder.tvThoughtCount.setText(
+                String.valueOf(
+                        new ThoughtCountByEventApi(holder.mContext, event.getmId()).exec()
+                )
+        );
 
         Log.d(TAG, "事件列表项目");
         Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
