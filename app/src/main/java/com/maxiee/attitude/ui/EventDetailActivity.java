@@ -12,12 +12,18 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.common.TimeUtils;
+import com.maxiee.attitude.common.tagview.Tag;
+import com.maxiee.attitude.common.tagview.TagView;
+import com.maxiee.attitude.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.attitude.database.api.GetOneEventApi;
 import com.maxiee.attitude.model.Event;
 import com.maxiee.attitude.ui.adapter.ThoughtTimeaxisAdapter;
 import com.maxiee.attitude.ui.dialog.NewThoughtDialog;
 
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * Created by maxiee on 15-6-13.
@@ -29,6 +35,8 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView mTvEvent;
     private RecyclerView mRecyclerView;
     private ThoughtTimeaxisAdapter mAdapter;
+    private TagView mTagView;
+    private TextView mTvTime;
     private int mId;
 
     public static final String EXTRA_NAME = "id";
@@ -47,6 +55,8 @@ public class EventDetailActivity extends AppCompatActivity {
 
         mTvEvent = (TextView) findViewById(R.id.tv_event);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        mTagView = (TagView) findViewById(R.id.tagview);
+        mTvTime = (TextView) findViewById(R.id.tv_time);
 
         try {
             mEvent =  new GetOneEventApi(this, mId).exec();
@@ -54,6 +64,16 @@ public class EventDetailActivity extends AppCompatActivity {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mAdapter = new ThoughtTimeaxisAdapter(mEvent.getmThoughts());
             mRecyclerView.setAdapter(mAdapter);
+
+            ArrayList<String> labels = new GetLabelsByEventKeyApi(this, mEvent.getmId()).exec();
+            if (labels != null) {
+                for (String label: labels) {
+                    mTagView.addTag(new Tag(label));
+                }
+            }
+
+            mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
