@@ -23,14 +23,13 @@ public class GetOneEventApi extends BaseDBApi {
         mId = String.valueOf(id);
     }
 
-    public Event exec() throws JSONException{
+    public Event exec() {
 
         Cursor cursor = mDatabaseHelper.getReadableDatabase().query(
                 EventsTable.NAME,
                 new String[] {
                         EventsTable.ID,
                         EventsTable.EVENT,
-                        EventsTable.THOUGHTS,
                         EventsTable.TIMESTAMP
                 },
                 EventsTable.ID + "=?",
@@ -48,10 +47,7 @@ public class GetOneEventApi extends BaseDBApi {
         String event = cursor.getString(
                 cursor.getColumnIndex(EventsTable.EVENT)
         );
-        String thoughts = cursor.getString(
-                cursor.getColumnIndex(EventsTable.THOUGHTS)
-        );
-        JSONArray thoughtsList = new JSONArray(thoughts);
+
         long timestamp = cursor.getLong(
                 cursor.getColumnIndex(EventsTable.TIMESTAMP)
         );
@@ -61,7 +57,6 @@ public class GetOneEventApi extends BaseDBApi {
         return new Event(
                 id,
                 event,
-                thoughtsList,
                 timestamp);
     }
 }
