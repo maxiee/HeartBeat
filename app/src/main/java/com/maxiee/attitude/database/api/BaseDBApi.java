@@ -24,11 +24,13 @@ public abstract class BaseDBApi {
         mContext = context;
     }
 
-    protected void add(String table, ContentValues values) {
+    protected long add(String table, ContentValues values) {
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        db.insert(table, null, values);
+        long key = db.insert(table, null, values);
         db.setTransactionSuccessful();
         db.endTransaction();
+
+        return key;
     };
 }
