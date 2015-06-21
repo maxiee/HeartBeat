@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by maxiee on 15-6-16.
  */
@@ -12,44 +14,53 @@ public class Thoughts {
     public static final String THOUGHT = "thought";
     public static final String TIMESTAMP = "timestamp";
 
-    private JSONArray mThoughts;
+    private ArrayList<Thought> mThoughts;
 
     public Thoughts() {
-        mThoughts = new JSONArray();
+        mThoughts = new ArrayList<>();
     }
 
-    public Thoughts(JSONArray thoughts) {
-        mThoughts = thoughts;
+    public void addThought(String thought) {
+
+        Thought thoughtObject = new Thought(
+                thought,
+                System.currentTimeMillis());
+
+        mThoughts.add(thoughtObject);
     }
 
-    public void addThought(String thought) throws JSONException{
-        JSONObject thoughtObject = new JSONObject();
-        thoughtObject.put(THOUGHT, thought);
-        thoughtObject.put(TIMESTAMP, System.currentTimeMillis());
-        mThoughts.put(thoughtObject);
-    }
-
-    public JSONArray getmThoughts() {
+    public ArrayList<Thought> getmThoughts() {
         return mThoughts;
     }
 
-    public JSONObject get(int position) throws JSONException{
-        return (JSONObject) mThoughts.get(position);
+    public Thought get(int position) {
+        return mThoughts.get(position);
     }
 
-    public String getThoughtAt(int position) throws JSONException{
-        return get(position).getString(THOUGHT);
+    public void add(Thought thought) {
+        mThoughts.add(thought);
     }
 
-    public String toString() {
-        return mThoughts.toString();
-    }
-
-    public long getTimestampAt(int position) throws JSONException{
-        return get(position).getLong(TIMESTAMP);
-    }
 
     public int length() {
-        return mThoughts.length();
+        return mThoughts.size();
+    }
+
+    public static class Thought {
+        private String mThought;
+        private long mTimeStamp;
+
+        public Thought(String mThought, long mTimeStamp) {
+            this.mThought = mThought;
+            this.mTimeStamp = mTimeStamp;
+        }
+
+        public String getThought() {
+            return mThought;
+        }
+
+        public long getTimeStamp() {
+            return mTimeStamp;
+        }
     }
 }
