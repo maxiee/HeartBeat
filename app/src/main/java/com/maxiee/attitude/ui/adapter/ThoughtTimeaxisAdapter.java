@@ -48,13 +48,9 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         }
         holder.tvOrder.setText(order);
 
-        try {
-            long time = mThoughtList.getTimestampAt(position);
-            holder.tvThought.setText(mThoughtList.getThoughtAt(position));
-            holder.tvTime.setText(TimeUtils.parseTime(holder.mContext, time));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        long time = mThoughtList.get(position).getTimeStamp();
+        holder.tvThought.setText(mThoughtList.get(position).getThought());
+        holder.tvTime.setText(TimeUtils.parseTime(holder.mContext, time));
     }
 
     @Override
