@@ -37,16 +37,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginLeft="2dp"
             android:id="@+id/tv_thought_count"
             android:layout_below="@id/tv_event"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:text="0"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:src="@drawable/ic_action_messenger"
             android:layout_below="@id/tv_event"
-            android:layout_toLeftOf="@id/tv_thought_count"/>
+            android:layout_toLeftOf="@id/tv_thought_count"
+            android:layout_alignBottom="@id/tv_thought_count"/>
 
     </RelativeLayout>
 
