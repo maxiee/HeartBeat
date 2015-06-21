@@ -10,15 +10,12 @@ public class EventsTable {
 
     public static final String EVENT = "event";
 
-    public static final String THOUGHTS = "thoughts";
-
     public static final String TIMESTAMP = "timestamp";
 
     public static final String CREATE = "create table " + NAME
             + "("
             + ID + " integer primary key autoincrement,"
             + EVENT + " text,"
-            + THOUGHTS + " text,"
             + TIMESTAMP + " integer"
             + ");";
 }
