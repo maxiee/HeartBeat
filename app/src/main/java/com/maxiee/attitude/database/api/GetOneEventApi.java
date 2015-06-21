@@ -52,7 +52,7 @@ public class GetOneEventApi extends BaseDBApi {
                 cursor.getColumnIndex(EventsTable.THOUGHTS)
         );
         JSONArray thoughtsList = new JSONArray(thoughts);
-        int timestamp = cursor.getInt(
+        long timestamp = cursor.getLong(
                 cursor.getColumnIndex(EventsTable.TIMESTAMP)
         );
 
