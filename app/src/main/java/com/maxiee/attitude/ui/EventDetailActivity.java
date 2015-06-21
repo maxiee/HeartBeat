@@ -15,6 +15,7 @@ import com.maxiee.attitude.R;
 import com.maxiee.attitude.common.TimeUtils;
 import com.maxiee.attitude.common.tagview.Tag;
 import com.maxiee.attitude.common.tagview.TagView;
+import com.maxiee.attitude.database.api.GetAllThoughtApi;
 import com.maxiee.attitude.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.attitude.database.api.GetOneEventApi;
 import com.maxiee.attitude.model.Event;
@@ -58,25 +59,23 @@ public class EventDetailActivity extends AppCompatActivity {
         mTagView = (TagView) findViewById(R.id.tagview);
         mTvTime = (TextView) findViewById(R.id.tv_time);
 
-        try {
-            mEvent =  new GetOneEventApi(this, mId).exec();
-            mTvEvent.setText(mEvent.getmEvent());
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mAdapter = new ThoughtTimeaxisAdapter(mEvent.getmThoughts());
-            mRecyclerView.setAdapter(mAdapter);
+        mEvent =  new GetOneEventApi(this, mId).exec();
+        mTvEvent.setText(mEvent.getmEvent());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new ThoughtTimeaxisAdapter(
+                new GetAllThoughtApi(this, mEvent.getmId()).exec()
+        );
+        mRecyclerView.setAdapter(mAdapter);
 
-            ArrayList<String> labels = new GetLabelsByEventKeyApi(this, mEvent.getmId()).exec();
-            if (labels != null) {
-                for (String label: labels) {
-                    mTagView.addTag(new Tag(label));
-                }
+        ArrayList<String> labels = new GetLabelsByEventKeyApi(this, mEvent.getmId()).exec();
+        if (labels != null) {
+            for (String label: labels) {
+                mTagView.addTag(new Tag(label));
             }
-
-            mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
+        mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,13 +85,11 @@ public class EventDetailActivity extends AppCompatActivity {
                 dialog.setOnAddFinishedListener(new NewThoughtDialog.OnAddFinishedListener() {
                     @Override
                     public void update() {
-                        try {
-                            mEvent = new GetOneEventApi(EventDetailActivity.this, mId).exec();
-                            mAdapter = new ThoughtTimeaxisAdapter(mEvent.getmThoughts());
-                            mRecyclerView.setAdapter(mAdapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        mEvent = new GetOneEventApi(EventDetailActivity.this, mId).exec();
+                        mAdapter = new ThoughtTimeaxisAdapter(
+                                new GetAllThoughtApi(EventDetailActivity.this, mEvent.getmId()).exec()
+                        );
+                        mRecyclerView.setAdapter(mAdapter);
                     }
                 });
                 dialog.show();
