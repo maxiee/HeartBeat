@@ -17,6 +17,7 @@ import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.AddEventApi;
 import com.maxiee.attitude.database.api.AddEventLabelRelationApi;
 import com.maxiee.attitude.database.api.AddLabelsApi;
+import com.maxiee.attitude.database.api.AddThoughtApi;
 import com.maxiee.attitude.database.api.GetLabelsAndFreqApi;
 import com.maxiee.attitude.database.api.GetOneLabelApi;
 import com.maxiee.attitude.ui.dialog.NewLabelDialog;
@@ -170,16 +171,20 @@ public class AddEventActivity extends AppCompatActivity{
         protected String doInBackground(Void... params) {
 
             try {
-                AddEventApi addEventApi = new AddEventApi(
+                // add event
+                int eventKey = (int) new AddEventApi(
                         AddEventActivity.this,
-                        mStrEvent,
-                        mStrFirstThought);
-                addEventApi.exec();
-                int eventKey = (int) addEventApi.getLatestKey();
+                        mStrEvent).exec();
+
+                // add thought
+                new AddThoughtApi(AddEventActivity.this, eventKey, mStrFirstThought).exec();
+
+                // add labels
                 ArrayList<Integer> labelsKey = new AddLabelsApi(
                         AddEventActivity.this,
                         mLabels
                 ).exec();
+
                 for (int labelkey: labelsKey) {
                     new AddEventLabelRelationApi(
                             AddEventActivity.this,
