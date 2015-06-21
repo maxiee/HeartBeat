@@ -18,14 +18,11 @@ import java.util.ArrayList;
 public class AddEventApi extends BaseDBApi {
 
     private String mEvent;
-    private String mThought;
 
     public AddEventApi(Context context,
-                       final String event,
-                       final String thought) {
+                       final String event) {
         super(context);
         mEvent = event;
-        mThought = thought;
     }
 
     private String convertJSONString(final ArrayList<String> list) {
@@ -41,18 +38,10 @@ public class AddEventApi extends BaseDBApi {
         return thoughtObject.getmThoughts().toString();
     }
 
-    public long getLatestKey() {
-        return DatabaseUtils.queryNumEntries(
-                mDatabaseHelper.getReadableDatabase(),
-                EventsTable.NAME);
-    }
-
-    public boolean exec() throws JSONException{
+    public long exec() {
         ContentValues values = new ContentValues();
         values.put(EventsTable.EVENT, mEvent);
-        values.put(EventsTable.THOUGHTS, convertThought(mThought));
         values.put(EventsTable.TIMESTAMP, System.currentTimeMillis());
-        add(EventsTable.NAME, values);
-        return true;
+        return add(EventsTable.NAME, values);
     }
 }
