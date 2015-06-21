@@ -14,8 +14,11 @@ import com.maxiee.attitude.common.TimeUtils;
 import com.maxiee.attitude.common.tagview.Tag;
 import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.GetLabelsByEventKeyApi;
+import com.maxiee.attitude.database.api.ThoughtCountByEventApi;
 import com.maxiee.attitude.model.Event;
 import com.maxiee.attitude.ui.EventDetailActivity;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -48,15 +51,20 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 TimeUtils.parseTime(
                         holder.mView.getContext(),
                         event.getTimestamp()));
-        ArrayList<String> labels = new GetLabelsByEventKeyApi(
-                holder.mContext,
-                event.getmId()
-        ).exec();
+
+        try {
+            holder.tvThoughtCount.setText(
+                    String.valueOf(
+                            new ThoughtCountByEventApi(holder.mContext, event.getmId()).exec()
+                    )
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Log.d(TAG, "事件列表项目");
         Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
         Log.d(TAG, "名称:" + event.getmEvent());
-        Log.d(TAG, "标签:" + labels.toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
