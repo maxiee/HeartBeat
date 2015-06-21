@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.maxiee.attitude.database.tables.EventsTable;
+import com.maxiee.attitude.database.tables.ThoughtsTable;
 import com.maxiee.attitude.model.Event;
 
 import org.json.JSONArray;
@@ -29,23 +30,20 @@ public class AddThoughtApi extends BaseDBApi{
         mThought = thought;
     }
 
-    public boolean exec() throws JSONException {
-        Event event = new GetOneEventApi(mContext, mEventKey).exec();
-        event.addThought(mThought);
+    public boolean exec() {
 
         ContentValues values = new ContentValues();
-        values.put(EventsTable.THOUGHTS, event.getmThoughts().toString());
+        values.put(ThoughtsTable.THOUGHT, mThought);
+        values.put(ThoughtsTable.TIMESTAMP, System.currentTimeMillis());
 
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        db.update(
-                EventsTable.NAME,
-                values,
-                EventsTable.ID + " =?",
-                new String[] {String.valueOf(mEventKey)}
-        );
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        int thoughtKey = (int) add(ThoughtsTable.NAME, values);
+
+        new AddEventThoughtRelationApi(
+                mContext,
+                mEventKey,
+                thoughtKey).exec();
+
         return true;
     }
 }
