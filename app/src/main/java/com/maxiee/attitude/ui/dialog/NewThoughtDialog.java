@@ -98,15 +98,11 @@ public class NewThoughtDialog extends AppCompatDialog {
 
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                new AddThoughtApi(
-                        getContext(),
-                        mEventKey,
-                        mTextThought).exec();
-                mAddSuccess = true;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new AddThoughtApi(
+                    getContext(),
+                    mEventKey,
+                    mTextThought).exec();
+            mAddSuccess = true;
             return null;
         }
 
