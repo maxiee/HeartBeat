@@ -145,8 +145,9 @@ public class AddEventActivity extends AppCompatActivity{
         for (Map.Entry<Integer,Integer> labelId : list) {
             Tag tag = new Tag(
                     new GetOneLabelApi(this, labelId.getKey()).exec()
-                    + " x" + String.valueOf(labelId.getValue())
             );
+            tag.hasExtraInfo = true;
+            tag.extraInfoString = " x" + String.valueOf(labelId.getValue());
             tag.layoutColor = getResources().getColor(R.color.tag_gray);
             tag.tagTextSize = 10.0f;
             mTagViewRecent.addTag(tag);
@@ -170,40 +171,34 @@ public class AddEventActivity extends AppCompatActivity{
         @Override
         protected String doInBackground(Void... params) {
 
-            try {
-                // add event
-                int eventKey = (int) new AddEventApi(
-                        AddEventActivity.this,
-                        mStrEvent).exec();
+            // add event
+            int eventKey = (int) new AddEventApi(
+                    AddEventActivity.this,
+                    mStrEvent).exec();
 
-                // add thought
-                new AddThoughtApi(AddEventActivity.this, eventKey, mStrFirstThought).exec();
+            // add thought
+            new AddThoughtApi(AddEventActivity.this, eventKey, mStrFirstThought).exec();
 
-                // add labels
-                ArrayList<Integer> labelsKey = new AddLabelsApi(
+            // add labels
+            ArrayList<Integer> labelsKey = new AddLabelsApi(
+                    AddEventActivity.this,
+                    mLabels
+            ).exec();
+
+            for (int labelkey: labelsKey) {
+                new AddEventLabelRelationApi(
                         AddEventActivity.this,
-                        mLabels
+                        eventKey,
+                        labelkey
                 ).exec();
-
-                for (int labelkey: labelsKey) {
-                    new AddEventLabelRelationApi(
-                            AddEventActivity.this,
-                            eventKey,
-                            labelkey
-                    ).exec();
-                }
-
-                Log.d(TAG, "添加事件");
-                Log.d(TAG, "id: " + String.valueOf(eventKey));
-                Log.d(TAG, "labels: " + mLabels.toString());
-                Log.d(TAG, "labels_key: " + labelsKey.toString());
-                mTaskSuccess = true;
-                return getmContext().getString(R.string.add_ok);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                mTaskSuccess = false;
-                return getmContext().getString(R.string.add_failed);
             }
+
+            Log.d(TAG, "添加事件");
+            Log.d(TAG, "id: " + String.valueOf(eventKey));
+            Log.d(TAG, "labels: " + mLabels.toString());
+            Log.d(TAG, "labels_key: " + labelsKey.toString());
+            mTaskSuccess = true;
+            return getmContext().getString(R.string.add_ok);
         }
     }
 
