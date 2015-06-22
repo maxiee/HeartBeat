@@ -62,6 +62,10 @@ public class AddEventActivity extends AppCompatActivity{
         mTagViewRecent = (TagView) findViewById(R.id.tagview_added);
         mTagViewToAdd = (TagView) findViewById(R.id.tagview_to_add);
 
+        if (mLabels == null) {
+            mLabels = new ArrayList<String>();
+        }
+
         initTagsToAdd();
         initTagsRecent();
 
@@ -73,9 +77,6 @@ public class AddEventActivity extends AppCompatActivity{
                     dialog.setOnAddFinishedListener(new NewLabelDialog.OnAddFinishedListener() {
                         @Override
                         public void addLabel(String label) {
-                            if (mLabels == null) {
-                                mLabels = new ArrayList<String>();
-                            }
                             mLabels.add(label);
                             initTagsToAdd();
                         }
@@ -91,6 +92,17 @@ public class AddEventActivity extends AppCompatActivity{
                 if (mLabels != null) {
                     mLabels.remove(tag.text);
                 }
+            }
+        });
+
+        mTagViewRecent.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(Tag tag, int position) {
+                if (mLabels.contains(tag.text)) {
+                    return;
+                }
+                mLabels.add(tag.text);
+                initTagsToAdd();
             }
         });
 
