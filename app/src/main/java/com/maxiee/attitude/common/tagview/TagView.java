@@ -205,6 +205,17 @@ public class TagView extends RelativeLayout {
                 deletableView.setVisibility(View.GONE);
             }
 
+            if (tag.hasExtraInfo) {
+                TextView extraTextView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_extra);
+                extraTextView.setVisibility(VISIBLE);
+                extraTextView.setText(tag.extraInfoString);
+                int offset = dipToPx(getContext(), 2f);
+                extraTextView.setPadding(offset, textPaddingTop, textPaddingRight+offset, texPaddingBottom);
+                extraTextView.setTextColor(tag.deleteIndicatorColor);
+                extraTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, tag.tagTextSize);
+                tagWidth += extraTextView.getPaint().measureText(tag.deleteIcon) +textPaddingLeft + textPaddingRight;
+            }
+
             LayoutParams tagParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
             //add margin of each line

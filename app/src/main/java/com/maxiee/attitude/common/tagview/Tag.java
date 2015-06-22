@@ -25,6 +25,8 @@ public class Tag {
     public float   layoutBorderSize;
     public int     layoutBorderColor;
     public Drawable background;
+    public boolean hasExtraInfo = false;
+    public String extraInfoString = "";
 
 
     public Tag(String text) {
