@@ -18,4 +18,6 @@
     <string name="add_failed">添加失败</string>
     <string name="new_tag">新标签</string>
     <string name="recent_label">常用:</string>
+    <string name="event_list">事件列表</string>
+    <string name="today">今日</string>
 </resources>

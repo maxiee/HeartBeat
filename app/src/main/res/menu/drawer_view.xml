@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/nav_event_list"
+        android:icon="@drawable/ic_action_reorder"
+        android:title="@string/event_list" />
+    <item
+        android:id="@+id/nav_today"
+        android:icon="@drawable/ic_action_today"
+        android:title="@string/today" />
 </menu>
