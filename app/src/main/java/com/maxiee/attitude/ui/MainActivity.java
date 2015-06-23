@@ -3,6 +3,7 @@ package com.maxiee.attitude.ui;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,8 @@ import android.view.View;
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.ui.fragments.EventListFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -129,5 +132,25 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == AddEventActivity.ADD_EVENT_RESULT_OK) {
             mEventListFragment.updateEventList();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        mDrawerLayout.closeDrawer(mNavigationView);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch (menuItem.getItemId()) {
+            case R.id.nav_event_list:
+                if (mEventListFragment == null) {
+                    mEventListFragment = new EventListFragment();
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nested_content, mEventListFragment)
+                        .commit();
+                setTitle(getString(R.string.event_list));
+                return true;
+            case R.id.nav_today:
+                return true;
+        }
+        return false;
     }
 }
