@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.ui.fragments.EventListFragment;
+import com.maxiee.attitude.ui.fragments.EventTodayFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
     private FloatingActionButton mFab;
     private EventListFragment mEventListFragment;
+    private EventTodayFragment mEventTodayFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +151,13 @@ public class MainActivity extends AppCompatActivity
                 setTitle(getString(R.string.event_list));
                 return true;
             case R.id.nav_today:
+                if (mEventTodayFragment == null) {
+                    mEventTodayFragment = new EventTodayFragment();
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nested_content, mEventTodayFragment)
+                        .commit();
+                setTitle(R.string.today);
                 return true;
         }
         return false;
