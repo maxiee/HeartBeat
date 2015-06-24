@@ -30,9 +30,6 @@ public class GetTodayEventApi extends BaseDBApi {
                 0, 0
         );
 
-        Log.d("time", String.valueOf(curDate.getTimeInMillis()));
-        Log.d("time", String.valueOf(System.currentTimeMillis()));
-
         Cursor cursor = mDatabaseHelper.getReadableDatabase().query(
                 EventsTable.NAME,
                 new String[] {
