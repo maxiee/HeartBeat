@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="add_event">心动瞬间\t\t(喜/怒/哀/乐)</string>
     <string name="first_thought">此刻感想</string>
-    <string name="notempty">内容不能为空...</string>
+    <string name="notempty">内容不能为空…</string>
     <string name="firtime">初刻</string>
     <string name="sectime">次刻</string>
     <string name="minute_ago">分钟前</string>
@@ -13,11 +13,19 @@
     <string name="day_ago">天前</string>
     <string name="add">添加</string>
     <string name="add_thought">新想法</string>
-    <string name="adding">正在添加, 请稍后...</string>
+    <string name="adding">正在添加, 请稍后…</string>
     <string name="add_ok">添加成功</string>
     <string name="add_failed">添加失败</string>
     <string name="new_tag">新标签</string>
     <string name="recent_label">常用:</string>
     <string name="event_list">事件列表</string>
     <string name="today">今日</string>
+    <string name="event_count_text">事件</string>
+    <string name="thought_count_text">感想</string>
+    <string-array name="today_tips">
+        <item>方才砰然心动, 何不记录下来?</item>
+        <item>细细留心, 品味时时刻刻</item>
+        <item>光阴短暂, 惜时, 惜时, 惜时</item>
+        <item>今日终归回忆, 是否有话想说?</item>
+    </string-array>
 </resources>
