@@ -20,7 +20,7 @@ public class GetAllEventApi extends BaseDBApi {
         super(context);
     }
 
-    public ArrayList<Event> exec() throws JSONException{
+    public ArrayList<Event> exec() {
         Cursor cursor = mDatabaseHelper.getReadableDatabase().query(
                 EventsTable.NAME,
                 new String[] {

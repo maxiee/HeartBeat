@@ -36,11 +36,9 @@ public class EventListFragment extends Fragment {
     }
 
     public void updateEventList() {
-        try {
-            ArrayList<Event> eventList = new GetAllEventApi(getActivity()).exec();
-            if (eventList != null) {
-                mRecyclerView.setAdapter(new EventListAdapter(eventList));
-            }
-        } catch (JSONException e) {e.printStackTrace();}
+        ArrayList<Event> eventList = new GetAllEventApi(getActivity()).exec();
+        if (eventList != null) {
+            mRecyclerView.setAdapter(new EventListAdapter(eventList));
+        }
     }
 }
