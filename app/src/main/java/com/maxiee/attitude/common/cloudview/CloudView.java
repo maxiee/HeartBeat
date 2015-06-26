@@ -12,6 +12,7 @@ import com.maxiee.attitude.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +22,7 @@ import java.util.List;
 @RemoteViews.RemoteView
 public class CloudView extends ViewGroup {
 
-    private List<Pair<String, Integer>> mLabels;
-
-    private static final int WEIGHT = 10;
+    private static final int MAX_SIZE = 100;
 
     public CloudView(Context context) {
         super(context);
@@ -38,12 +37,17 @@ public class CloudView extends ViewGroup {
     }
 
     public void addLabels(List<Pair<String, Integer>> labels) {
-        mLabels = labels;
+
+        if (labels == null) {
+            return;
+        }
+
+        float maxFreq = computeMaxFreq(labels);
 
         for (Pair<String, Integer> label: labels) {
             TextView tagView = new TextView(getContext());
             tagView.setText(label.first);
-            tagView.setTextSize(label.second * WEIGHT);
+            tagView.setTextSize(label.second / maxFreq * MAX_SIZE);
             LayoutParams layoutParams = new LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT
@@ -53,7 +57,22 @@ public class CloudView extends ViewGroup {
             addView(tagView);
         }
 
+    }
 
+    private float computeMaxFreq(List<Pair<String, Integer>> labels) {
+        float maxFreq = 1;
+
+        for (Pair<String, Integer> label: labels) {
+            if (label.second > maxFreq) {
+                maxFreq = label.second;
+            }
+        }
+
+        return maxFreq;
+    }
+
+    private float computeSize(float score) {
+        return score * MAX_SIZE;
     }
 
     @Override
