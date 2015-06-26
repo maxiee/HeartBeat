@@ -8,4 +8,8 @@
         android:id="@+id/nav_today"
         android:icon="@drawable/ic_action_today"
         android:title="@string/today" />
+    <item
+        android:id="@+id/nav_label_cloud"
+        android:icon="@drawable/ic_action_label"
+        android:title="@string/labelCloud" />
 </menu>

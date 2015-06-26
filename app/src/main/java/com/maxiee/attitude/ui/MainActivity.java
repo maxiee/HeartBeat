@@ -16,6 +16,7 @@ import android.view.View;
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.ui.fragments.EventListFragment;
 import com.maxiee.attitude.ui.fragments.EventTodayFragment;
+import com.maxiee.attitude.ui.fragments.LabelCloudFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton mFab;
     private EventListFragment mEventListFragment;
     private EventTodayFragment mEventTodayFragment;
+    private LabelCloudFragment mLabelCloudFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +160,15 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.nested_content, mEventTodayFragment)
                         .commit();
                 setTitle(R.string.today);
+                return true;
+            case R.id.nav_label_cloud:
+                if (mLabelCloudFragment == null) {
+                    mLabelCloudFragment = new LabelCloudFragment();
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nested_content, mLabelCloudFragment)
+                        .commit();
+                setTitle(R.string.labelCloud);
                 return true;
         }
         return false;
