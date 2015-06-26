@@ -22,6 +22,7 @@
     <string name="today">今日</string>
     <string name="event_count_text">事件</string>
     <string name="thought_count_text">感想</string>
+    <string name="labelCloud">标签云</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
