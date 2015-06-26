@@ -1,8 +1,10 @@
 package com.maxiee.attitude.common.cloudview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RemoteViews;
@@ -44,10 +46,29 @@ public class CloudView extends ViewGroup {
 
         float maxFreq = computeMaxFreq(labels);
 
+        final TypedValue accentValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.colorAccent, accentValue, true);
+        int  accentColor = accentValue.data;
+
+        final TypedValue grayValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.colorPrimary, grayValue, true);
+        int grayColor = grayValue.data;
+
+        float redStep = (Color.red(accentColor) - Color.red(grayColor)) / maxFreq;
+        float greenStep = (Color.green(accentColor) - Color.green(grayColor)) / maxFreq;
+        float blueStep = (Color.blue(accentColor) - Color.blue(grayColor)) / maxFreq;
+
         for (Pair<String, Integer> label: labels) {
             TextView tagView = new TextView(getContext());
             tagView.setText(label.first);
             tagView.setTextSize(label.second / maxFreq * MAX_SIZE);
+            tagView.setTextColor(
+                    Color.rgb(
+                            (int) (Color.red(grayColor) + redStep * label.second),
+                            (int) (Color.green(grayColor) + greenStep * label.second),
+                            (int) (Color.blue(grayColor) + blueStep * label.second)
+                    )
+            );
             LayoutParams layoutParams = new LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT
