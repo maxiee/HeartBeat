@@ -24,7 +24,7 @@
             android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.LabelDetailActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.EventDetailActivity" />
     </application>
 
 </manifest>

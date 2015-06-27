@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,8 +20,6 @@ import com.maxiee.attitude.database.api.GetOneEventApi;
 import com.maxiee.attitude.model.Event;
 import com.maxiee.attitude.ui.adapter.ThoughtTimeaxisAdapter;
 import com.maxiee.attitude.ui.dialog.NewThoughtDialog;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -82,7 +79,6 @@ public class EventDetailActivity extends AppCompatActivity {
                 i.setClass(EventDetailActivity.this, LabelDetailActivity.class);
                 i.putExtra("tag_text", tag.text);
                 startActivity(i);
-                finish();
             }
         });
 
