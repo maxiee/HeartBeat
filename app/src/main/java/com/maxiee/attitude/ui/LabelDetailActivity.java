@@ -8,6 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.maxiee.attitude.R;
+import com.maxiee.attitude.database.api.GetEventsByLabelKeyApi;
+import com.maxiee.attitude.database.api.HasLabelApi;
+import com.maxiee.attitude.model.Event;
+import com.maxiee.attitude.ui.adapter.EventListAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by maxiee on 15-6-27.
@@ -28,12 +34,6 @@ public class LabelDetailActivity extends AppCompatActivity{
 
         mLabel = i.getStringExtra("tag_text");
 
-        if (mLabel == null) {
-            mLabel = getString(R.string.app_name);
-        }
-
-        setTitle(mLabel);
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,5 +41,15 @@ public class LabelDetailActivity extends AppCompatActivity{
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
 
+        if (mLabel != null) {
+            setTitle(mLabel);
+            int labelKey = new HasLabelApi(this, mLabel).exec();
+            updateEventList(labelKey);
+        }
+    }
+
+    public void updateEventList(int labelKey) {
+        ArrayList<Event> eventList = new GetEventsByLabelKeyApi(this, labelKey).exec();
+        mRecyclerView.setAdapter(new EventListAdapter(eventList));
     }
 }
