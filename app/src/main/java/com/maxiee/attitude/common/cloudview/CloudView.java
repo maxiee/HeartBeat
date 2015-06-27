@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import com.maxiee.attitude.R;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +22,11 @@ import java.util.List;
 public class CloudView extends ViewGroup {
 
     private static final int MAX_SIZE = 100;
+    private OnLabelClickListener mCallback;
+
+    public interface OnLabelClickListener {
+        void onClick(String label);
+    }
 
     public CloudView(Context context) {
         super(context);
@@ -36,6 +38,10 @@ public class CloudView extends ViewGroup {
 
     public CloudView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setOnLabelClickListener(OnLabelClickListener callback) {
+        mCallback = callback;
     }
 
     public void addLabels(List<Pair<String, Integer>> labels) {
@@ -58,7 +64,7 @@ public class CloudView extends ViewGroup {
         float greenStep = (Color.green(accentColor) - Color.green(grayColor)) / maxFreq;
         float blueStep = (Color.blue(accentColor) - Color.blue(grayColor)) / maxFreq;
 
-        for (Pair<String, Integer> label: labels) {
+        for (final Pair<String, Integer> label: labels) {
             TextView tagView = new TextView(getContext());
             tagView.setText(label.first);
             tagView.setTextSize(label.second / maxFreq * MAX_SIZE);
@@ -75,6 +81,14 @@ public class CloudView extends ViewGroup {
             );
             layoutParams.setMargins(5, 5, 5, 5);
             tagView.setLayoutParams(layoutParams);
+            tagView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mCallback != null) {
+                        mCallback.onClick(label.first);
+                    }
+                }
+            });
             addView(tagView);
         }
 
