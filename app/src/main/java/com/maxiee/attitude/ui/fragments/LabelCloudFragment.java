@@ -1,5 +1,6 @@
 package com.maxiee.attitude.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Pair;
@@ -11,6 +12,7 @@ import com.maxiee.attitude.R;
 import com.maxiee.attitude.common.cloudview.CloudView;
 import com.maxiee.attitude.database.api.GetLabelsAndFreqApi;
 import com.maxiee.attitude.database.api.GetOneLabelApi;
+import com.maxiee.attitude.ui.LabelDetailActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -43,6 +45,16 @@ public class LabelCloudFragment extends Fragment{
 
         mCloudView = (CloudView) v.findViewById(R.id.cloud_view);
         mCloudView.addLabels(labels);
+        mCloudView.setOnLabelClickListener(new CloudView.OnLabelClickListener() {
+            @Override
+            public void onClick(String label) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_MAIN);
+                i.setClass(getActivity(), LabelDetailActivity.class);
+                i.putExtra("tag_text", label);
+                startActivity(i);
+            }
+        });
         return v;
     }
 }
