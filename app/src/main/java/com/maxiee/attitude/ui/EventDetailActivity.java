@@ -74,6 +74,18 @@ public class EventDetailActivity extends AppCompatActivity {
             }
         }
 
+        mTagView.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(Tag tag, int position) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_MAIN);
+                i.setClass(EventDetailActivity.this, LabelDetailActivity.class);
+                i.putExtra("tag_text", tag.text);
+                startActivity(i);
+                finish();
+            }
+        });
+
         mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
 
 
