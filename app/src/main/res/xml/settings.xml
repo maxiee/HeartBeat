@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="about" android:title="@string/category_about" >
+
+        <Preference
+            android:key="version"
+            android:title="@string/settings_version" />
+
+        <Preference
+            android:key="github"
+            android:title="@string/settings_github" />
+
+        <Preference
+            android:key="weibo"
+            android:title="@string/settings_weibo" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

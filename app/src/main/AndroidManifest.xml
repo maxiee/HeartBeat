@@ -25,6 +25,9 @@
         <activity
             android:name=".ui.LabelDetailActivity"
             android:parentActivityName=".ui.EventDetailActivity" />
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:parentActivityName=".ui.MainActivity" />
     </application>
 
 </manifest>
