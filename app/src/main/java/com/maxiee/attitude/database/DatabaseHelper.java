@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.maxiee.attitude.database.tables.EventImageRelationTable;
 import com.maxiee.attitude.database.tables.EventLabelRelationTable;
 import com.maxiee.attitude.database.tables.EventThoughtRelationTable;
 import com.maxiee.attitude.database.tables.EventsTable;
+import com.maxiee.attitude.database.tables.ImageTable;
 import com.maxiee.attitude.database.tables.LabelsTable;
 import com.maxiee.attitude.database.tables.ThoughtsTable;
 
@@ -31,6 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(EventLabelRelationTable.CREATE);
         db.execSQL(ThoughtsTable.CREATE);
         db.execSQL(EventThoughtRelationTable.CREATE);
+        db.execSQL(ImageTable.CREATE);
+        db.execSQL(EventImageRelationTable.CREATE);
     }
 
     @Override
