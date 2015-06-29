@@ -18,7 +18,7 @@ import com.maxiee.attitude.database.tables.ThoughtsTable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private final static String DB_NAME = "attitude";
-    private final static int DB_VER = 1;
+    private final static int DB_VER = 2;
 
     private static DatabaseHelper instance;
 
@@ -38,7 +38,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 1) {
+            db.execSQL(ImageTable.CREATE);
+            db.execSQL(EventImageRelationTable.CREATE);
+        }
+    }
 
     public static synchronized DatabaseHelper instance(Context context) {
         if (instance == null) {
