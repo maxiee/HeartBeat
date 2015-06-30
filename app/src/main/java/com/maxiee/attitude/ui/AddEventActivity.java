@@ -10,9 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.common.DialogAsyncTask;
 import com.maxiee.attitude.common.tagview.Tag;
@@ -50,6 +52,7 @@ public class AddEventActivity extends AppCompatActivity{
     private TagView mTagViewRecent;
     private TagView mTagViewToAdd;
     private TextView mTvAddImage;
+    private ImageView mImageBackDrop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class AddEventActivity extends AppCompatActivity{
         mTagViewRecent = (TagView) findViewById(R.id.tagview_added);
         mTagViewToAdd = (TagView) findViewById(R.id.tagview_to_add);
         mTvAddImage = (TextView) findViewById(R.id.add_imgae);
+        mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
 
         mTvAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +149,7 @@ public class AddEventActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
-            Log.d("maxiee", "hehe");
+            Glide.with(this).load(data.getData()).into(mImageBackDrop);
         }
     }
 
