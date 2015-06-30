@@ -1,6 +1,8 @@
 package com.maxiee.attitude.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maxiee.attitude.R;
@@ -22,12 +25,9 @@ import com.maxiee.attitude.database.api.GetLabelsAndFreqApi;
 import com.maxiee.attitude.database.api.GetOneLabelApi;
 import com.maxiee.attitude.ui.dialog.NewLabelDialog;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -36,6 +36,8 @@ import java.util.Map;
 public class AddEventActivity extends AppCompatActivity{
 
     private final static String TAG = AddEventActivity.class.getSimpleName();
+
+    private static final int ADD_IMAGE = 1127;
 
     public final static int ADD_EVENT_REQUEST = 100;
     public final static int ADD_EVENT_RESULT_OK = 101;
@@ -47,6 +49,7 @@ public class AddEventActivity extends AppCompatActivity{
     private ArrayList<String> mLabels;
     private TagView mTagViewRecent;
     private TagView mTagViewToAdd;
+    private TextView mTvAddImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,17 @@ public class AddEventActivity extends AppCompatActivity{
         mEditFirstThought = (EditText) findViewById(R.id.first_thought);
         mTagViewRecent = (TagView) findViewById(R.id.tagview_added);
         mTagViewToAdd = (TagView) findViewById(R.id.tagview_to_add);
+        mTvAddImage = (TextView) findViewById(R.id.add_imgae);
+
+        mTvAddImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
+            }
+        });
 
         if (mLabels == null) {
             mLabels = new ArrayList<String>();
@@ -125,6 +139,14 @@ public class AddEventActivity extends AppCompatActivity{
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
+            Log.d("maxiee", "hehe");
+        }
     }
 
     public void initTagsToAdd() {
