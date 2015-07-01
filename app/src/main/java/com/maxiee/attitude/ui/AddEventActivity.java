@@ -3,6 +3,7 @@ package com.maxiee.attitude.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.maxiee.attitude.common.tagview.Tag;
 import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.AddEventApi;
 import com.maxiee.attitude.database.api.AddEventLabelRelationApi;
+import com.maxiee.attitude.database.api.AddImageApi;
 import com.maxiee.attitude.database.api.AddLabelsApi;
 import com.maxiee.attitude.database.api.AddThoughtApi;
 import com.maxiee.attitude.database.api.GetLabelsAndFreqApi;
@@ -53,6 +55,7 @@ public class AddEventActivity extends AppCompatActivity{
     private TagView mTagViewToAdd;
     private TextView mTvAddImage;
     private ImageView mImageBackDrop;
+    private Uri mImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +153,8 @@ public class AddEventActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
             Glide.with(this).load(data.getData()).into(mImageBackDrop);
+            mImageUri = data.getData();
+            mTvAddImage.setText(R.string.change_image);
         }
     }
 
@@ -231,10 +236,15 @@ public class AddEventActivity extends AppCompatActivity{
                 ).exec();
             }
 
+            if (mImageUri != null) {
+                new AddImageApi(AddEventActivity.this, eventKey, mImageUri.toString()).exec();
+            }
+
             Log.d(TAG, "添加事件");
             Log.d(TAG, "id: " + String.valueOf(eventKey));
             Log.d(TAG, "labels: " + mLabels.toString());
             Log.d(TAG, "labels_key: " + labelsKey.toString());
+            Log.d(TAG, "image_uri" + mImageUri.toString());
             mTaskSuccess = true;
             return getmContext().getString(R.string.add_ok);
         }
