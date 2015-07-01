@@ -6,9 +6,6 @@ import android.database.Cursor;
 import com.maxiee.attitude.database.tables.EventsTable;
 import com.maxiee.attitude.model.Event;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
 
 /**
@@ -49,7 +46,7 @@ public class GetAllEventApi extends BaseDBApi {
             long timestamp = cursor.getLong(
                     cursor.getColumnIndex(EventsTable.TIMESTAMP)
             );
-            eventList.add(new Event(
+            eventList.add(0, new Event(
                     id,
                     event,
                     timestamp

@@ -42,7 +42,7 @@ public class GetEventsByLabelKeyApi extends BaseDBApi{
                     cursor.getColumnIndex(EventLabelRelationTable.EVENT_ID)
             );
             Event event = new GetOneEventApi(mContext, eventId).exec();
-            ret.add(event);
+            ret.add(0, event);
         } while (cursor.moveToNext());
 
         return ret;
