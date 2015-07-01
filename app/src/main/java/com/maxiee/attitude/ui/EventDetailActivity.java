@@ -8,13 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.common.TimeUtils;
 import com.maxiee.attitude.common.tagview.Tag;
 import com.maxiee.attitude.common.tagview.TagView;
 import com.maxiee.attitude.database.api.GetAllThoughtApi;
+import com.maxiee.attitude.database.api.GetImageByEventKeyApi;
 import com.maxiee.attitude.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.attitude.database.api.GetOneEventApi;
 import com.maxiee.attitude.model.Event;
@@ -35,6 +38,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private ThoughtTimeaxisAdapter mAdapter;
     private TagView mTagView;
     private TextView mTvTime;
+    private ImageView mImageBackDrop;
     private int mId;
 
     public static final String EXTRA_NAME = "id";
@@ -55,6 +59,7 @@ public class EventDetailActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mTagView = (TagView) findViewById(R.id.tagview);
         mTvTime = (TextView) findViewById(R.id.tv_time);
+        mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
 
         mEvent =  new GetOneEventApi(this, mId).exec();
         mTvEvent.setText(mEvent.getmEvent());
@@ -84,6 +89,11 @@ public class EventDetailActivity extends AppCompatActivity {
 
         mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
 
+        String imageUri = new GetImageByEventKeyApi(this, mEvent.getmId()).exec();
+
+        if (imageUri != null) {
+            Glide.with(this).load(imageUri).into(mImageBackDrop);
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
