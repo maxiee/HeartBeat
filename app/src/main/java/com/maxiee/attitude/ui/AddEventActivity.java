@@ -244,7 +244,6 @@ public class AddEventActivity extends AppCompatActivity{
             Log.d(TAG, "id: " + String.valueOf(eventKey));
             Log.d(TAG, "labels: " + mLabels.toString());
             Log.d(TAG, "labels_key: " + labelsKey.toString());
-            Log.d(TAG, "image_uri" + mImageUri.toString());
             mTaskSuccess = true;
             return getmContext().getString(R.string.add_ok);
         }
