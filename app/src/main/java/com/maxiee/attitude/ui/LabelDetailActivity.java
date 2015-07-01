@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.maxiee.attitude.R;
 import com.maxiee.attitude.database.api.GetEventsByLabelKeyApi;
@@ -51,5 +52,15 @@ public class LabelDetailActivity extends AppCompatActivity{
     public void updateEventList(int labelKey) {
         ArrayList<Event> eventList = new GetEventsByLabelKeyApi(this, labelKey).exec();
         mRecyclerView.setAdapter(new EventListAdapter(eventList));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
