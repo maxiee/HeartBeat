@@ -2,9 +2,7 @@ package com.maxiee.attitude.database.api;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.maxiee.attitude.common.TimeUtils;
 import com.maxiee.attitude.database.tables.EventsTable;
 import com.maxiee.attitude.model.Event;
 
@@ -58,7 +56,7 @@ public class GetTodayEventApi extends BaseDBApi {
             long timestamp = cursor.getLong(
                     cursor.getColumnIndex(EventsTable.TIMESTAMP)
             );
-            ret.add(new Event(
+            ret.add(0, new Event(
                     id,
                     event,
                     timestamp
