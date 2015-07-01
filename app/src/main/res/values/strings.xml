@@ -28,6 +28,7 @@
     <string name="settings_github">GitHub 开源项目</string>
     <string name="settings_weibo">新浪微博</string>
     <string name="add_image">添加图片...</string>
+    <string name="change_image">更换图片...</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
