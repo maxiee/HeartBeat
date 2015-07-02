@@ -138,7 +138,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == AddEventActivity.ADD_EVENT_RESULT_OK) {
-            mEventListFragment.updateEventList();
+            if (mEventListFragment != null) {
+                mEventListFragment.updateEventList();
+            }
+
+            if (mEventTodayFragment != null) {
+                mEventTodayFragment.updateEventList();
+            }
+
+
         }
     }
 
