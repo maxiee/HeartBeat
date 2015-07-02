@@ -31,6 +31,15 @@ public class LabelCloudFragment extends Fragment{
 
         View v = inflater.inflate(R.layout.fragment_label_cloud, container, false);
 
+        mCloudView = (CloudView) v.findViewById(R.id.cloud_view);
+
+        updateCloud();
+
+        return v;
+    }
+
+    public void updateCloud() {
+
         Map<Integer,Integer> allLabels = new GetLabelsAndFreqApi(getActivity()).exec();
         List<Pair<String, Integer>> labels = new LinkedList<>();
 
@@ -43,7 +52,6 @@ public class LabelCloudFragment extends Fragment{
             }
         }
 
-        mCloudView = (CloudView) v.findViewById(R.id.cloud_view);
         mCloudView.addLabels(labels);
         mCloudView.setOnLabelClickListener(new CloudView.OnLabelClickListener() {
             @Override
@@ -55,6 +63,6 @@ public class LabelCloudFragment extends Fragment{
                 startActivity(i);
             }
         });
-        return v;
+
     }
 }
