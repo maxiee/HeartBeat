@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <com.maxiee.attitude.common.cloudview.CloudView
+    <com.maxiee.heartbeat.common.cloudview.CloudView
         android:id="@+id/cloud_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

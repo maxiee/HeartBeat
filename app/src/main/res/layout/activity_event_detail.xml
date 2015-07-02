@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="com.maxiee.attitude.common.FixedHeightScrollingViewBehavior">
+        app:layout_behavior="com.maxiee.heartbeat.common.FixedHeightScrollingViewBehavior">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                     android:layout_below="@id/tv_event"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                <com.maxiee.attitude.common.tagview.TagView
+                <com.maxiee.heartbeat.common.tagview.TagView
                     android:id="@+id/tagview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -95,7 +95,7 @@
                             android:hint="@string/first_thought"/>
                     </android.support.design.widget.TextInputLayout>
 
-                    <com.maxiee.attitude.common.tagview.TagView
+                    <com.maxiee.heartbeat.common.tagview.TagView
                         android:id="@+id/tagview_to_add"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                             android:text="@string/recent_label"
                             android:layout_marginRight="5dp"/>
 
-                        <com.maxiee.attitude.common.tagview.TagView
+                        <com.maxiee.heartbeat.common.tagview.TagView
                             android:id="@+id/tagview_added"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
