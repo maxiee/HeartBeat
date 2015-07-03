@@ -21,7 +21,7 @@ import java.util.List;
 @RemoteViews.RemoteView
 public class CloudView extends ViewGroup {
 
-    private static final int MAX_SIZE = 100;
+    private static final int MAX_SIZE = 70;
     private OnLabelClickListener mCallback;
 
     public interface OnLabelClickListener {
@@ -45,6 +45,8 @@ public class CloudView extends ViewGroup {
     }
 
     public void addLabels(List<Pair<String, Integer>> labels) {
+
+        removeAllViews();
 
         if (labels == null) {
             return;
@@ -79,7 +81,7 @@ public class CloudView extends ViewGroup {
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT
             );
-            layoutParams.setMargins(5, 5, 5, 5);
+            layoutParams.setMargins(20, 5, 20, 5);
             tagView.setLayoutParams(layoutParams);
             tagView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -106,10 +108,6 @@ public class CloudView extends ViewGroup {
         return maxFreq;
     }
 
-    private float computeSize(float score) {
-        return score * MAX_SIZE;
-    }
-
     @Override
     public boolean shouldDelayChildPressedState() {
         return false;
@@ -132,9 +130,6 @@ public class CloudView extends ViewGroup {
 
             LayoutParams layoutParams = (LayoutParams) childView.getLayoutParams();
 
-            if (height > heightMax) {
-                heightMax = height;
-            }
 
             if (mPainterPosX + layoutParams.leftMargin + width + layoutParams.rightMargin > mViewGroupWidth) {
                 mPainterPosX = l;
@@ -150,6 +145,10 @@ public class CloudView extends ViewGroup {
             );
 
             mPainterPosX += width + layoutParams.leftMargin + layoutParams.rightMargin;
+
+            if (height > heightMax) {
+                heightMax = height;
+            }
         }
     }
 
