@@ -107,6 +107,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_action_add" />
+        android:src="@drawable/ic_action_add"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:layout_behavior="com.maxiee.heartbeat.ui.common.ScrollingFABBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
