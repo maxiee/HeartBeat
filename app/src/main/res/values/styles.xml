@@ -2,16 +2,16 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#673AB7</item>
-        <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#FF4081</item>
+        <item name="colorPrimary">#00BCD4</item>
+        <item name="colorPrimaryDark">#00ACC1</item>
+        <item name="colorAccent">#EF9A9A</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorPrimary">#673AB7</item>
-        <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#FF4081</item>
+        <item name="colorPrimary">#00BCD4</item>
+        <item name="colorPrimaryDark">#00ACC1</item>
+        <item name="colorAccent">#EF9A9A</item>
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">
