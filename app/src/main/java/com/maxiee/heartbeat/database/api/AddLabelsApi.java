@@ -23,9 +23,7 @@ public class AddLabelsApi extends BaseDBApi{
     public int insertLabel(String label) {
         ContentValues values = new ContentValues();
         values.put(LabelsTable.LABEL, label);
-        add(LabelsTable.NAME, values);
-
-        return new HasLabelApi(mContext, label).exec();
+        return (int) add(LabelsTable.NAME, values);
     }
 
     public ArrayList<Integer> exec() {
@@ -34,9 +32,7 @@ public class AddLabelsApi extends BaseDBApi{
             int id = new HasLabelApi(mContext, label).exec();
             if (id == HasLabelApi.NOT_FOUND) { // insert into DB
                 int insertedId = insertLabel(label);
-                if (insertedId != HasLabelApi.NOT_FOUND) {
-                    ret.add(insertedId);
-                }
+                ret.add(insertedId);
             } else {
                 ret.add(id);
             }
