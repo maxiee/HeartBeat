@@ -39,7 +39,7 @@
 
 新浪微博：[@Maxiee_Bayesian](http://weibo.com/maxiee)
 
-邮箱：maxieewong@gmai.com
+邮箱：maxieewong@gmail.com
 
 ##关于我
 
