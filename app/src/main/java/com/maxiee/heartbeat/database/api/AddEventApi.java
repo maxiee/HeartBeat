@@ -24,19 +24,6 @@ public class AddEventApi extends BaseDBApi {
         mEvent = event;
     }
 
-    private String convertJSONString(final ArrayList<String> list) {
-        JSONArray array = new JSONArray(list);
-        return array.toString();
-    }
-
-    private String convertThought(final String thought) throws JSONException{
-        Thoughts thoughtObject = new Thoughts();
-        thoughtObject.addThought(
-                thought
-        );
-        return thoughtObject.getmThoughts().toString();
-    }
-
     public long exec() {
         ContentValues values = new ContentValues();
         values.put(EventsTable.EVENT, mEvent);
