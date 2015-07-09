@@ -2,6 +2,7 @@ package com.maxiee.heartbeat.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.model.Thoughts;
+import com.maxiee.heartbeat.ui.dialog.EditThoughtDialog;
 
 
 /**
@@ -31,7 +33,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         String order;
         switch (position) {
             case 0:
@@ -49,6 +51,36 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         long time = mThoughtList.get(position).getTimeStamp();
         holder.tvThought.setText(mThoughtList.get(position).getThought());
         holder.tvTime.setText(TimeUtils.parseTime(holder.mContext, time));
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                EditThoughtDialog dialog = new EditThoughtDialog(
+                        holder.mContext,
+                        mThoughtList.get(position).getKey(),
+                        mThoughtList.get(position).getThought()
+                );
+                dialog.setOnAddFinishedListener(new EditThoughtDialog.OnAddFinishedListener() {
+                    @Override
+                    public void update(String newThought) {
+                        mThoughtList.get(position).setThought(newThought);
+                        holder.tvThought.setText(newThought);
+                    }
+
+                    @Override
+                    public void remove() {
+                        mThoughtList.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                dialog.show();
+                return true;
+            }
+        });
+        Log.d("增删测试",
+                String.valueOf(mThoughtList.get(position).getKey()) + ": " +
+                mThoughtList.get(position).getThought()
+        );
     }
 
     @Override
@@ -59,10 +91,12 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvOrder, tvThought, tvTime;
+        public final View mView;
         public Context mContext;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mView = itemView;
             mContext = itemView.getContext();
             tvOrder = (TextView) itemView.findViewById(R.id.tv_order);
             tvThought = (TextView) itemView.findViewById(R.id.tv_thought);
