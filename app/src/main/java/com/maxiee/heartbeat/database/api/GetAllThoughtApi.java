@@ -56,6 +56,7 @@ public class GetAllThoughtApi extends BaseDBApi {
             cursor = mDatabaseHelper.getReadableDatabase().query(
                     ThoughtsTable.NAME,
                     new String[]{
+                            ThoughtsTable.ID,
                             ThoughtsTable.THOUGHT,
                             ThoughtsTable.TIMESTAMP
                     },
@@ -70,6 +71,9 @@ public class GetAllThoughtApi extends BaseDBApi {
 
             cursor.moveToFirst();
 
+            int key = (int) cursor.getLong(
+                    cursor.getColumnIndex(ThoughtsTable.ID)
+            );
             String thought = cursor.getString(
                     cursor.getColumnIndex(ThoughtsTable.THOUGHT)
             );
@@ -77,7 +81,7 @@ public class GetAllThoughtApi extends BaseDBApi {
                     cursor.getColumnIndex(ThoughtsTable.TIMESTAMP)
             );
 
-            ret.add(new Thoughts.Thought(thought, time));
+            ret.add(new Thoughts.Thought(key, thought, time));
 
         }
 
