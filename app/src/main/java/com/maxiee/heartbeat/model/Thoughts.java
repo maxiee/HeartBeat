@@ -16,9 +16,10 @@ public class Thoughts {
         mThoughts = new ArrayList<>();
     }
 
-    public void addThought(String thought) {
+    public void addThought(int key, String thought) {
 
         Thought thoughtObject = new Thought(
+                key,
                 thought,
                 System.currentTimeMillis());
 
@@ -37,18 +38,29 @@ public class Thoughts {
         mThoughts.add(thought);
     }
 
+    public void remove(int position) {
+        mThoughts.remove(position);
+    }
+
 
     public int length() {
         return mThoughts.size();
     }
 
     public static class Thought {
+
+        private int key;
         private String mThought;
         private long mTimeStamp;
 
-        public Thought(String mThought, long mTimeStamp) {
+        public Thought(int key, String mThought, long mTimeStamp) {
+            this.key = key;
             this.mThought = mThought;
             this.mTimeStamp = mTimeStamp;
+        }
+
+        public int getKey() {
+            return key;
         }
 
         public String getThought() {
@@ -57,6 +69,10 @@ public class Thoughts {
 
         public long getTimeStamp() {
             return mTimeStamp;
+        }
+
+        public void setThought(String mThought) {
+            this.mThought = mThought;
         }
     }
 }
