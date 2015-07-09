@@ -29,6 +29,12 @@
     <string name="settings_weibo">新浪微博</string>
     <string name="add_image">添加图片...</string>
     <string name="change_image">更换图片...</string>
+    <string name="dialog_edit_thought">编辑想法</string>
+    <string name="done">完成</string>
+    <string name="delete">删除</string>
+    <string name="delete_text">删除操作将无法恢复, 是否继续?</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
