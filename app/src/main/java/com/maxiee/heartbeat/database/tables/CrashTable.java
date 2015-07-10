@@ -5,7 +5,7 @@ package com.maxiee.heartbeat.database.tables;
  */
 public class CrashTable {
 
-    public static final String NAME = "thoughts";
+    public static final String NAME = "crashes";
 
     public static final String ID = "id";
 
