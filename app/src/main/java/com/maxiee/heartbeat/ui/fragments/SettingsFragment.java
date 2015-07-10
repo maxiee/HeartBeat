@@ -7,6 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.ui.CrashListActivity;
 
 /**
  * Created by maxiee on 15-6-28.
@@ -20,6 +21,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mVersionPref;
     private Preference mGitHubPref;
     private Preference mWeiboPref;
+    private Preference mCrashPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mVersionPref = (Preference) findPreference("version");
         mGitHubPref = (Preference) findPreference("github");
         mWeiboPref = (Preference) findPreference("weibo");
+        mCrashPref = (Preference) findPreference("crash");
 
         String version = "Unknown";
         try {
@@ -41,6 +44,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mGitHubPref.setSummary(GITHUB_URL);
         mWeiboPref.setOnPreferenceClickListener(this);
         mWeiboPref.setSummary(Weibo_URL);
+        mCrashPref.setSummary(getString(R.string.settings_crash_summary));
+        mCrashPref.setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -53,6 +58,13 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         if (preference == mGitHubPref) {
             Uri uri = Uri.parse(GITHUB_URL);
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            return true;
+        }
+        if (preference == mCrashPref) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.setClass(getActivity(), CrashListActivity.class);
+            startActivity(intent);
             return true;
         }
         return false;
