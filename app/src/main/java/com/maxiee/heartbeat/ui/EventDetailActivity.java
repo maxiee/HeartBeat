@@ -22,7 +22,9 @@ import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetOneEventApi;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.ui.adapter.ThoughtTimeaxisAdapter;
+import com.maxiee.heartbeat.ui.dialog.EditEventDialog;
 import com.maxiee.heartbeat.ui.dialog.NewThoughtDialog;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
  * Created by maxiee on 15-6-13.
  */
 public class EventDetailActivity extends AppCompatActivity {
+    public final static int EVENT_DETAIL = 200;
+    public final static int EVENT_DETAIL_MODIFIED = 201;
 
     private Event mEvent;
 
@@ -40,6 +44,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private TagView mTagView;
     private TextView mTvTime;
     private ImageView mImageBackDrop;
+    private View mCardEvent;
     private int mId;
 
     public static final String EXTRA_NAME = "id";
@@ -61,6 +66,7 @@ public class EventDetailActivity extends AppCompatActivity {
         mTagView = (TagView) findViewById(R.id.tagview);
         mTvTime = (TextView) findViewById(R.id.tv_time);
         mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
+        mCardEvent = (View) findViewById(R.id.card_event);
 
         mEvent =  new GetOneEventApi(this, mId).exec();
         mTvEvent.setText(mEvent.getmEvent());
@@ -89,6 +95,25 @@ public class EventDetailActivity extends AppCompatActivity {
         });
 
         mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
+
+        mCardEvent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                EditEventDialog dialog = new EditEventDialog(
+                        EventDetailActivity.this,
+                        mEvent
+                );
+                dialog.setOnEditFinishedListener(new EditEventDialog.OnEditFinishedListener() {
+                    @Override
+                    public void update(String event) {
+                        mTvEvent.setText(event);
+                        setResult(EVENT_DETAIL_MODIFIED);
+                    }
+                });
+                dialog.show();
+                return true;
+            }
+        });
 
         String imageUri = new GetImageByEventKeyApi(this, mEvent.getmId()).exec();
 
