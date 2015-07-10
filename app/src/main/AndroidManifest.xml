@@ -28,6 +28,11 @@
         <activity
             android:name="com.maxiee.heartbeat.ui.SettingsActivity"
             android:parentActivityName="com.maxiee.heartbeat.ui.MainActivity" />
+        <activity
+            android:name=".ui.CrashListActivity"
+            android:parentActivityName=".ui.SettingsActivity" />
+        <activity android:name=".ui.CrashDetailActivity"
+            android:parentActivityName=".ui.CrashListActivity" />
     </application>
 
 </manifest>
