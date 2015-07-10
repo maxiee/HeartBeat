@@ -56,15 +56,17 @@ public class EventTodayFragment extends Fragment{
     }
 
     private void showTodayHint(int thoughtCount) {
-        String[] hints = getResources().getStringArray(R.array.today_tips);
-        if (thoughtCount < 2 ) {
-            mTvTodayHint.setText(hints[0]);
-        } else if (thoughtCount < 5){
-            mTvTodayHint.setText(hints[1]);
-        } else if (thoughtCount < 10){
-            mTvTodayHint.setText(hints[2]);
-        } else {
-            mTvTodayHint.setText(hints[3]);
+        if (getActivity() != null) {
+            String[] hints = getActivity().getResources().getStringArray(R.array.today_tips);
+            if (thoughtCount < 2) {
+                mTvTodayHint.setText(hints[0]);
+            } else if (thoughtCount < 5) {
+                mTvTodayHint.setText(hints[1]);
+            } else if (thoughtCount < 10) {
+                mTvTodayHint.setText(hints[2]);
+            } else {
+                mTvTodayHint.setText(hints[3]);
+            }
         }
     }
 }
