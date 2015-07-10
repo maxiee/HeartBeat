@@ -1,8 +1,10 @@
 package com.maxiee.heartbeat.ui.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,7 +18,9 @@ import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
 import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
 import com.maxiee.heartbeat.database.api.AddLabelsApi;
+import com.maxiee.heartbeat.database.api.DeleteEventByKeyApi;
 import com.maxiee.heartbeat.database.api.DeleteEventLabelRelationApi;
+import com.maxiee.heartbeat.database.api.GetEventsByLabelKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetOneLabelApi;
@@ -47,6 +51,7 @@ public class EditEventDialog extends AppCompatDialog{
 
     public interface OnEditFinishedListener {
         void update(String event);
+        void remove();
     }
 
     public EditEventDialog(Context context, Event event) {
@@ -89,6 +94,30 @@ public class EditEventDialog extends AppCompatDialog{
                     new UpdateEventTask().execute();
                     return true;
                 }
+
+                if (item.getItemId() == R.id.delete) {
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog);
+                    builder.setTitle(R.string.delete);
+                    builder.setMessage(R.string.delete_text);
+                    builder.setPositiveButton(
+                            getContext().getString(R.string.ok),
+                            new OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    new DeleteEventByKeyApi(getContext(), mEvent.getmId()).exec();
+                                    dismiss();
+                                    mCallback.remove();
+                                }
+                            }
+                    );
+                    builder.setNegativeButton(
+                            getContext().getString(R.string.cancel),
+                            null
+                    );
+                    builder.show();
+                }
+
                 return false;
             }
         });
@@ -191,12 +220,21 @@ public class EditEventDialog extends AppCompatDialog{
         protected Void doInBackground(Void... params) {
             new UpdateEventApi(getContext(), mEvent.getmId(), mEventText).exec();
             for (String l:mLabels) {
-                if (new HasLabelApi(getContext(), l).exec() == HasLabelApi.NOT_FOUND) {
+                int labelKey = new HasLabelApi(getContext(), l).exec();
+                if (labelKey == HasLabelApi.NOT_FOUND) {
                     Log.d(TAG, "label to add: " + l);
                     // Todo: need an AddLabelApi
                     ArrayList<Integer> labelId = new AddLabelsApi(getContext(), l).exec();
                     Log.d(TAG, labelId.toString());
                     new AddEventLabelRelationApi(getContext(), mEvent.getmId(), labelId.get(0)).exec();
+                } else {
+                    ArrayList<Event> events = new GetEventsByLabelKeyApi(getContext(), labelKey).exec();
+                    boolean alreadyHas = false;
+                    for (Event event:events)
+                        if (event.getmId() == mEvent.getmId())
+                            alreadyHas = true;
+                    if (!alreadyHas)
+                        new AddEventLabelRelationApi(getContext(), mEvent.getmId(), labelKey).exec();
                 }
             }
             for (String l:mLabelsBackup)
