@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 /**
  * Created by maxiee on 15-6-16.
+ *
+ * TODO: need an AddLabelApi
  */
 public class AddLabelsApi extends BaseDBApi{
 
@@ -18,6 +20,13 @@ public class AddLabelsApi extends BaseDBApi{
                         ArrayList<String> labels) {
         super(context);
         mLabels = labels;
+    }
+
+    public AddLabelsApi(Context context,
+                        String label) {
+        super(context);
+        mLabels = new ArrayList<>();
+        mLabels.add(label);
     }
 
     public int insertLabel(String label) {
