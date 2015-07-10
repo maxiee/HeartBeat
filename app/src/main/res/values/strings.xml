@@ -35,6 +35,7 @@
     <string name="delete_text">删除操作将无法恢复, 是否继续?</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
+    <string name="dialog_edit_event">编辑事件</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
