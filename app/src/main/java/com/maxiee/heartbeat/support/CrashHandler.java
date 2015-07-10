@@ -29,7 +29,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
         mContext = context;
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            VERSION = info.versionName + info.versionCode;
+            VERSION = info.versionName + " (" + info.versionCode + ")";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
