@@ -29,12 +29,13 @@ public class GetAllEventApi extends BaseDBApi {
                 null, null, null, null
         );
 
+        ArrayList<Event> eventList = new ArrayList<>();
+
         if (cursor.getCount() < 1) {
-            return null;
+            return eventList;
         }
 
         cursor.moveToFirst();
-        ArrayList<Event> eventList = new ArrayList<>();
         do {
             int id = cursor.getInt(
                     cursor.getColumnIndex(EventsTable.ID)
