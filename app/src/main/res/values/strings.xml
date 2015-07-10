@@ -38,6 +38,9 @@
     <string name="dialog_edit_event">编辑事件</string>
     <string name="settings_crash">崩溃报告</string>
     <string name="settings_crash_summary">为了保护用户隐私，「心动」没有使用网络访问权限。但为了追踪 Bug，需要应用的崩溃报告（不含隐私信息）来研究程序。您可以通过新浪微博、Email、GitHub 等渠道，将报告复制/截图给我。感谢您的参与，让我们共同将「心动」变得更好！</string>
+    <string name="copy">复制</string>
+    <string name="share">分享</string>
+    <string name="copy_finished">复制成功</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
