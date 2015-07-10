@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.maxiee.heartbeat.database.tables.EventLabelRelationTable;
 import com.maxiee.heartbeat.database.tables.LabelsTable;
+import com.maxiee.heartbeat.model.Label;
 
 import java.util.ArrayList;
 
@@ -21,35 +22,11 @@ public class GetLabelsByEventKeyApi extends BaseDBApi {
     }
 
     public ArrayList<String> exec() {
-        // get Labels from relation table
-        Cursor cursor = mDatabaseHelper.getReadableDatabase().query(
-                EventLabelRelationTable.NAME,
-                new String[] {
-                        EventLabelRelationTable.LABEL_ID
-                },
-                EventLabelRelationTable.EVENT_ID + "=?",
-                new String[] {String.valueOf(mEventKey)},
-                null, null, null
-        );
-
-        if (cursor.getCount() < 1) {
-            return null;
-        }
-
-        cursor.moveToFirst();
-        ArrayList<Integer> labelIds = new ArrayList<>();
-        do {
-            int labelId = cursor.getInt(
-                    cursor.getColumnIndex(EventLabelRelationTable.LABEL_ID)
-            );
-            labelIds.add(labelId);
-        } while (cursor.moveToNext());
-
-        cursor.close();
-
+        ArrayList<Integer> labelKeys = new GetLabelKeysByEventKeyApi(mContext, mEventKey).exec();
+        if (labelKeys==null) return null;
         ArrayList<String> labels = new ArrayList<>();
-        for (int labelId: labelIds) {
-            cursor = mDatabaseHelper.getReadableDatabase().query(
+        for (int labelId: labelKeys) {
+            Cursor cursor = mDatabaseHelper.getReadableDatabase().query(
                     LabelsTable.NAME,
                     new String[]{
                             LabelsTable.LABEL
