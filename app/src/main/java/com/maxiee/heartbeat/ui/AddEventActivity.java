@@ -98,7 +98,7 @@ public class AddEventActivity extends AppCompatActivity{
                     dialog.setOnAddFinishedListener(new NewLabelDialog.OnAddFinishedListener() {
                         @Override
                         public void addLabel(String label) {
-                            mLabels.add(label);
+                            if (!mLabels.contains(label)) mLabels.add(label);
                             initTagsToAdd();
                         }
                     });
