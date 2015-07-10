@@ -76,12 +76,7 @@ public class EventDetailActivity extends AppCompatActivity {
         );
         mRecyclerView.setAdapter(mAdapter);
 
-        ArrayList<String> labels = new GetLabelsByEventKeyApi(this, mEvent.getmId()).exec();
-        if (labels != null) {
-            for (String label: labels) {
-                mTagView.addTag(new Tag(label));
-            }
-        }
+        updateTagView();
 
         mTagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
@@ -107,7 +102,14 @@ public class EventDetailActivity extends AppCompatActivity {
                     @Override
                     public void update(String event) {
                         mTvEvent.setText(event);
+                        updateTagView();
                         setResult(EVENT_DETAIL_MODIFIED);
+                    }
+
+                    @Override
+                    public void remove() {
+                        setResult(EVENT_DETAIL_MODIFIED);
+                        finish();
                     }
                 });
                 dialog.show();
@@ -149,5 +151,15 @@ public class EventDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateTagView() {
+        mTagView.clear();
+        ArrayList<String> labels = new GetLabelsByEventKeyApi(this, mEvent.getmId()).exec();
+        if (labels != null) {
+            for (String label: labels) {
+                mTagView.addTag(new Tag(label));
+            }
+        }
     }
 }
