@@ -20,6 +20,7 @@ import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
 import com.maxiee.heartbeat.database.api.AddLabelsApi;
 import com.maxiee.heartbeat.database.api.DeleteEventByKeyApi;
 import com.maxiee.heartbeat.database.api.DeleteEventLabelRelationApi;
+import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetEventsByLabelKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
@@ -106,6 +107,7 @@ public class EditEventDialog extends AppCompatDialog{
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     new DeleteEventByKeyApi(getContext(), mEvent.getmId()).exec();
+                                    new DeleteImageByEventKeyApi(getContext(), mEvent.getmId()).exec();
                                     dismiss();
                                     mCallback.remove();
                                 }
