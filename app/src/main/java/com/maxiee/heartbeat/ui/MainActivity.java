@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
@@ -137,7 +139,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == AddEventActivity.ADD_EVENT_RESULT_OK) {
+        if (resultCode == AddEventActivity.ADD_EVENT_RESULT_OK
+                || resultCode == EventDetailActivity.EVENT_DETAIL_MODIFIED) {
             if (mEventListFragment != null) {
                 mEventListFragment.updateEventList();
             }
@@ -145,8 +148,6 @@ public class MainActivity extends AppCompatActivity
             if (mEventTodayFragment != null) {
                 mEventTodayFragment.updateEventList();
             }
-
-
         }
     }
 
