@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.support.CrashHandler;
 import com.maxiee.heartbeat.ui.fragments.EventListFragment;
 import com.maxiee.heartbeat.ui.fragments.EventTodayFragment;
 import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CrashHandler.register(this);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
