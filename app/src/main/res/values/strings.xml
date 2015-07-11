@@ -41,6 +41,7 @@
     <string name="copy">复制</string>
     <string name="share">分享</string>
     <string name="copy_finished">复制成功</string>
+    <string name="email">电子邮箱</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>

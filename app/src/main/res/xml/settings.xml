@@ -17,6 +17,10 @@
             android:title="@string/settings_weibo" />
 
         <Preference
+            android:key="email"
+            android:title="@string/email" />
+
+        <Preference
             android:key="crash"
             android:title="@string/settings_crash" />
 

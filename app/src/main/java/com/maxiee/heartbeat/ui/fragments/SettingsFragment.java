@@ -17,11 +17,13 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private final static String GITHUB_URL = "https://github.com/maxiee/HeartBeat";
     private final static String Weibo_URL = "http://weibo.com/maxiee";
+    private final static String EMAIL = "maxieewong@gmail.com";
 
     private Preference mVersionPref;
     private Preference mGitHubPref;
     private Preference mWeiboPref;
     private Preference mCrashPref;
+    private Preference mEmailPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mGitHubPref = (Preference) findPreference("github");
         mWeiboPref = (Preference) findPreference("weibo");
         mCrashPref = (Preference) findPreference("crash");
+        mEmailPref = (Preference) findPreference("email");
 
         String version = "Unknown";
         try {
@@ -46,6 +49,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mWeiboPref.setSummary(Weibo_URL);
         mCrashPref.setSummary(getString(R.string.settings_crash_summary));
         mCrashPref.setOnPreferenceClickListener(this);
+        mEmailPref.setSummary(EMAIL);
     }
 
     @Override
