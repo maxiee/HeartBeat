@@ -32,12 +32,12 @@ public class GetLabelKeysByEventKeyApi extends BaseDBApi {
                 null, null, null
         );
 
+        ArrayList<Integer> labelKeys = new ArrayList<>();
         if (cursor.getCount() < 1) {
-            return null;
+            return labelKeys;
         }
 
         cursor.moveToFirst();
-        ArrayList<Integer> labelKeys = new ArrayList<>();
         do {
             int labelId = cursor.getInt(
                     cursor.getColumnIndex(EventLabelRelationTable.LABEL_ID)
