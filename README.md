@@ -12,7 +12,9 @@
 
 <a href="https://play.google.com/store/apps/details?id=com.maxiee.heartbeat"><img src="http://www.android.com/images/brand/get_it_on_play_logo_large.png"/></a>
 
-[网盘下载地址](http://pan.baidu.com/s/1jGIQcN8)
+[酷市场下载地址](http://coolapk.com/apk/com.maxiee.heartbeat)
+
+[网盘下载地址](http://pan.baidu.com/s/1pJvFmun)
 
 ##应用说明
 
