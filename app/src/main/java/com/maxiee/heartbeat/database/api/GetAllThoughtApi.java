@@ -35,7 +35,7 @@ public class GetAllThoughtApi extends BaseDBApi {
         );
 
         if (cursor.getCount() < 1) {
-            return null;
+            return new Thoughts();
         }
 
         ArrayList<Integer> thoughtIds = new ArrayList<>();
