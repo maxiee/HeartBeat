@@ -2,6 +2,8 @@ package com.maxiee.heartbeat.common.cloudview;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingChildHelper;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -130,7 +132,6 @@ public class CloudView extends ViewGroup {
 
             LayoutParams layoutParams = (LayoutParams) childView.getLayoutParams();
 
-
             if (mPainterPosX + layoutParams.leftMargin + width + layoutParams.rightMargin > mViewGroupWidth) {
                 mPainterPosX = l;
                 mPainterPosY += heightMax;
@@ -159,9 +160,36 @@ public class CloudView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int count = getChildCount();
 
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int start = 0;
+        int currentLineWidth = 0;
+        int currentLineHeight = 0;
+
+        int totalHeight = 0;
+        int totalWeight = 0;
+
+        for (int i=0; i<count; i++) {
+            final View child = getChildAt(i);
+            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            if (i==0) {
+                start = child.getLeft();
+                currentLineWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+                currentLineHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
+            } else if (child.getLeft() != start) {
+                currentLineHeight = Math.max(
+                        currentLineHeight, child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
+                currentLineWidth += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            } else {
+                totalHeight += currentLineHeight;
+                totalWeight= Math.max(currentLineWidth, totalWeight);
+                currentLineWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+                currentLineHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
+            }
+
+        }
+        setMeasuredDimension(resolveSize(totalHeight, heightMeasureSpec), resolveSize(totalWeight, widthMeasureSpec));
 
     }
 
