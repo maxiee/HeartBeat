@@ -46,6 +46,9 @@
     <string name="statistics">心路</string>
     <string name="statistics_week">一周统计</string>
     <string name="statistics_event_distribution">事件分布</string>
+    <string name="distri_hint_average_head">您平均每条事件包含 </string>
+    <string name="distri_hint_average_tail"> 条感想\n</string>
+    <string name="disti_hint_waste_book">设: 流水帐 = 感想数为 1 的事件\n您的流水帐数目为: </string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>

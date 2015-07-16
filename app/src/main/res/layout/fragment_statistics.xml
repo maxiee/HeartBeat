@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.v4.widget.NestedScrollView
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -84,5 +84,17 @@
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
+        <TextView
+            android:id="@+id/distribution_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="?attr/colorPrimary"
+            android:lineSpacingMultiplier="1.2"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
     </LinearLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
