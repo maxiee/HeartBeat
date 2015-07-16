@@ -11,7 +11,7 @@ import java.util.Calendar;
  * Created by maxiee on 15-6-14.
  */
 public class TimeUtils {
-
+    private final static int WEEK_COUNT = 7;
     private static final int MS_ONE_SEC = 1000;
     private static final int MS_ONE_MIN = 60 * MS_ONE_SEC;
     private static final int MS_ONE_HOUR = MS_ONE_MIN * 60;
@@ -42,5 +42,28 @@ public class TimeUtils {
             timeUnit = context.getString(R.string.day_ago);
         }
         return String.valueOf(count) + timeUnit;
+    }
+
+    public static Calendar calendarDaysBefore(int days) {
+        Calendar curDate = Calendar.getInstance();
+        curDate.set(
+                curDate.get(Calendar.YEAR),
+                curDate.get(Calendar.MONTH),
+                curDate.get(Calendar.DAY_OF_MONTH),
+                0, 0
+        );
+        curDate.add(Calendar.DAY_OF_MONTH, -1 * days);
+        return curDate;
+    }
+
+    public static String[] getWeekDateString() {
+        String[] ret = new String[WEEK_COUNT];
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1 * WEEK_COUNT);
+        for (int i=0; i<WEEK_COUNT; i++) {
+            ret[i] = DateFormat.format("MM月dd日", cal).toString();
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return ret;
     }
 }
