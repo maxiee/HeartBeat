@@ -19,6 +19,7 @@ import com.maxiee.heartbeat.support.CrashHandler;
 import com.maxiee.heartbeat.ui.fragments.EventListFragment;
 import com.maxiee.heartbeat.ui.fragments.EventTodayFragment;
 import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
+import com.maxiee.heartbeat.ui.fragments.StatisticsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private EventListFragment mEventListFragment;
     private EventTodayFragment mEventTodayFragment;
     private LabelCloudFragment mLabelCloudFragment;
+    private StatisticsFragment mStatisticsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +188,14 @@ public class MainActivity extends AppCompatActivity
                         .commit();
                 setTitle(R.string.labelCloud);
                 return true;
+            case R.id.nav_statistics:
+                if (mStatisticsFragment == null) {
+                    mStatisticsFragment = new StatisticsFragment();
+                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nested_content, mStatisticsFragment)
+                        .commit();
+                setTitle(R.string.statistics);
         }
         return false;
     }

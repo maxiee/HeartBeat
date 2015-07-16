@@ -12,4 +12,8 @@
         android:id="@+id/nav_label_cloud"
         android:icon="@drawable/ic_action_label"
         android:title="@string/labelCloud" />
+    <item
+        android:id="@+id/nav_statistics"
+        android:icon="@drawable/ic_action_trending_up"
+        android:title="@string/statistics" />
 </menu>
