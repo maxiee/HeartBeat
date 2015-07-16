@@ -42,6 +42,10 @@
     <string name="share">分享</string>
     <string name="copy_finished">复制成功</string>
     <string name="email">电子邮箱</string>
+    <string name="thought">感想</string>
+    <string name="statistics">心路</string>
+    <string name="statistics_week">一周统计</string>
+    <string name="statistics_event_distribution">事件分布</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
