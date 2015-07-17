@@ -228,7 +228,11 @@ public class StatisticsFragment extends Fragment{
         });
 
         // 获取流水帐数目
-        mWasteBookCount = freqCount.get(1);
+        if (!freqCount.isEmpty()) {
+            mWasteBookCount = freqCount.get(1);
+        } else {
+            mWasteBookCount = 0;
+        }
         ArrayList<String> xVals = new ArrayList<>();
         ArrayList<Entry> yVals = new ArrayList<>();
         int distributionCount =
@@ -273,7 +277,9 @@ public class StatisticsFragment extends Fragment{
 
     private void showDistriHint() {
         String averageHead = getString(R.string.distri_hint_average_head);
-        String averageCount = String.valueOf(1f * mThoughtCount / mEventCount);
+        float averageCountV = 1f * mThoughtCount / mEventCount;
+        if (mThoughtCount == 0) averageCountV = 0;
+        String averageCount = String.valueOf(averageCountV);
         String averageTail = getString(R.string.distri_hint_average_tail);
         String wasteBook = getString(R.string.disti_hint_waste_book);
         String wasteCount = String.valueOf(mWasteBookCount);
