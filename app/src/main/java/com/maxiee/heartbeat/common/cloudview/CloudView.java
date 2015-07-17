@@ -173,15 +173,15 @@ public class CloudView extends ViewGroup {
             final View child = getChildAt(i);
             measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            if (i==0) {
+            if (i==0) { // first one
                 start = child.getLeft();
                 currentLineWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
                 currentLineHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            } else if (child.getLeft() != start) {
+            } else if (child.getLeft() != start) { // not the last
                 currentLineHeight = Math.max(
                         currentLineHeight, child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
                 currentLineWidth += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
-            } else {
+            } else { // the last one
                 totalHeight += currentLineHeight;
                 totalWeight= Math.max(currentLineWidth, totalWeight);
                 currentLineWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
@@ -189,7 +189,7 @@ public class CloudView extends ViewGroup {
             }
 
         }
-        setMeasuredDimension(resolveSize(totalHeight, heightMeasureSpec), resolveSize(totalWeight, widthMeasureSpec));
+        setMeasuredDimension(resolveSize(totalWeight, widthMeasureSpec), resolveSize(totalHeight, heightMeasureSpec));
 
     }
 
