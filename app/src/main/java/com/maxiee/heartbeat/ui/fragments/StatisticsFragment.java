@@ -277,6 +277,9 @@ public class StatisticsFragment extends Fragment{
         String averageTail = getString(R.string.distri_hint_average_tail);
         String wasteBook = getString(R.string.disti_hint_waste_book);
         String wasteCount = String.valueOf(mWasteBookCount);
+        if (averageCount.length()>3) {
+            averageCount = averageCount.substring(0, 3);
+        }
         mTvDistriHint.setText(averageHead + averageCount + averageTail + wasteBook +wasteCount);
     }
 
