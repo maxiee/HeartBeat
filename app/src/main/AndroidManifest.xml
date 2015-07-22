@@ -12,7 +12,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,6 +32,8 @@
             android:parentActivityName=".ui.SettingsActivity" />
         <activity android:name=".ui.CrashDetailActivity"
             android:parentActivityName=".ui.CrashListActivity" />
+        <activity
+            android:name=".ui.SearchResultActivity" />
     </application>
 
 </manifest>
