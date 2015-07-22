@@ -140,7 +140,6 @@ public class StatisticsFragment extends Fragment{
         mPieChart.setDrawCenterText(false);
         Legend legend = mPieChart.getLegend();
         legend.setEnabled(false);
-//        mPieChart.setCenterText("事件分布");
     }
 
     private BarData getWeekEventData() {
@@ -227,8 +226,8 @@ public class StatisticsFragment extends Fragment{
             }
         });
 
-        // 获取流水帐数目
-        if (!freqCount.isEmpty()) {
+        // 获取流水帐数目 fix bug4.
+        if (!freqCount.isEmpty() && freqCount.containsKey(1)) {
             mWasteBookCount = freqCount.get(1);
         } else {
             mWasteBookCount = 0;
