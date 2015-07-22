@@ -1,7 +1,5 @@
 package com.maxiee.heartbeat.ui;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,10 +20,14 @@ import com.maxiee.heartbeat.ui.fragments.EventTodayFragment;
 import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
 import com.maxiee.heartbeat.ui.fragments.StatisticsFragment;
 import com.quinny898.library.persistentsearch.SearchBox;
+import com.quinny898.library.persistentsearch.SearchResult;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int SEARCH_HISTORY_SIZE = 5;
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     private LabelCloudFragment mLabelCloudFragment;
     private StatisticsFragment mStatisticsFragment;
     private SearchBox mSearchBox;
+    private ArrayList<String> mSearchHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        mSearchHistory = new ArrayList<>();
         mSearchBox.setLogoText(getString(R.string.search_hint));
         mSearchBox.setSearchListener(new SearchBox.SearchListener() {
             @Override
@@ -143,6 +146,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onSearch(String s) {
+                if (mSearchHistory.size() == SEARCH_HISTORY_SIZE) {
+                    mSearchHistory.remove(SEARCH_HISTORY_SIZE - 1);
+                }
+                if (!mSearchHistory.contains(s)) {
+                    mSearchHistory.add(0, s);
+                }
                 Intent i = new Intent(Intent.ACTION_MAIN);
                 i.setClass(MainActivity.this, SearchResultActivity.class);
                 i.putExtra("search", s);
@@ -176,7 +185,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_search) {
+            mSearchBox.clearSearchable();
+            for (String his: mSearchHistory) {
+                mSearchBox.addSearchable(
+                        new SearchResult(his, null));
+            }
             mSearchBox.revealFromMenuItem(R.id.action_search, this);
+
         }
 
         return super.onOptionsItemSelected(item);
