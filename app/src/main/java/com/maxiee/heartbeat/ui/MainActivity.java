@@ -1,5 +1,7 @@
 package com.maxiee.heartbeat.ui;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,8 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.maxiee.heartbeat.ui.fragments.EventListFragment;
 import com.maxiee.heartbeat.ui.fragments.EventTodayFragment;
 import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
 import com.maxiee.heartbeat.ui.fragments.StatisticsFragment;
+import com.quinny898.library.persistentsearch.SearchBox;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private EventTodayFragment mEventTodayFragment;
     private LabelCloudFragment mLabelCloudFragment;
     private StatisticsFragment mStatisticsFragment;
+    private SearchBox mSearchBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mSearchBox = (SearchBox) findViewById(R.id.searchbox);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
@@ -113,6 +118,37 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(i, AddEventActivity.ADD_EVENT_REQUEST);
             }
         });
+
+        mSearchBox.setLogoText(getString(R.string.search_hint));
+        mSearchBox.setSearchListener(new SearchBox.SearchListener() {
+            @Override
+            public void onSearchOpened() {
+
+            }
+
+            @Override
+            public void onSearchCleared() {
+
+            }
+
+            @Override
+            public void onSearchClosed() {
+                mSearchBox.hideCircularly(MainActivity.this);
+            }
+
+            @Override
+            public void onSearchTermChanged() {
+
+            }
+
+            @Override
+            public void onSearch(String s) {
+                Intent i = new Intent(Intent.ACTION_MAIN);
+                i.setClass(MainActivity.this, SearchResultActivity.class);
+                i.putExtra("search", s);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -137,6 +173,10 @@ public class MainActivity extends AppCompatActivity
             i.setClass(MainActivity.this, SettingsActivity.class);
             startActivity(i);
             return true;
+        }
+
+        if (id == R.id.action_search) {
+            mSearchBox.revealFromMenuItem(R.id.action_search, this);
         }
 
         return super.onOptionsItemSelected(item);
