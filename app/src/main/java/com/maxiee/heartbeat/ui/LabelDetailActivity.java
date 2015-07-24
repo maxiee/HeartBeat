@@ -77,7 +77,7 @@ public class LabelDetailActivity extends AppCompatActivity{
     public void showHintText() {
         if (mEventList.size() < 1) return;
         long earlistEventTime = mEventList.get(mEventList.size() - 1).getTimestamp();
-        long latestEventTime = mEventList.get(0).getTimestamp();
+        long latestEventTime = System.currentTimeMillis();
         ArrayList<String> hint = new ArrayList<>();
         hint.add(mLabel + "\n");
         hint.add(getString(R.string.label_hint_001));
