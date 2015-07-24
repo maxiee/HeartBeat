@@ -66,4 +66,9 @@ public class TimeUtils {
         }
         return ret;
     }
+
+    public static int countDaysBetween(long earlistEventTime, long latestEventTime) {
+        long diff = latestEventTime - earlistEventTime;
+        return (int) diff / MS_ONE_DAY;
+    }
 }
