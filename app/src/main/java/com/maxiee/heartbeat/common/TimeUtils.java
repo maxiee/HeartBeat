@@ -17,12 +17,13 @@ public class TimeUtils {
     private static final int MS_ONE_HOUR = MS_ONE_MIN * 60;
     public static final int MS_ONE_DAY = MS_ONE_HOUR * 24;
     private static final int MS_TEN_DAYS = MS_ONE_DAY * 10;
+    private static final int MS_FOUR_DAYS = MS_ONE_DAY * 4;
 
     public static String parseTime(final Context context, final long timestamp) {
         Long timeNow = System.currentTimeMillis();
         Long delta = timeNow - timestamp;
 
-        if (delta > MS_TEN_DAYS) {
+        if (delta > MS_FOUR_DAYS) {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timestamp);
             return DateFormat.format("yyyy-MM-dd", cal).toString();
