@@ -1,12 +1,14 @@
 package com.maxiee.heartbeat.ui.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AlertDialog;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.ui.CrashListActivity;
@@ -83,7 +85,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         }
         if (preference == mPatternPref) {
             onPatternClick();
-//            startActivity(new Intent(getActivity(), PatternActivity.class));
             return true;
         }
         return false;
@@ -103,12 +104,38 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     }
 
     private void onPatternClick() {
-        Intent i = new Intent();
-        i.setClass(getActivity(), PatternActivity.class);
         if (mPattern.isEmpty()) {
+            Intent i = new Intent();
+            i.setClass(getActivity(), PatternActivity.class);
             i.putExtra(PatternActivity.ACTION, PatternActivity.SET);
             startActivity(i);
-            return;
+        } else {
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(getActivity(), R.style.AppTheme_Dialog);
+            builder.setTitle(getString(R.string.choice));
+            builder.setItems(
+                    new String[]{
+                            getString(R.string.settings_pattern_cancel),
+                            getString(R.string.settings_pattern_change)
+                    },
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
+                                Intent i = new Intent(getActivity(), PatternActivity.class);
+                                i.putExtra(PatternActivity.ACTION, PatternActivity.CANCAL);
+                                startActivity(i);
+                                dialog.dismiss();
+                            } else if (which == 1) {
+                                Intent i = new Intent(getActivity(), PatternActivity.class);
+                                i.putExtra(PatternActivity.ACTION, PatternActivity.MODIFY);
+                                startActivity(i);
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+            );
+            builder.show();
         }
     }
 }
