@@ -65,6 +65,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initPattern();
+    }
+
+    @Override
     public boolean onPreferenceClick(Preference preference) {
         if (preference == mWeiboPref) {
             Uri uri = Uri.parse(Weibo_URL);
@@ -123,7 +129,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {
                                 Intent i = new Intent(getActivity(), PatternActivity.class);
-                                i.putExtra(PatternActivity.ACTION, PatternActivity.CANCAL);
+                                i.putExtra(PatternActivity.ACTION, PatternActivity.CANCEL);
                                 startActivity(i);
                                 dialog.dismiss();
                             } else if (which == 1) {
