@@ -18,10 +18,12 @@ public class PatternActivity extends AppCompatActivity{
     public final static int SET = 0;
     public final static int VERIFY = 1;
     public final static int MODIFY = 2; // verify then set
+    public final static int CANCEL = 3; // verify then clear
     public final static int ERROR = -1;
 
     private final static int SET_1_STAGE = 10;
     private final static int SET_2_STAGE = 11;
+    private final static int CANCEL_1_STAGE = 20;
 
     private SharedPreferences mPrefs;
     private PatternView mPatternView;
@@ -46,6 +48,9 @@ public class PatternActivity extends AppCompatActivity{
             case SET:
                 setStageOne();
                 break;
+            case CANCEL:
+                cancelStageOne();
+                break;
         }
     }
 
@@ -60,6 +65,22 @@ public class PatternActivity extends AppCompatActivity{
         mPatternBak = mPattern;
     }
 
+    private void cancelStageOne() {
+        mTvPatternHint.setText(getString(R.string.input_pattern));
+        mCurrentStatus = CANCEL_1_STAGE;
+    }
+
+    private void cancelFinished() {
+        if (verifyPattern(mPattern, getSPPattern())) {
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putString("pattern", "");
+            editor.apply();
+            finish();
+        } else {
+            mTvPatternHint.setText(R.string.input_pattern_error);
+        }
+    }
+
     private void setFinished() {
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putString("pattern", mPattern);
@@ -67,8 +88,12 @@ public class PatternActivity extends AppCompatActivity{
         finish();
     }
 
-    private boolean verifyPattern() {
-        return  (mPatternBak.equals(mPattern));
+    private boolean verifyPattern(String pattern1, String pattern2) {
+        return  (pattern1.equals(pattern2));
+    }
+
+    private String getSPPattern() {
+        return mPrefs.getString("pattern", "");
     }
 
     private class PatternDetected implements PatternView.OnPatternDetectedListener {
@@ -79,11 +104,13 @@ public class PatternActivity extends AppCompatActivity{
             if (mCurrentStatus == SET_1_STAGE) {
                 setStageTwo();
             } else if (mCurrentStatus == SET_2_STAGE) {
-                if (verifyPattern()) {
+                if (verifyPattern(mPattern, mPatternBak)) {
                     setFinished();
                 } else {
                     setStageOne();
                 }
+            } else if (mCurrentStatus == CANCEL_1_STAGE) {
+                cancelFinished();
             }
         }
     }
