@@ -2,6 +2,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        android:key="setting" android:title="@string/action_settings" >
+
+        <Preference
+            android:key="pattern"
+            android:title="@string/settings_pattern" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="about" android:title="@string/category_about" >
 
         <Preference
