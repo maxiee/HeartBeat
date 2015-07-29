@@ -32,8 +32,8 @@
             android:parentActivityName=".ui.SettingsActivity" />
         <activity android:name=".ui.CrashDetailActivity"
             android:parentActivityName=".ui.CrashListActivity" />
-        <activity
-            android:name=".ui.SearchResultActivity" />
+        <activity android:name=".ui.SearchResultActivity" />
+        <activity android:name=".ui.PatternActivity" />
     </application>
 
 </manifest>

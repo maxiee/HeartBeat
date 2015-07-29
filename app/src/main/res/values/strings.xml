@@ -55,6 +55,11 @@
     <string name="label_hint_002">，\n已发生</string>
     <string name="label_hint_003">个事件，至今已</string>
     <string name="label_hint_004">天。</string>
+    <string name="settings_pattern">手势密码</string>
+    <string name="empty">无</string>
+    <string name="input_pattern">请输入手势密码：</string>
+    <string name="verify_pattern">请再次验证密码：</string>
+    <string name="setted">已设置</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
