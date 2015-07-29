@@ -24,6 +24,9 @@ public class PatternActivity extends AppCompatActivity{
     private final static int SET_1_STAGE = 10;
     private final static int SET_2_STAGE = 11;
     private final static int CANCEL_1_STAGE = 20;
+    private final static int MODIFY_1_STAGE = 30;
+    private final static int MODIFY_2_STAGE = 31;
+    private final static int MODIFY_3_STAGE = 32;
 
     private SharedPreferences mPrefs;
     private PatternView mPatternView;
@@ -51,6 +54,8 @@ public class PatternActivity extends AppCompatActivity{
             case CANCEL:
                 cancelStageOne();
                 break;
+            case MODIFY:
+                modifyStageOne();
         }
     }
 
@@ -79,6 +84,31 @@ public class PatternActivity extends AppCompatActivity{
         } else {
             mTvPatternHint.setText(R.string.input_pattern_error);
         }
+    }
+
+    private void modifyStageOne() {
+        mTvPatternHint.setText(getString(R.string.input_pattern));
+        mCurrentStatus = MODIFY_1_STAGE;
+    }
+
+    private void modifyStageTwo() {
+        if (mCurrentStatus == MODIFY_1_STAGE) {
+            if (verifyPattern(mPattern, getSPPattern())) {
+                mTvPatternHint.setText(getString(R.string.input_new_pattern));
+                mCurrentStatus = MODIFY_2_STAGE;
+            } else {
+                mTvPatternHint.setText(R.string.input_pattern_error);
+            }
+        } else if (mCurrentStatus == MODIFY_3_STAGE) {
+            mTvPatternHint.setText(getString(R.string.input_new_pattern));
+            mCurrentStatus = MODIFY_2_STAGE;
+        }
+    }
+
+    private void modifyStageThree() {
+        mTvPatternHint.setText(getString(R.string.verify_pattern));
+        mCurrentStatus = MODIFY_3_STAGE;
+        mPatternBak = mPattern;
     }
 
     private void setFinished() {
@@ -111,6 +141,16 @@ public class PatternActivity extends AppCompatActivity{
                 }
             } else if (mCurrentStatus == CANCEL_1_STAGE) {
                 cancelFinished();
+            } else if (mCurrentStatus == MODIFY_1_STAGE) {
+                modifyStageTwo();   // 密码验证成功，准备设置新密码
+            } else if (mCurrentStatus == MODIFY_2_STAGE) {
+                modifyStageThree(); // 输入新密码
+            } else if (mCurrentStatus == MODIFY_3_STAGE) {
+                if (verifyPattern(mPattern, mPatternBak)) {
+                    setFinished();
+                } else {
+                    modifyStageTwo();
+                }
             }
         }
     }

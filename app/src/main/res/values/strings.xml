@@ -64,6 +64,7 @@
     <string name="settings_pattern_cancel">取消手势密码</string>
     <string name="settings_pattern_change">更改手势密码</string>
     <string name="input_pattern_error">验证失败，请重新输入：</string>
+    <string name="input_new_pattern">请输入新手势密码：</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
