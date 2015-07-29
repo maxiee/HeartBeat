@@ -27,6 +27,7 @@ public class PatternActivity extends AppCompatActivity{
     private final static int MODIFY_1_STAGE = 30;
     private final static int MODIFY_2_STAGE = 31;
     private final static int MODIFY_3_STAGE = 32;
+    private final static int VERIFY_1_STAGE = 40;
 
     private SharedPreferences mPrefs;
     private PatternView mPatternView;
@@ -56,6 +57,11 @@ public class PatternActivity extends AppCompatActivity{
                 break;
             case MODIFY:
                 modifyStageOne();
+                break;
+            case VERIFY:
+                mTvPatternHint.setText(getString(R.string.input_pattern));
+                mCurrentStatus = VERIFY_1_STAGE;
+                break;
         }
     }
 
@@ -150,6 +156,14 @@ public class PatternActivity extends AppCompatActivity{
                     setFinished();
                 } else {
                     modifyStageTwo();
+                }
+            } else if (mCurrentStatus == VERIFY_1_STAGE) {
+                if (verifyPattern(mPattern, getSPPattern())) {
+                    Intent i = new Intent(PatternActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    mTvPatternHint.setText(R.string.input_pattern_error);
                 }
             }
         }
