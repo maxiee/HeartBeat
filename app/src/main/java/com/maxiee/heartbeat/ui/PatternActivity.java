@@ -1,0 +1,90 @@
+package com.maxiee.heartbeat.ui;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+
+import com.eftimoff.patternview.PatternView;
+import com.maxiee.heartbeat.R;
+
+/**
+ * Created by maxiee on 15-7-29.
+ */
+public class PatternActivity extends AppCompatActivity{
+    public final static String ACTION = "action";
+    public final static int SET = 0;
+    public final static int VERIFY = 1;
+    public final static int MODIFY = 2; // verify then set
+    public final static int ERROR = -1;
+
+    private final static int SET_1_STAGE = 10;
+    private final static int SET_2_STAGE = 11;
+
+    private SharedPreferences mPrefs;
+    private PatternView mPatternView;
+    private TextView mTvPatternHint;
+    private int mCurrentStatus;
+    private String mPattern;
+    private String mPatternBak;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pattern);
+
+        mTvPatternHint = (TextView) findViewById(R.id.pattern_hint);
+        mPatternView = (PatternView) findViewById(R.id.pattern);
+        mPatternView.setOnPatternDetectedListener(new PatternDetected());
+        mPrefs = getSharedPreferences("hb", Context.MODE_PRIVATE);
+
+        Intent i = getIntent();
+        int action = i.getIntExtra(ACTION, ERROR);
+        switch (action) {
+            case SET:
+                setStageOne();
+                break;
+        }
+    }
+
+    private void setStageOne() {
+        mTvPatternHint.setText(getString(R.string.input_pattern));
+        mCurrentStatus = SET_1_STAGE;
+    }
+
+    private void setStageTwo() {
+        mTvPatternHint.setText(getString(R.string.verify_pattern));
+        mCurrentStatus = SET_2_STAGE;
+        mPatternBak = mPattern;
+    }
+
+    private void setFinished() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString("pattern", mPattern);
+        editor.apply();
+        finish();
+    }
+
+    private boolean verifyPattern() {
+        return  (mPatternBak.equals(mPattern));
+    }
+
+    private class PatternDetected implements PatternView.OnPatternDetectedListener {
+        @Override
+        public void onPatternDetected() {
+            mPattern = mPatternView.getPatternString();
+            mPatternView.clearPattern();
+            if (mCurrentStatus == SET_1_STAGE) {
+                setStageTwo();
+            } else if (mCurrentStatus == SET_2_STAGE) {
+                if (verifyPattern()) {
+                    setFinished();
+                } else {
+                    setStageOne();
+                }
+            }
+        }
+    }
+}
