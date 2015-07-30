@@ -8,8 +8,8 @@ android {
         applicationId "com.maxiee.heartbeat"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 5
-        versionName "0.7.2"
+        versionCode 6
+        versionName "0.7.3"
     }
     buildTypes {
         release {
