@@ -102,7 +102,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 ""
         );
         if (mPattern.isEmpty()) {
-            mPatternPref.setSummary(getString(R.string.empty));
+            mPatternPref.setSummary(getString(R.string.pattern_empty));
         } else {
             mPatternPref.setSummary(getString(R.string.setted));
         }
