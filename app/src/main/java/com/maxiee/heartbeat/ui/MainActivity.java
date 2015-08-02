@@ -1,14 +1,27 @@
 package com.maxiee.heartbeat.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,21 +36,15 @@ import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int SEARCH_HISTORY_SIZE = 5;
 
     private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
-    private ActionBarDrawerToggle mDrawerToggle;
     private FloatingActionButton mFab;
-    private EventListFragment mEventListFragment;
-    private EventTodayFragment mEventTodayFragment;
-    private LabelCloudFragment mLabelCloudFragment;
-    private StatisticsFragment mStatisticsFragment;
+    private ViewPagerAdapter mViewPagerAdapter;
     private SearchBox mSearchBox;
     private ArrayList<String> mSearchHistory;
 
@@ -50,65 +57,48 @@ public class MainActivity extends AppCompatActivity
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("");
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                setTitle(mViewPagerAdapter.getFragmentTitle(tab.getPosition()));
+                tab.setContentDescription(
+                        mViewPagerAdapter.getPageIcon(
+                                tab.getPosition(),
+                                getThemeAccentColor(MainActivity.this)));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tab.setContentDescription(
+                        mViewPagerAdapter.getPageIcon(
+                                tab.getPosition(),
+                                Color.WHITE
+                        )
+                );
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+        // init TabLayout
+        setTitle(mViewPagerAdapter.getFragmentTitle(0));
+        tabLayout.getTabAt(0).setContentDescription(
+                mViewPagerAdapter.getPageIcon(
+                        0,
+                        getThemeAccentColor(this)
+                )
+        );
+
         mSearchBox = (SearchBox) findViewById(R.id.searchbox);
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                mDrawerToggle.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                mDrawerToggle.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                mDrawerToggle.onDrawerStateChanged(newState);
-            }
-        });
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                R.string.abc_action_bar_home_description,
-                R.string.abc_action_bar_home_description){
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                invalidateOptionsMenu();
-            }
-        };
-
-        mDrawerLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerToggle.syncState();
-            }
-        });
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        mEventListFragment = new EventListFragment();
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.nested_content, mEventListFragment).commit();
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +150,21 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private static int getThemeAccentColor (final Context context) {
+        final TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
+        return value.data;
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter.addFrag(new EventListFragment(), getString(R.string.event_list), R.drawable.ic_action_reorder);
+        mViewPagerAdapter.addFrag(new EventTodayFragment(), getString(R.string.today), R.drawable.ic_action_today);
+        mViewPagerAdapter.addFrag(new LabelCloudFragment(), getString(R.string.labelCloud), R.drawable.ic_action_label);
+        mViewPagerAdapter.addFrag(new StatisticsFragment(), getString(R.string.statistics), R.drawable.ic_action_trending_up);
+        viewPager.setAdapter(mViewPagerAdapter);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -169,9 +174,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
 
         int id = item.getItemId();
 
@@ -199,59 +201,51 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == AddEventActivity.ADD_EVENT_RESULT_OK
-                || resultCode == EventDetailActivity.EVENT_DETAIL_MODIFIED) {
-            if (mEventListFragment != null) {
-                mEventListFragment.updateEventList();
-            }
-
-            if (mEventTodayFragment != null) {
-                mEventTodayFragment.updateEventList();
-            }
-        }
+        // TODO: put these code to onResume!
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
-        mDrawerLayout.closeDrawer(mNavigationView);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        switch (menuItem.getItemId()) {
-            case R.id.nav_event_list:
-                if (mEventListFragment == null) {
-                    mEventListFragment = new EventListFragment();
-                }
-                fragmentManager.beginTransaction()
-                        .replace(R.id.nested_content, mEventListFragment)
-                        .commit();
-                setTitle(getString(R.string.event_list));
-                return true;
-            case R.id.nav_today:
-                if (mEventTodayFragment == null) {
-                    mEventTodayFragment = new EventTodayFragment();
-                }
-                fragmentManager.beginTransaction()
-                        .replace(R.id.nested_content, mEventTodayFragment)
-                        .commit();
-                setTitle(R.string.today);
-                return true;
-            case R.id.nav_label_cloud:
-                if (mLabelCloudFragment == null) {
-                    mLabelCloudFragment = new LabelCloudFragment();
-                }
-                fragmentManager.beginTransaction()
-                        .replace(R.id.nested_content, mLabelCloudFragment)
-                        .commit();
-                setTitle(R.string.labelCloud);
-                return true;
-            case R.id.nav_statistics:
-                if (mStatisticsFragment == null) {
-                    mStatisticsFragment = new StatisticsFragment();
-                }
-                fragmentManager.beginTransaction()
-                        .replace(R.id.nested_content, mStatisticsFragment)
-                        .commit();
-                setTitle(R.string.statistics);
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+        private final List<Integer> mFragmentIconList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
-        return false;
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title, @DrawableRes int id) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+            mFragmentIconList.add(id);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return getPageIcon(position, Color.WHITE);
+        }
+
+        public CharSequence getPageIcon(int position, int filterColor) {
+            Drawable image = getDrawable(mFragmentIconList.get(position));
+            image.setColorFilter(filterColor, PorterDuff.Mode.MULTIPLY);
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
+        }
+
+        public String getFragmentTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
