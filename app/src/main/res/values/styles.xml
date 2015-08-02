@@ -22,4 +22,8 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>
