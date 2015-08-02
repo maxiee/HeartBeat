@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 tab.setContentDescription(
                         mViewPagerAdapter.getPageIcon(
                                 tab.getPosition(),
-                                Color.WHITE
+                                getResources().getColor(R.color.tab_white_trans)
                         )
                 );
             }
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return getPageIcon(position, Color.WHITE);
+            return getPageIcon(position, getResources().getColor(R.color.tab_white_trans));
         }
 
         public CharSequence getPageIcon(int position, int filterColor) {
