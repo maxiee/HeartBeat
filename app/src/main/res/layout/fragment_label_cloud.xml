@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent" >
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/cloud_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.maxiee.heartbeat.common.cloudview.CloudView
-            android:id="@+id/cloud_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <com.maxiee.heartbeat.common.cloudview.CloudView
+                android:id="@+id/cloud_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-</android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/image_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:scaleType="center"/>
+        <TextView
+            android:text="@string/clout_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_empty"
+            android:layout_marginTop="30dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?attr/colorPrimary"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+</FrameLayout>
