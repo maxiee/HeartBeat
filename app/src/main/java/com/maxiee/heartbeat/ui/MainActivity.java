@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public CharSequence getPageIcon(int position, int filterColor) {
-            Drawable image = getDrawable(mFragmentIconList.get(position));
+            Drawable image = ResourcesCompat.getDrawable(getResources(), mFragmentIconList.get(position), null);
             image.setColorFilter(filterColor, PorterDuff.Mode.MULTIPLY);
             image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
             SpannableString sb = new SpannableString(" ");
