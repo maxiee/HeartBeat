@@ -66,6 +66,8 @@
     <string name="input_pattern_error">验证失败，请重新输入：</string>
     <string name="input_new_pattern">请输入新手势密码：</string>
     <string name="pattern_empty">点击设置手势密码</string>
+    <string name="event_empty">美好的事情你还没有记录呢</string>
+    <string name="clout_empty">添加标签让你更清楚了解自己的心情</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
