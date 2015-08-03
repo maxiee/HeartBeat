@@ -8,6 +8,18 @@
             android:key="pattern"
             android:title="@string/settings_pattern" />
 
+        <ListPreference
+            android:key="time_axis_sorting"
+            android:title="@string/setting_timeaxis_sorting"
+            android:dialogTitle="@string/setting_timeaxis_sorting"
+            android:entries="@array/time_axis_sorting_entries"
+            android:entryValues="@array/time_axis_sorting_entrie_values"
+            android:defaultValue="@string/time_axis_sorting_old_to_new" />
+
+        <Preference
+            android:key="crash"
+            android:title="@string/settings_crash" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -28,10 +40,6 @@
         <Preference
             android:key="email"
             android:title="@string/email" />
-
-        <Preference
-            android:key="crash"
-            android:title="@string/settings_crash" />
 
     </PreferenceCategory>
 </PreferenceScreen>

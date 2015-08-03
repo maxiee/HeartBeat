@@ -70,10 +70,21 @@
     <string name="clout_empty">添加标签让你更清楚了解自己的心情</string>
     <string name="today_empty">新的一日开始了，记录下美好的事情</string>
     <string name="search_empty">搜索结果未找到</string>
+    <string name="setting_timeaxis_sorting">时间轴排序方式</string>
     <string-array name="today_tips">
         <item>方才砰然心动, 何不记录下来?</item>
         <item>细细留心, 品味时时刻刻</item>
         <item>光阴短暂, 惜时, 惜时, 惜时</item>
         <item>今日终归回忆, 是否有话想说?</item>
     </string-array>
+    <string-array name="time_axis_sorting_entries" >
+        <item>由旧到新</item>
+        <item>由新到旧</item>
+    </string-array>
+    <string name="time_axis_sorting_old_to_new">0</string>
+    <string name="time_axis_sorting_new_to_old">1</string>
+    <array name="time_axis_sorting_entrie_values" >
+        <item>@string/time_axis_sorting_old_to_new</item>
+        <item>@string/time_axis_sorting_new_to_old</item>
+    </array>
 </resources>
