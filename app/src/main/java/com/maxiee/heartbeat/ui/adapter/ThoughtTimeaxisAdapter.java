@@ -1,6 +1,8 @@
 package com.maxiee.heartbeat.ui.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,16 +37,26 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         String order;
-        switch (position) {
-            case 0:
+        if (holder.sortingType.equals("0")) {
+            switch (position) {
+                case 0:
+                    order = holder.mContext.getString(R.string.firtime);
+                    break;
+                case 1:
+                    order = holder.mContext.getString(R.string.sectime);
+                    break;
+                default:
+                    order = String.valueOf(position + 1) + ".";
+                    break;
+            }
+        } else {
+            if (position == mThoughtList.length() - 1) {
                 order = holder.mContext.getString(R.string.firtime);
-                break;
-            case 1:
+            } else if (position == mThoughtList.length() - 2) {
                 order = holder.mContext.getString(R.string.sectime);
-                break;
-            default:
-                order = String.valueOf(position + 1) + ".";
-                break;
+            } else {
+                order = String.valueOf(mThoughtList.length() - position) + ".";
+            }
         }
         holder.tvOrder.setText(order);
 
@@ -93,6 +105,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         public TextView tvOrder, tvThought, tvTime;
         public final View mView;
         public Context mContext;
+        public String sortingType;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -101,6 +114,8 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
             tvOrder = (TextView) itemView.findViewById(R.id.tv_order);
             tvThought = (TextView) itemView.findViewById(R.id.tv_thought);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+            sortingType = sp.getString("time_axis_sorting", "0");
         }
     }
 }
