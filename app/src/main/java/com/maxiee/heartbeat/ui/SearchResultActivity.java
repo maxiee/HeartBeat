@@ -8,7 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.database.api.EventSearchApi;
 import com.maxiee.heartbeat.model.Event;
@@ -23,6 +27,8 @@ public class SearchResultActivity extends AppCompatActivity{
     private static final String TAG = SearchResultActivity.class.getSimpleName();
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
+    private RelativeLayout mEmptyLayout;
+    private ImageView mImageEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,8 @@ public class SearchResultActivity extends AppCompatActivity{
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mEmptyLayout = (RelativeLayout) findViewById(R.id.empty);
+        mImageEmpty = (ImageView) findViewById(R.id.image_empty);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
 
@@ -43,8 +51,6 @@ public class SearchResultActivity extends AppCompatActivity{
             setTitle(search);
             updateEventList(search);
         }
-
-        Log.d(TAG, search);
     }
 
     @Override
@@ -59,8 +65,12 @@ public class SearchResultActivity extends AppCompatActivity{
 
     public void updateEventList(String search) {
         ArrayList<Event> eventList = new EventSearchApi(this, search).exec();
-        if (eventList != null) {
+        if (!eventList.isEmpty()) {
             mRecyclerView.setAdapter(new EventListAdapter(eventList));
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.drawable.empty_bg1).into(mImageEmpty);
         }
     }
 }
