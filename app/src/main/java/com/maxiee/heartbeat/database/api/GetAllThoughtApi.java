@@ -1,13 +1,17 @@
 package com.maxiee.heartbeat.database.api;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 
 import com.maxiee.heartbeat.database.tables.EventThoughtRelationTable;
 import com.maxiee.heartbeat.database.tables.ThoughtsTable;
 import com.maxiee.heartbeat.model.Thoughts;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 
 /**
@@ -82,7 +86,12 @@ public class GetAllThoughtApi extends BaseDBApi {
             );
 
             ret.add(new Thoughts.Thought(key, thought, time));
+        }
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String sorting = sp.getString("time_axis_sorting", "0");
+        if (sorting.equals("1")) {
+            ret.reverse();
         }
 
         return ret;
