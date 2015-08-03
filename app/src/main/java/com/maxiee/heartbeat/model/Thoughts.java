@@ -1,6 +1,8 @@
 package com.maxiee.heartbeat.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by maxiee on 15-6-16.
@@ -42,6 +44,9 @@ public class Thoughts {
         mThoughts.remove(position);
     }
 
+    public void reverse() {
+        Collections.reverse(mThoughts);
+    }
 
     public int length() {
         return mThoughts.size();
