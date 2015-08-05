@@ -23,6 +23,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private final static String GITHUB_URL = "https://github.com/maxiee/HeartBeat";
     private final static String Weibo_URL = "http://weibo.com/maxiee";
     private final static String EMAIL = "maxieewong@gmail.com";
+    private final static String XXXXL = "http://coolapk.com/u/421881";
 
     private Preference mPatternPref;
     private Preference mVersionPref;
@@ -30,6 +31,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mWeiboPref;
     private Preference mCrashPref;
     private Preference mEmailPref;
+    private Preference mThanksXXXXL;
     private SharedPreferences mPrefs;
 
     private String mPattern;
@@ -45,6 +47,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mWeiboPref = (Preference) findPreference("weibo");
         mCrashPref = (Preference) findPreference("crash");
         mEmailPref = (Preference) findPreference("email");
+        mThanksXXXXL = (Preference) findPreference("icon_thanks");
 
         String version = "Unknown";
         try {
@@ -61,6 +64,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mCrashPref.setSummary(getString(R.string.settings_crash_summary));
         mCrashPref.setOnPreferenceClickListener(this);
         mEmailPref.setSummary(EMAIL);
+        mThanksXXXXL.setOnPreferenceClickListener(this);
         initPattern();
     }
 
@@ -91,6 +95,11 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         }
         if (preference == mPatternPref) {
             onPatternClick();
+            return true;
+        }
+        if (preference == mThanksXXXXL) {
+            Uri uri = Uri.parse(XXXXL);
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
             return true;
         }
         return false;

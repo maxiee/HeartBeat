@@ -41,5 +41,10 @@
             android:key="email"
             android:title="@string/email" />
 
+        <Preference
+            android:key="icon_thanks"
+            android:title="@string/icon_thanks_title"
+            android:summary="@string/icon_thanks_summary"/>
+
     </PreferenceCategory>
 </PreferenceScreen>
