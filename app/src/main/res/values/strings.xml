@@ -83,8 +83,7 @@
     </string-array>
     <string name="time_axis_sorting_old_to_new">0</string>
     <string name="time_axis_sorting_new_to_old">1</string>
-    <string name="icon_thanks_title">图标设计 @XXXXL</string>
-    <string name="icon_thanks_summary">感谢 XXXXL 为图标以及界面改进做出的贡献。</string>
+    <string name="icon_thanks_title">致谢 @XXXXL</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
