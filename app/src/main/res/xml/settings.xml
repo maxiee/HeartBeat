@@ -23,6 +23,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="backup_cat" android:title="@string/setting_backup_cat" >
+
+        <Preference
+            android:key="backup"
+            android:title="@string/setting_backup" />
+
+        <Preference
+            android:key="restore"
+            android:title="@string/setting_restore" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="about" android:title="@string/category_about" >
 
         <Preference

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.ui.CrashListActivity;
@@ -32,6 +33,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mCrashPref;
     private Preference mEmailPref;
     private Preference mThanksXXXXL;
+    private Preference mBackupPref;
+    private Preference mRestorePref;
     private SharedPreferences mPrefs;
 
     private String mPattern;
@@ -48,6 +51,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mCrashPref = (Preference) findPreference("crash");
         mEmailPref = (Preference) findPreference("email");
         mThanksXXXXL = (Preference) findPreference("icon_thanks");
+        mBackupPref = (Preference) findPreference("backup");
+        mRestorePref = (Preference) findPreference("restore");
 
         String version = "Unknown";
         try {
@@ -65,6 +70,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mCrashPref.setOnPreferenceClickListener(this);
         mEmailPref.setSummary(EMAIL);
         mThanksXXXXL.setOnPreferenceClickListener(this);
+        mBackupPref.setOnPreferenceClickListener(this);
+        mRestorePref.setOnPreferenceClickListener(this);
         initPattern();
     }
 
@@ -100,6 +107,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         if (preference == mThanksXXXXL) {
             Uri uri = Uri.parse(XXXXL);
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            return true;
+        }
+        if (preference == mBackupPref) {
+            return true;
+        }
+        if (preference == mRestorePref) {
             return true;
         }
         return false;
