@@ -26,8 +26,12 @@
         android:key="backup_cat" android:title="@string/setting_backup_cat" >
 
         <Preference
-            android:key="backup"
-            android:title="@string/setting_backup" />
+            android:key="backup_sd"
+            android:title="@string/setting_backup_sd" />
+
+        <Preference
+            android:key="backup_cloud"
+            android:title="@string/setting_backup_cloud" />
 
         <Preference
             android:key="restore"

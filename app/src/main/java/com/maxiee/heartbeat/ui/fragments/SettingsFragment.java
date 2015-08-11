@@ -1,5 +1,6 @@
 package com.maxiee.heartbeat.ui.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,9 +10,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.backup.BackupManager;
 import com.maxiee.heartbeat.ui.CrashListActivity;
 import com.maxiee.heartbeat.ui.PatternActivity;
 
@@ -21,6 +22,7 @@ import com.maxiee.heartbeat.ui.PatternActivity;
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener{
 
+    private final static int RESTORE_REQUEST = 1127;
     private final static String GITHUB_URL = "https://github.com/maxiee/HeartBeat";
     private final static String Weibo_URL = "http://weibo.com/maxiee";
     private final static String EMAIL = "maxieewong@gmail.com";
@@ -33,7 +35,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mCrashPref;
     private Preference mEmailPref;
     private Preference mThanksXXXXL;
-    private Preference mBackupPref;
+    private Preference mBackupSDPref;
+    private Preference mBackupCloudPref;
     private Preference mRestorePref;
     private SharedPreferences mPrefs;
 
@@ -51,7 +54,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mCrashPref = (Preference) findPreference("crash");
         mEmailPref = (Preference) findPreference("email");
         mThanksXXXXL = (Preference) findPreference("icon_thanks");
-        mBackupPref = (Preference) findPreference("backup");
+        mBackupSDPref = (Preference) findPreference("backup_sd");
+        mBackupCloudPref = (Preference) findPreference("backup_cloud");
         mRestorePref = (Preference) findPreference("restore");
 
         String version = "Unknown";
@@ -70,7 +74,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mCrashPref.setOnPreferenceClickListener(this);
         mEmailPref.setSummary(EMAIL);
         mThanksXXXXL.setOnPreferenceClickListener(this);
-        mBackupPref.setOnPreferenceClickListener(this);
+        mBackupSDPref.setOnPreferenceClickListener(this);
+        mBackupCloudPref.setOnPreferenceClickListener(this);
         mRestorePref.setOnPreferenceClickListener(this);
         initPattern();
     }
@@ -109,10 +114,19 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
             return true;
         }
-        if (preference == mBackupPref) {
+        if (preference == mBackupSDPref) {
+            BackupManager.backupSD(getActivity(), true);
+            return true;
+        }
+        if (preference == mBackupCloudPref) {
+            BackupManager.backupCloud(getActivity());
             return true;
         }
         if (preference == mRestorePref) {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_GET_CONTENT);
+            i.setType("*/*");
+            startActivityForResult(i, RESTORE_REQUEST);
             return true;
         }
         return false;
@@ -164,6 +178,14 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                     }
             );
             builder.show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESTORE_REQUEST && resultCode == Activity.RESULT_OK) {
+            BackupManager.restore(getActivity(), data);
         }
     }
 }

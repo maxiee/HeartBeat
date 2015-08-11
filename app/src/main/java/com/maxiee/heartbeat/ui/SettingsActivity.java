@@ -1,10 +1,13 @@
 package com.maxiee.heartbeat.ui;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.backup.BackupManager;
 import com.maxiee.heartbeat.ui.fragments.SettingsFragment;
 
 /**
@@ -29,5 +32,10 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
 
         setTitle(getString(R.string.action_settings));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
