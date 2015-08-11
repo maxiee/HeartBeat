@@ -84,9 +84,16 @@
     <string name="time_axis_sorting_old_to_new">0</string>
     <string name="time_axis_sorting_new_to_old">1</string>
     <string name="icon_thanks_title">致谢 @XXXXL</string>
-    <string name="setting_backup">备份数据库</string>
     <string name="setting_backup_cat">备份</string>
     <string name="setting_restore">恢复数据库</string>
+    <string name="share_not_found">未找到可分享应用</string>
+    <string name="restore_ok">数据库恢复成功</string>
+    <string name="restore_failed">数据库恢复失败</string>
+    <string name="setting_backup_sd">备份至外部储存</string>
+    <string name="setting_backup_cloud">备份至云服务</string>
+    <string name="backup_failed">备份失败</string>
+    <string name="backup_ok">备份成功</string>
+    <string name="filetype_error">文件类型错误，请选择正确备份文件</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
