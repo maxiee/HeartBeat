@@ -19,6 +19,11 @@ public class TimeUtils {
     private static final int MS_TEN_DAYS = MS_ONE_DAY * 10;
     private static final int MS_FOUR_DAYS = MS_ONE_DAY * 4;
 
+    public static String getDate(final Context context) {
+        Calendar cal = Calendar.getInstance();
+        return DateFormat.format("yyyy-MM-dd-h-mm", cal).toString();
+    }
+
     public static String parseTime(final Context context, final long timestamp) {
         Long timeNow = System.currentTimeMillis();
         Long delta = timeNow - timestamp;
