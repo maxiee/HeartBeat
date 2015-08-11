@@ -26,27 +26,23 @@ public class BackupManager {
     private final static String DB = "heartbeat";
     private final static String BACKUP_PATH = "HeartBeat";
     private final static String BACKUP_PREFIX = "[Backup]";
-    private final static int LENGTH_OF_SQLITE_MAGIC_NUMBER = 15;
-    private final static String SQLITE_MAGIC_NUMBER = "SQLite format 3";
 
     public static String backupSD(Context context, boolean showToast) {
         try {
             File curDB = context.getDatabasePath(DB);
             File backupPath = new File(Environment.getExternalStorageDirectory(), BACKUP_PATH);
-            Log.d("maxiee", "备份目录"+backupPath.toString());
-            Log.d("maxiee", "是否存在："+String.valueOf(backupPath.exists()));
             if (!backupPath.exists()) {
                 backupPath.mkdir();
             }
-            Log.d("maxiee", "是否创建成功："+String.valueOf(backupPath.exists()));
             File bakDB = new File(
                     backupPath,
                     BACKUP_PREFIX + "[" + DB + "]" + "[" + TimeUtils.getDate(context) + "]");
-            Log.d("maxiee", "备份文件地址："+bakDB.toString());
             bakDB.createNewFile();
-            FileChannel cur = new FileInputStream(curDB).getChannel();
-            FileChannel bak = new FileOutputStream(bakDB).getChannel();
-            bak.transferFrom(cur, 0, cur.size());
+//            FileChannel cur = new FileInputStream(curDB).getChannel();
+//            FileChannel bak = new FileOutputStream(bakDB).getChannel();
+//            bak.transferFrom(cur, 0, cur.size());
+            // 使用加密
+            FileDES.doEncryptFile(curDB, bakDB);
             if (showToast) {
                 Toast.makeText(context, context.getString(R.string.backup_ok), Toast.LENGTH_LONG).show();
             }
@@ -77,34 +73,25 @@ public class BackupManager {
     }
 
     public static void restore(Context context, Intent data) {
-        if (!checkFileType(context, data.getData())) {
-            Toast.makeText(context, context.getString(R.string.filetype_error), Toast.LENGTH_LONG).show();
-            return;
-        }
         try {
             File curDB = context.getDatabasePath(DB);
             OutputStream out = new FileOutputStream(curDB);
             InputStream in = context.getContentResolver().openInputStream(data.getData());
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len=in.read(buf)) > 0) {
-                out.write(buf, 0, len);
+//            byte[] buf = new byte[1024];
+//            int len;
+//            while ((len=in.read(buf)) > 0) {
+//                out.write(buf, 0, len);
+//            }
+//            out.close();
+//            in.close();
+            // 使用解密
+            if (!FileDES.doDecryptFile(in, out)) {
+                Toast.makeText(context, context.getString(R.string.restore_failed), Toast.LENGTH_LONG).show();
+                return;
             }
-            out.close();
-            in.close();
             Toast.makeText(context, context.getString(R.string.restore_ok), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, context.getString(R.string.restore_failed), Toast.LENGTH_LONG).show();}
-    }
-
-    private static boolean checkFileType(Context context, Uri uri) {
-        try {
-            InputStream in = context.getContentResolver().openInputStream(uri);
-            byte[] buffer = new byte[LENGTH_OF_SQLITE_MAGIC_NUMBER];
-            in.read(buffer);
-            return new String(buffer).equals(SQLITE_MAGIC_NUMBER);
-        } catch (Exception e) {e.printStackTrace();}
-        return false;
     }
 }
