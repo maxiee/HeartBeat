@@ -17,8 +17,6 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class FileDES {
     private final static String KEY_RULE = "maxieejudy";
-    private final static int LENGTH_OF_SQLITE_MAGIC_NUMBER = 15;
-    private final static String SQLITE_MAGIC_NUMBER = "SQLite format 3";
 
     private static Key initKey() {
         byte[] keyByte = KEY_RULE.getBytes();
