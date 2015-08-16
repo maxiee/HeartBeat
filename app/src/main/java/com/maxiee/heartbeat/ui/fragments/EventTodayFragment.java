@@ -68,7 +68,7 @@ public class EventTodayFragment extends Fragment{
         } else {
             mMainLayout.setVisibility(View.GONE);
             mEmtpyLayout.setVisibility(View.VISIBLE);
-            Glide.with(getActivity()).load(R.drawable.empty_bg).into(mImageEmpty);
+            Glide.with(getActivity()).load(R.drawable.empty_bg2).into(mImageEmpty);
         }
     }
 
