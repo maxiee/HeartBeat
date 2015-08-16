@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">心动</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
     <string name="add_event">心动瞬间\t\t(喜/怒/哀/乐)</string>
     <string name="first_thought">此刻感想</string>
@@ -94,6 +92,9 @@
     <string name="backup_failed">备份失败</string>
     <string name="backup_ok">备份成功</string>
     <string name="filetype_error">文件类型错误，请选择正确备份文件</string>
+    <string name="attention">注意</string>
+    <string name="backup_attention">备份功能不对添加的图片进行备份，请使用专门的图片备份服务进行单独备份。</string>
+    <string name="backup_sd_summary">位于外部储存的 HeartBeat 目录下</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

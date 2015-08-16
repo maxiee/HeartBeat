@@ -27,7 +27,8 @@
 
         <Preference
             android:key="backup_sd"
-            android:title="@string/setting_backup_sd" />
+            android:title="@string/setting_backup_sd"
+            android:summary="@string/backup_sd_summary"/>
 
         <Preference
             android:key="backup_cloud"
@@ -36,6 +37,10 @@
         <Preference
             android:key="restore"
             android:title="@string/setting_restore" />
+
+        <Preference
+            android:title="@string/attention"
+            android:summary="@string/backup_attention"/>
 
     </PreferenceCategory>
 
