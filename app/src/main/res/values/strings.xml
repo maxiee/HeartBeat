@@ -1,100 +1,100 @@
 <resources>
-    <string name="app_name">心动</string>
-    <string name="action_settings">设置</string>
-    <string name="add_event">心动瞬间\t\t(喜/怒/哀/乐)</string>
-    <string name="first_thought">此刻感想</string>
-    <string name="notempty">内容不能为空…</string>
-    <string name="firtime">初刻</string>
-    <string name="sectime">次刻</string>
-    <string name="minute_ago">分钟前</string>
-    <string name="hour_ago">小时前</string>
-    <string name="day_ago">天前</string>
-    <string name="add">添加</string>
-    <string name="add_thought">新想法</string>
-    <string name="adding">正在添加, 请稍后…</string>
-    <string name="add_ok">添加成功</string>
-    <string name="add_failed">添加失败</string>
-    <string name="new_tag">新标签</string>
-    <string name="recent_label">常用:</string>
-    <string name="event_list">事件列表</string>
-    <string name="today">今日</string>
-    <string name="event_count_text">事件</string>
-    <string name="thought_count_text">感想</string>
-    <string name="labelCloud">标签云</string>
-    <string name="category_about">关于</string>
-    <string name="settings_version">应用版本</string>
-    <string name="settings_github">GitHub 开源项目</string>
-    <string name="settings_weibo">新浪微博</string>
-    <string name="add_image">添加图片...</string>
-    <string name="change_image">更换图片...</string>
-    <string name="dialog_edit_thought">编辑想法</string>
-    <string name="done">完成</string>
-    <string name="delete">删除</string>
-    <string name="delete_text">删除操作将无法恢复, 是否继续?</string>
-    <string name="ok">确定</string>
-    <string name="cancel">取消</string>
-    <string name="dialog_edit_event">编辑事件</string>
-    <string name="settings_crash">崩溃报告</string>
-    <string name="settings_crash_summary">为了保护用户隐私，「心动」没有使用网络访问权限。但为了追踪 Bug，需要应用的崩溃报告（不含隐私信息）来研究程序。您可以通过新浪微博、Email、GitHub 等渠道，将报告复制/截图给我。感谢您的参与，让我们共同将「心动」变得更好！</string>
-    <string name="copy">复制</string>
-    <string name="share">分享</string>
-    <string name="copy_finished">复制成功</string>
-    <string name="email">电子邮箱</string>
-    <string name="thought">感想</string>
-    <string name="statistics">心路</string>
-    <string name="statistics_week">一周统计</string>
-    <string name="statistics_event_distribution">事件分布</string>
-    <string name="distri_hint_average_head">您平均每条事件包含 </string>
-    <string name="distri_hint_average_tail"> 条感想\n</string>
-    <string name="disti_hint_waste_book">设: 流水帐 = 感想数为 1 的事件\n您的流水帐数目为: </string>
-    <string name="search">搜索</string>
-    <string name="search_hint">搜索事件...</string>
-    <string name="label_hint_001">第一条事件起始于</string>
-    <string name="label_hint_002">，\n已发生</string>
-    <string name="label_hint_003">个事件，至今已</string>
-    <string name="label_hint_004">天。</string>
-    <string name="settings_pattern">手势密码</string>
-    <string name="empty">无</string>
-    <string name="input_pattern">请输入手势密码：</string>
-    <string name="verify_pattern">请再次验证密码：</string>
-    <string name="setted">已设置</string>
-    <string name="choice">选择操作</string>
-    <string name="settings_pattern_cancel">取消手势密码</string>
-    <string name="settings_pattern_change">更改手势密码</string>
-    <string name="input_pattern_error">验证失败，请重新输入：</string>
-    <string name="input_new_pattern">请输入新手势密码：</string>
-    <string name="pattern_empty">点击设置手势密码</string>
-    <string name="event_empty">美好的事情你还没有记录呢</string>
-    <string name="clout_empty">添加标签让你更清楚了解自己的心情</string>
-    <string name="today_empty">新的一日开始了，记录下美好的事情</string>
-    <string name="search_empty">搜索结果未找到</string>
-    <string name="setting_timeaxis_sorting">时间轴排序方式</string>
+    <string name="app_name">HeartBeat</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_event">Emotional moment (happy/sad)</string>
+    <string name="first_thought">Current thought</string>
+    <string name="notempty">Content can't be empty...</string>
+    <string name="firtime">First thought</string>
+    <string name="sectime">Second thought</string>
+    <string name="minute_ago">minute(s) ago</string>
+    <string name="hour_ago">hour(s) ago</string>
+    <string name="day_ago">day(s) ago</string>
+    <string name="add">Add</string>
+    <string name="add_thought">New thought</string>
+    <string name="adding">Adding, please wait...</string>
+    <string name="add_ok">Add successful!</string>
+    <string name="add_failed">Failed to add...</string>
+    <string name="new_tag">New label</string>
+    <string name="recent_label">Recent:</string>
+    <string name="event_list">Event list</string>
+    <string name="today">Today</string>
+    <string name="event_count_text">Event</string>
+    <string name="thought_count_text">thought(s)</string>
+    <string name="labelCloud">Label cloud</string>
+    <string name="category_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_github">GitHub homepage</string>
+    <string name="settings_weibo">Sina weibo</string>
+    <string name="add_image">Adding...</string>
+    <string name="change_image">Change image...</string>
+    <string name="dialog_edit_thought">Edit thought</string>
+    <string name="done">Done</string>
+    <string name="delete">Delete</string>
+    <string name="delete_text">The action cannot be undone, continue?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_edit_event">Edit event</string>
+    <string name="settings_crash">Crash report</string>
+    <string name="settings_crash_summary">In order to protect users' privacy, HeartBeat doesn't use the Internet access permission. But in order to track bugs, we need crash reports to debug. You can send it to me though Sina weibo, Email, Github, by pasting or screenshoting. Thank you for your participation, let us make HeartBeat more better!</string>
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+    <string name="copy_finished">Copy successful!</string>
+    <string name="email">Email</string>
+    <string name="thought">Thought</string>
+    <string name="statistics">Journey of the heart</string>
+    <string name="statistics_week">A week statistics</string>
+    <string name="statistics_event_distribution">Event distribution</string>
+    <string name="distri_hint_average_head">You have </string>
+    <string name="distri_hint_average_tail"> thoughts per event on average\n</string>
+    <string name="disti_hint_waste_book">Let waste book = the event has only one thought, then your count of waste book is</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search events...</string>
+    <string name="label_hint_001">Your first event starts at</string>
+    <string name="label_hint_002">,\n</string>
+    <string name="label_hint_003">events have occurred. There are </string>
+    <string name="label_hint_004">days since then.</string>
+    <string name="settings_pattern">Gesture password</string>
+    <string name="empty">empty</string>
+    <string name="input_pattern">Input gesture password:</string>
+    <string name="verify_pattern">Verify password:</string>
+    <string name="setted">Have set</string>
+    <string name="choice">Choose</string>
+    <string name="settings_pattern_cancel">Cancel Gesture password</string>
+    <string name="settings_pattern_change">Change Gesture password</string>
+    <string name="input_pattern_error">Verification failed, please input again:</string>
+    <string name="input_new_pattern">Input new gesture password:</string>
+    <string name="pattern_empty">Click to set gesture password</string>
+    <string name="event_empty">Record your emotional moments.</string>
+    <string name="clout_empty">Add labels to classify your mood</string>
+    <string name="today_empty">A new day begins, record your emotional moments.</string>
+    <string name="search_empty">Search result not found</string>
+    <string name="setting_timeaxis_sorting">Sorting order of time axis</string>
     <string-array name="today_tips">
-        <item>方才砰然心动, 何不记录下来?</item>
-        <item>细细留心, 品味时时刻刻</item>
-        <item>光阴短暂, 惜时, 惜时, 惜时</item>
-        <item>今日终归回忆, 是否有话想说?</item>
+        <item>Record emotional moments.</item>
+        <item>Taste every moment.</item>
+        <item>The time is short. Treasure Your Time.</item>
+        <item>Today will go into memory, have some thoughts?</item>
     </string-array>
     <string-array name="time_axis_sorting_entries" >
-        <item>由旧到新</item>
-        <item>由新到旧</item>
+        <item>Old to the new</item>
+        <item>New to the old</item>
     </string-array>
     <string name="time_axis_sorting_old_to_new">0</string>
-    <string name="time_axis_sorting_new_to_old">1</string>
-    <string name="icon_thanks_title">致谢 @XXXXL</string>
-    <string name="setting_backup_cat">备份</string>
-    <string name="setting_restore">恢复数据库</string>
-    <string name="share_not_found">未找到可分享应用</string>
-    <string name="restore_ok">数据库恢复成功</string>
-    <string name="restore_failed">数据库恢复失败</string>
-    <string name="setting_backup_sd">备份至外部储存</string>
-    <string name="setting_backup_cloud">备份至云服务</string>
-    <string name="backup_failed">备份失败</string>
-    <string name="backup_ok">备份成功</string>
-    <string name="filetype_error">文件类型错误，请选择正确备份文件</string>
-    <string name="attention">注意</string>
-    <string name="backup_attention">备份功能不对添加的图片进行备份，请使用专门的图片备份服务进行单独备份。</string>
-    <string name="backup_sd_summary">位于外部储存的 HeartBeat 目录下</string>
+    <string name="time_axis_sorting_new_to_old" translatable="false">1</string>
+    <string name="icon_thanks_title">Thanks to @XXXXL</string>
+    <string name="setting_backup_cat">Back up</string>
+    <string name="setting_restore">Restore</string>
+    <string name="share_not_found">Can't find APP to share</string>
+    <string name="restore_ok">Back up successful!</string>
+    <string name="restore_failed">Failed to back up</string>
+    <string name="setting_backup_sd">Back up to external storage</string>
+    <string name="setting_backup_cloud">Back up to cloud</string>
+    <string name="backup_failed">Failded to back up.</string>
+    <string name="backup_ok">Back up successful!</string>
+    <string name="filetype_error">Filetype error, please choose the right back up file</string>
+    <string name="attention">Attention</string>
+    <string name="backup_attention">Images aren't backed up, please use the specialized image back up services.</string>
+    <string name="backup_sd_summary">The back up files are in HeartBeat directory of your external storage.</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
