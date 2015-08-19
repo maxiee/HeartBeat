@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="add_event">Emotional moment (happy/sad)</string>
     <string name="first_thought">Current thought</string>
-    <string name="notempty">Content can't be empty...</string>
+    <string name="notempty">Content can\'t be empty…</string>
     <string name="firtime">First thought</string>
     <string name="sectime">Second thought</string>
     <string name="minute_ago">minute(s) ago</string>
@@ -11,9 +11,9 @@
     <string name="day_ago">day(s) ago</string>
     <string name="add">Add</string>
     <string name="add_thought">New thought</string>
-    <string name="adding">Adding, please wait...</string>
+    <string name="adding">Adding, please wait…</string>
     <string name="add_ok">Add successful!</string>
-    <string name="add_failed">Failed to add...</string>
+    <string name="add_failed">Failed to add…</string>
     <string name="new_tag">New label</string>
     <string name="recent_label">Recent:</string>
     <string name="event_list">Event list</string>
@@ -25,8 +25,8 @@
     <string name="settings_version">Version</string>
     <string name="settings_github">GitHub homepage</string>
     <string name="settings_weibo">Sina weibo</string>
-    <string name="add_image">Adding...</string>
-    <string name="change_image">Change image...</string>
+    <string name="add_image">Adding…</string>
+    <string name="change_image">Change image…</string>
     <string name="dialog_edit_thought">Edit thought</string>
     <string name="done">Done</string>
     <string name="delete">Delete</string>
@@ -35,7 +35,7 @@
     <string name="cancel">Cancel</string>
     <string name="dialog_edit_event">Edit event</string>
     <string name="settings_crash">Crash report</string>
-    <string name="settings_crash_summary">In order to protect users' privacy, HeartBeat doesn't use the Internet access permission. But in order to track bugs, we need crash reports to debug. You can send it to me though Sina weibo, Email, Github, by pasting or screenshoting. Thank you for your participation, let us make HeartBeat more better!</string>
+    <string name="settings_crash_summary">In order to protect users\' privacy, HeartBeat doesn\'t use the Internet access permission. But in order to track bugs, we need crash reports to debug. You can send it to me though Sina weibo, Email, Github, by pasting or screenshoting. Thank you for your participation, let us make HeartBeat more better!</string>
     <string name="copy">Copy</string>
     <string name="share">Share</string>
     <string name="copy_finished">Copy successful!</string>
@@ -48,7 +48,7 @@
     <string name="distri_hint_average_tail"> thoughts per event on average\n</string>
     <string name="disti_hint_waste_book">Let waste book = the event has only one thought, then your count of waste book is</string>
     <string name="search">Search</string>
-    <string name="search_hint">Search events...</string>
+    <string name="search_hint">Search events…</string>
     <string name="label_hint_001">Your first event starts at</string>
     <string name="label_hint_002">,\n</string>
     <string name="label_hint_003">events have occurred. There are </string>
@@ -84,16 +84,16 @@
     <string name="icon_thanks_title">Thanks to @XXXXL</string>
     <string name="setting_backup_cat">Back up</string>
     <string name="setting_restore">Restore</string>
-    <string name="share_not_found">Can't find APP to share</string>
+    <string name="share_not_found">Can not find APP to share</string>
     <string name="restore_ok">Back up successful!</string>
     <string name="restore_failed">Failed to back up</string>
     <string name="setting_backup_sd">Back up to external storage</string>
     <string name="setting_backup_cloud">Back up to cloud</string>
-    <string name="backup_failed">Failded to back up.</string>
+    <string name="backup_failed">Failed to back up.</string>
     <string name="backup_ok">Back up successful!</string>
     <string name="filetype_error">Filetype error, please choose the right back up file</string>
     <string name="attention">Attention</string>
-    <string name="backup_attention">Images aren't backed up, please use the specialized image back up services.</string>
+    <string name="backup_attention">Images aren\'t backed up, please use the specialized image back up services.</string>
     <string name="backup_sd_summary">The back up files are in HeartBeat directory of your external storage.</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
