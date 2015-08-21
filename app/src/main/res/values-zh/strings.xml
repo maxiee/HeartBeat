@@ -86,4 +86,5 @@
     <string name="today">今日</string>
     <string name="today_empty">新的一日开始了，记录下美好的事情</string>
     <string name="verify_pattern">请再次验证密码：</string>
+    <string name="thought_count_pie">感想</string>
 </resources>

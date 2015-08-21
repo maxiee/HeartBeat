@@ -4,28 +4,28 @@
     <string name="add_event">Emotional moment (happy/sad)</string>
     <string name="first_thought">Current thought</string>
     <string name="notempty">Content can\'t be empty…</string>
-    <string name="firtime">First thought</string>
-    <string name="sectime">Second thought</string>
-    <string name="minute_ago">minute(s) ago</string>
-    <string name="hour_ago">hour(s) ago</string>
-    <string name="day_ago">day(s) ago</string>
+    <string name="firtime">1st</string>
+    <string name="sectime">2nd</string>
+    <string name="minute_ago">\u0020minute(s) ago</string>
+    <string name="hour_ago">\u0020hour(s) ago</string>
+    <string name="day_ago">\u0020day(s) ago</string>
     <string name="add">Add</string>
     <string name="add_thought">New thought</string>
     <string name="adding">Adding, please wait…</string>
     <string name="add_ok">Add successful!</string>
     <string name="add_failed">Failed to add…</string>
-    <string name="new_tag">New label</string>
+    <string name="new_tag">New</string>
     <string name="recent_label">Recent:</string>
     <string name="event_list">Event list</string>
     <string name="today">Today</string>
-    <string name="event_count_text">Event</string>
-    <string name="thought_count_text">thought(s)</string>
+    <string name="event_count_text">Event(s)</string>
+    <string name="thought_count_text">Thought(s)</string>
     <string name="labelCloud">Label cloud</string>
     <string name="category_about">About</string>
     <string name="settings_version">Version</string>
     <string name="settings_github">GitHub homepage</string>
     <string name="settings_weibo">Sina weibo</string>
-    <string name="add_image">Adding…</string>
+    <string name="add_image">Add an image…</string>
     <string name="change_image">Change image…</string>
     <string name="dialog_edit_thought">Edit thought</string>
     <string name="done">Done</string>
@@ -44,35 +44,35 @@
     <string name="statistics">Journey of the heart</string>
     <string name="statistics_week">A week statistics</string>
     <string name="statistics_event_distribution">Event distribution</string>
-    <string name="distri_hint_average_head">You have </string>
-    <string name="distri_hint_average_tail"> thoughts per event on average\n</string>
-    <string name="disti_hint_waste_book">Let waste book = the event has only one thought, then your count of waste book is</string>
+    <string name="distri_hint_average_head">You have\u0020</string>
+    <string name="distri_hint_average_tail">\u0020thoughts per event on average.\n</string>
+    <string name="disti_hint_waste_book">Let waste book = the event has only one thought, then your count of waste book is\u0020</string>
     <string name="search">Search</string>
     <string name="search_hint">Search events…</string>
-    <string name="label_hint_001">Your first event starts at</string>
+    <string name="label_hint_001">Your first event starts at\u0020</string>
     <string name="label_hint_002">,\n</string>
-    <string name="label_hint_003">events have occurred. There are </string>
-    <string name="label_hint_004">days since then.</string>
+    <string name="label_hint_003">\u0020events have occurred. There are\u0020</string>
+    <string name="label_hint_004">\u0020days since then.</string>
     <string name="settings_pattern">Gesture password</string>
     <string name="empty">empty</string>
     <string name="input_pattern">Input gesture password:</string>
     <string name="verify_pattern">Verify password:</string>
     <string name="setted">Have set</string>
     <string name="choice">Choose</string>
-    <string name="settings_pattern_cancel">Cancel Gesture password</string>
-    <string name="settings_pattern_change">Change Gesture password</string>
+    <string name="settings_pattern_cancel">Cancel gesture password</string>
+    <string name="settings_pattern_change">Change gesture password</string>
     <string name="input_pattern_error">Verification failed, please input again:</string>
     <string name="input_new_pattern">Input new gesture password:</string>
     <string name="pattern_empty">Click to set gesture password</string>
     <string name="event_empty">Record your emotional moments.</string>
-    <string name="clout_empty">Add labels to classify your mood</string>
+    <string name="clout_empty">Add labels to classify your mood.</string>
     <string name="today_empty">A new day begins, record your emotional moments.</string>
     <string name="search_empty">Search result not found</string>
     <string name="setting_timeaxis_sorting">Sorting order of time axis</string>
     <string-array name="today_tips">
         <item>Record emotional moments.</item>
         <item>Taste every moment.</item>
-        <item>The time is short. Treasure Your Time.</item>
+        <item>The time is short. Treasure your time.</item>
         <item>Today will go into memory, have some thoughts?</item>
     </string-array>
     <string-array name="time_axis_sorting_entries" >
@@ -80,7 +80,7 @@
         <item>New to the old</item>
     </string-array>
     <string name="time_axis_sorting_old_to_new">0</string>
-    <string name="time_axis_sorting_new_to_old" translatable="false">1</string>
+    <string name="time_axis_sorting_new_to_old">1</string>
     <string name="icon_thanks_title">Thanks to @XXXXL</string>
     <string name="setting_backup_cat">Back up</string>
     <string name="setting_restore">Restore</string>
@@ -95,6 +95,7 @@
     <string name="attention">Attention</string>
     <string name="backup_attention">Images aren\'t backed up, please use the specialized image back up services.</string>
     <string name="backup_sd_summary">The back up files are in HeartBeat directory of your external storage.</string>
+    <string name="thought_count_pie">\u0020thought(s)</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
