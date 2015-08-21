@@ -49,7 +49,7 @@
     <string name="disti_hint_waste_book">Let waste book = the event has only one thought, then your count of waste book is\u0020</string>
     <string name="search">Search</string>
     <string name="search_hint">Search events…</string>
-    <string name="label_hint_001">Your first event starts at\u0020</string>
+    <string name="label_hint_001">Your first event started at\u0020</string>
     <string name="label_hint_002">,\n</string>
     <string name="label_hint_003">\u0020events have occurred. There are\u0020</string>
     <string name="label_hint_004">\u0020days since then.</string>
