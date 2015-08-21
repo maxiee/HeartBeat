@@ -1,5 +1,17 @@
 #心动 ChangeLog
 
+##v0.7.6
+
+发布日期: 20150821
+
+功能变化:
+
+1. Add English translation.
+
+2. Update Google Play introduction.
+
+3. Update GitHub README.
+
 ##v0.7.5
 
 发布日期: 20150816
