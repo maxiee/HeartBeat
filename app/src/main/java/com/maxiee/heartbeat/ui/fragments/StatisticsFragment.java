@@ -240,7 +240,7 @@ public class StatisticsFragment extends Fragment{
             if (1.0f * freqCountSort.get(i).getValue() / mEventCount < 0.1) {
                 xVals.add(String.valueOf(freqCountSort.get(i).getKey()));
             } else {
-                xVals.add(String.valueOf(freqCountSort.get(i).getKey()) + "感想");
+                xVals.add(String.valueOf(freqCountSort.get(i).getKey()) + getString(R.string.thought_count_pie));
             }
             yVals.add(new Entry(freqCountSort.get(i).getValue(), i));
         }
