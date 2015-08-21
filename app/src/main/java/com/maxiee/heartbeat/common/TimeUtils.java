@@ -67,7 +67,7 @@ public class TimeUtils {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1 * WEEK_COUNT);
         for (int i=0; i<WEEK_COUNT; i++) {
-            ret[i] = DateFormat.format("MM月dd日", cal).toString();
+            ret[i] = DateFormat.format("MM-dd", cal).toString();
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
         return ret;
