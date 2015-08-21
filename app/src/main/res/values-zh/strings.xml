@@ -87,4 +87,14 @@
     <string name="today_empty">新的一日开始了，记录下美好的事情</string>
     <string name="verify_pattern">请再次验证密码：</string>
     <string name="thought_count_pie">感想</string>
+    <string-array name="today_tips">
+        <item>方才砰然心动, 何不记录下来?</item>
+        <item>细细留心, 品味时时刻刻</item>
+        <item>光阴短暂, 惜时, 惜时, 惜时</item>
+        <item>今日终归回忆, 是否有话想说?</item>
+    </string-array>
+    <string-array name="time_axis_sorting_entries" >
+        <item>由旧到新</item>
+        <item>由新到旧</item>
+    </string-array>
 </resources>
