@@ -73,6 +73,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mCrashPref.setSummary(getString(R.string.settings_crash_summary));
         mCrashPref.setOnPreferenceClickListener(this);
         mEmailPref.setSummary(EMAIL);
+        mEmailPref.setOnPreferenceClickListener(this);
         mThanksXXXXL.setOnPreferenceClickListener(this);
         mBackupSDPref.setOnPreferenceClickListener(this);
         mBackupCloudPref.setOnPreferenceClickListener(this);
@@ -128,6 +129,14 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             i.setType("*/*");
             startActivityForResult(i, RESTORE_REQUEST);
             return true;
+        }
+        if (preference == mEmailPref) {
+            Intent i = new Intent(Intent.ACTION_SENDTO);
+            i.setData(Uri.parse("mailto:"));
+            i.putExtra(Intent.EXTRA_EMAIL, new String[] {EMAIL});
+            if (i.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(i);
+            }
         }
         return false;
     }
