@@ -34,6 +34,7 @@
             android:parentActivityName=".ui.CrashListActivity" />
         <activity android:name=".ui.SearchResultActivity" />
         <activity android:name=".ui.PatternActivity" />
+        <activity android:name=".ui.GalleryActivity" />
     </application>
 
 </manifest>
