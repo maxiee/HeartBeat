@@ -1,16 +1,22 @@
 package com.maxiee.heartbeat.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
@@ -22,7 +28,6 @@ import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetOneEventApi;
 import com.maxiee.heartbeat.model.Event;
-import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.ui.adapter.ThoughtTimeaxisAdapter;
 import com.maxiee.heartbeat.ui.dialog.EditEventDialog;
 import com.maxiee.heartbeat.ui.dialog.NewThoughtDialog;
@@ -33,6 +38,8 @@ import java.util.ArrayList;
  * Created by maxiee on 15-6-13.
  */
 public class EventDetailActivity extends AppCompatActivity {
+    private final static String TAG = EventDetailActivity.class.getSimpleName();
+
     public final static int EVENT_DETAIL = 200;
     public final static int EVENT_DETAIL_MODIFIED = 201;
 
@@ -117,12 +124,6 @@ public class EventDetailActivity extends AppCompatActivity {
             }
         });
 
-        String imageUri = new GetImageByEventKeyApi(this, mEvent.getmId()).exec();
-
-        if (imageUri != null) {
-            Glide.with(this).load(imageUri).into(mImageBackDrop);
-        }
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +142,48 @@ public class EventDetailActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        initImage();
+    }
+
+    private void initImage() {
+        final String imageUri = new GetImageByEventKeyApi(this, mEvent.getmId()).exec();
+        if (imageUri == null) return;
+        if (checkUriValid(imageUri)) {
+            Glide.with(this)
+                    .load(Uri.parse(imageUri))
+                    .into(mImageBackDrop);
+            mImageBackDrop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(EventDetailActivity.this, GalleryActivity.class);
+                    i.putExtra(GalleryActivity.EVENT_ID, mEvent.getmId());
+                    startActivity(i);
+                }
+            });
+        } else {    // uri not valid
+            // toast
+            Toast.makeText(this, getString(R.string.uri_parse_filed), Toast.LENGTH_LONG).show();
+            // delete invalid entry in database
+        }
+    }
+
+    // fix bug previous version 0.7.7
+    private boolean checkUriValid(String uri) {
+        try {
+            Cursor cursor = getContentResolver().query(
+                    Uri.parse(uri),
+                    new String[] {MediaStore.Images.Media.DATA},
+                    null, null, null
+            );
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+        } catch (SecurityException e) {
+            return false;
+        }
+        return false;
     }
 
     @Override
