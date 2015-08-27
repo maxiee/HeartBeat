@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -76,10 +77,17 @@ public class AddEventActivity extends AppCompatActivity{
         mTvAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
+                if (Build.VERSION.SDK_INT < 19) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
+                }
             }
         });
 
@@ -155,6 +163,13 @@ public class AddEventActivity extends AppCompatActivity{
             Glide.with(this).load(data.getData()).into(mImageBackDrop);
             mImageUri = data.getData();
             mTvAddImage.setText(R.string.change_image);
+            if (Build.VERSION.SDK_INT >= 19) {
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                //noinspection ResourceType
+                getContentResolver().takePersistableUriPermission(mImageUri, takeFlags);
+            }
         }
     }
 
