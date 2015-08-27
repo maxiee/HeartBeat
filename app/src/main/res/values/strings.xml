@@ -96,6 +96,7 @@
     <string name="backup_attention">Images aren\'t backed up, please use the specialized image back up services.</string>
     <string name="backup_sd_summary">The back up files are in HeartBeat directory of your external storage.</string>
     <string name="thought_count_pie">\u0020thought(s)</string>
+    <string name="uri_parse_filed">Image path parsing failed.\nPlease re-add images.</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

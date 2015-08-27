@@ -97,4 +97,5 @@
         <item>由旧到新</item>
         <item>由新到旧</item>
     </string-array>
+    <string name="uri_parse_filed">图片解析失败.\n请重新添加.</string>
 </resources>
