@@ -1,5 +1,31 @@
 #心动 ChangeLog
 
+##v0.7.7
+
+发布日期: 20150828
+
+1. 事件详情页点击图片显示大图
+
+2. 无图事件可在详情页中添加图片了
+
+3. 修复英文界面文本居中问题
+
+4. 设置页 Email 点击打开邮件应用
+
+5. 修复 Bug：针对 Android 4.4 以上版本，之前版本添加图片的代码有误，存在图片无法显示问题，已修复（受影响的图片将标为失效，需要在详情页重新添加）
+
+Release date: 20150828
+
+1. Click image to display full image in event detail page.
+
+2. Add image to event without image in event detail page.
+
+3. Fix text center alignment under English language.
+
+4. Click Email opens corresponding APP in Settings.
+
+5. Bug fix: To device abrove Android 4.4, there is a bug in image-adding, may cause the image can not be shown. I fixed it. (The affected images will mark as "parse failed", need re-add in event detail page).
+
 ##v0.7.6
 
 发布日期: 20150821
