@@ -1,5 +1,6 @@
 package com.maxiee.heartbeat.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
+import com.maxiee.heartbeat.database.api.AddImageApi;
+import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetAllThoughtApi;
 import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
@@ -43,6 +46,8 @@ public class EventDetailActivity extends AppCompatActivity {
     public final static int EVENT_DETAIL = 200;
     public final static int EVENT_DETAIL_MODIFIED = 201;
 
+    private static final int ADD_IMAGE = 1127;
+
     private Event mEvent;
 
     private TextView mTvEvent;
@@ -53,6 +58,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private ImageView mImageBackDrop;
     private View mCardEvent;
     private int mId;
+    private TextView mAddImageText;
 
     public static final String EXTRA_NAME = "id";
 
@@ -74,6 +80,7 @@ public class EventDetailActivity extends AppCompatActivity {
         mTvTime = (TextView) findViewById(R.id.tv_time);
         mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
         mCardEvent = (View) findViewById(R.id.card_event);
+        mAddImageText = (TextView) findViewById(R.id.add_imgae);
 
         mEvent =  new GetOneEventApi(this, mId).exec();
         mTvEvent.setText(mEvent.getmEvent());
@@ -148,8 +155,28 @@ public class EventDetailActivity extends AppCompatActivity {
 
     private void initImage() {
         final String imageUri = new GetImageByEventKeyApi(this, mEvent.getmId()).exec();
-        if (imageUri == null) return;
+        if (imageUri == null) {
+            mAddImageText.setVisibility(View.VISIBLE);
+            mImageBackDrop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT < 19) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("image/*");
+                        startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
+                    }
+                }
+            });
+            return;
+        }
         if (checkUriValid(imageUri)) {
+            mAddImageText.setVisibility(View.INVISIBLE);
             Glide.with(this)
                     .load(Uri.parse(imageUri))
                     .into(mImageBackDrop);
@@ -165,6 +192,9 @@ public class EventDetailActivity extends AppCompatActivity {
             // toast
             Toast.makeText(this, getString(R.string.uri_parse_filed), Toast.LENGTH_LONG).show();
             // delete invalid entry in database
+            new DeleteImageByEventKeyApi(this, mEvent.getmId()).exec();
+            // recursive call initImage to init as no images
+            initImage();
         }
     }
 
@@ -203,6 +233,24 @@ public class EventDetailActivity extends AppCompatActivity {
             for (String label: labels) {
                 mTagView.addTag(new Tag(label));
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
+            Glide.with(this).load(data.getData()).into(mImageBackDrop);
+            Uri mImageUri = data.getData();
+            if (Build.VERSION.SDK_INT >= 19) {
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                //noinspection ResourceType
+                getContentResolver().takePersistableUriPermission(mImageUri, takeFlags);
+            }
+            new AddImageApi(EventDetailActivity.this, mEvent.getmId(), mImageUri.toString()).exec();
+            initImage();
         }
     }
 }
