@@ -93,6 +93,7 @@ public class TagView extends RelativeLayout {
     private void initialize(Context ctx, AttributeSet attrs, int defStyle) {
         mContext = ctx;
         mViewTreeObserber = getViewTreeObserver();
+        // 当布局可视后开始绘制标签
         mViewTreeObserber.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -160,16 +161,18 @@ public class TagView extends RelativeLayout {
             // inflate tag layout
             View tagLayout = (View) LayoutInflater.from(mContext).inflate(R.layout.tagview_item, this, false);
             tagLayout.setId(listIndex);
-            tagLayout.setBackground(getSelector(tag));
+            tagLayout.setBackground(getSelector(tag)); //
 
-            // tag text
+            // tag text 把单个Tag布局里的标签文本拿出来
             TextView tagView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_contain);
-            tagView.setText(tag.text);
+            tagView.setText(tag.text);  // 把内容传进去
+            // 给Tag布局，将Padding作为Margin传进去，同时赋上颜色、大小
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tagView.getLayoutParams();
             params.setMargins(textPaddingLeft, textPaddingTop, textPaddingRight, texPaddingBottom);
             tagView.setLayoutParams(params);
             tagView.setTextColor(tag.tagTextColor);
             tagView.setTextSize(TypedValue.COMPLEX_UNIT_SP ,tag.tagTextSize);
+            // 给整个布局设置点击回调
             tagLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -182,15 +185,17 @@ public class TagView extends RelativeLayout {
             // calculate　of tag layout width
             float tagWidth = tagView.getPaint().measureText(tag.text) + textPaddingLeft + textPaddingRight;
 
-            // deletable text
+            // deletable text 再找出来删除Text
             TextView deletableView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_delete);
+            // 如果Tag需要可删除设置，不需要隐藏
             if (tag.isDeletable) {
                 deletableView.setVisibility(View.VISIBLE);
-                deletableView.setText(tag.deleteIcon);
+                deletableView.setText(tag.deleteIcon);  // 设置删除标志
                 int offset = dipToPx(getContext(), 2f);
                 deletableView.setPadding(offset, textPaddingTop, textPaddingRight+offset, texPaddingBottom);
                 deletableView.setTextColor(tag.deleteIndicatorColor);
                 deletableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, tag.deleteIndicatorSize);
+                // 点击回调，删除自身并调用回调
                 deletableView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -205,6 +210,7 @@ public class TagView extends RelativeLayout {
                 deletableView.setVisibility(View.GONE);
             }
 
+            // 这堆貌似是我写的，如果有附加信息则添加附加信息
             if (tag.hasExtraInfo) {
                 TextView extraTextView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_extra);
                 extraTextView.setVisibility(VISIBLE);
@@ -221,6 +227,7 @@ public class TagView extends RelativeLayout {
             //add margin of each line
             tagParams.bottomMargin = lineMargin;
 
+            // 是否需要换行
             if (mWidth <= total + tagWidth + dipToPx(this.getContext(), Constants.LAYOUT_WIDTH_OFFSET)) {
                 //need to add in new line
                 tagParams.addRule(RelativeLayout.BELOW, index_bottom);
@@ -249,17 +256,22 @@ public class TagView extends RelativeLayout {
     }
 
     private Drawable getSelector(Tag tag) {
-        if (tag.background!=null)return tag.background;
+        // 已有背景直接返回
+        if (tag.background!=null)   return tag.background;
+        // 没有则创建
         StateListDrawable states = new StateListDrawable();
         GradientDrawable gd_normal = new GradientDrawable();
+        // 填充颜色，绘制圆角
         gd_normal.setColor(tag.layoutColor);
         gd_normal.setCornerRadius(tag.radius);
+        // 绘制边框
         if (tag.layoutBorderSize>0){
             gd_normal.setStroke(dipToPx(getContext(), tag.layoutBorderSize), tag.layoutBorderColor);
         }
         GradientDrawable gd_press = new GradientDrawable();
         gd_press.setColor(tag.layoutColorPress);
         gd_press.setCornerRadius(tag.radius);
+        // 设计一个能够响应点击的Drawable的方法，按照如下形式：
         states.addState(new int[] { android.R.attr.state_pressed }, gd_press);
         //must add state_pressed first，or state_pressed will not take effect
         states.addState(new int[] {}, gd_normal);
