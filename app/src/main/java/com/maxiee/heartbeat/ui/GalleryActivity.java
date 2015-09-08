@@ -1,6 +1,6 @@
 package com.maxiee.heartbeat.ui;
 
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,15 +25,17 @@ public class GalleryActivity extends AppCompatActivity {
 
         int eventId = getIntent().getIntExtra(EVENT_ID, -1);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(Color.BLACK);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mImage = (ImageView) findViewById(R.id.imageview);
 
         if (eventId != -1) {
-            final String imageUri = new GetImageByEventKeyApi(this, eventId).exec();
-            Glide.with(this).load(Uri.parse(imageUri)).into(mImage);
+            final String imagePath = new GetImageByEventKeyApi(this, eventId).exec();
+            Glide.with(this).load(imagePath).into(mImage);
         }
     }
 
