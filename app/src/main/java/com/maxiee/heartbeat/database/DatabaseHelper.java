@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.maxiee.heartbeat.database.api.ImageUriUpgradeApi;
 import com.maxiee.heartbeat.database.tables.CrashTable;
 import com.maxiee.heartbeat.database.tables.EventImageRelationTable;
 import com.maxiee.heartbeat.database.tables.EventLabelRelationTable;
@@ -11,8 +12,8 @@ import com.maxiee.heartbeat.database.tables.EventThoughtRelationTable;
 import com.maxiee.heartbeat.database.tables.EventsTable;
 import com.maxiee.heartbeat.database.tables.ImageTable;
 import com.maxiee.heartbeat.database.tables.LabelsTable;
+import com.maxiee.heartbeat.database.tables.ThoughtResTable;
 import com.maxiee.heartbeat.database.tables.ThoughtsTable;
-import com.maxiee.heartbeat.support.CrashHandler;
 
 /**
  * Created by maxiee on 15-6-11.
@@ -20,12 +21,14 @@ import com.maxiee.heartbeat.support.CrashHandler;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private final static String DB_NAME = "heartbeat";
-    private final static int DB_VER = 3;
+    private final static int DB_VER = 4;
 
     private static DatabaseHelper instance;
+    private Context mContext;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VER);
+        mContext = context;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(ImageTable.CREATE);
         db.execSQL(EventImageRelationTable.CREATE);
         db.execSQL(CrashTable.CREATE);
+        db.execSQL(ThoughtResTable.CREATE);
     }
 
     @Override
@@ -45,8 +49,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion == 1) {
             db.execSQL(ImageTable.CREATE);
             db.execSQL(EventImageRelationTable.CREATE);
-        } else if (oldVersion == 2) {
+        }
+        if (oldVersion <= 2) {
             db.execSQL(CrashTable.CREATE);
+        }
+        if (oldVersion <= 3) {
+            db.execSQL(ThoughtResTable.CREATE);
+            // upgrade items in ImageTable
+            ImageUriUpgradeApi.exec(mContext, db);
         }
     }
 
@@ -54,7 +64,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (instance == null) {
             instance = new DatabaseHelper(context);
         }
-
         return instance;
     }
 }
