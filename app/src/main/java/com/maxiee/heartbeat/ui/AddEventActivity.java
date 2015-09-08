@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.DialogAsyncTask;
+import com.maxiee.heartbeat.common.FileUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
 import com.maxiee.heartbeat.database.api.AddEventApi;
@@ -252,7 +253,9 @@ public class AddEventActivity extends AppCompatActivity{
             }
 
             if (mImageUri != null) {
-                new AddImageApi(AddEventActivity.this, eventKey, mImageUri.toString()).exec();
+                // convert uri to path
+                String path = FileUtils.uriToPath(AddEventActivity.this, mImageUri);
+                new AddImageApi(AddEventActivity.this, eventKey, path).exec();
             }
 
             Log.d(TAG, "添加事件");
