@@ -2,30 +2,26 @@ package com.maxiee.heartbeat.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.common.FileUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
 import com.maxiee.heartbeat.database.api.AddImageApi;
-import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetAllThoughtApi;
 import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
@@ -175,45 +171,18 @@ public class EventDetailActivity extends AppCompatActivity {
             });
             return;
         }
-        if (checkUriValid(imageUri)) {
-            mAddImageText.setVisibility(View.INVISIBLE);
-            Glide.with(this)
-                    .load(Uri.parse(imageUri))
-                    .into(mImageBackDrop);
-            mImageBackDrop.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(EventDetailActivity.this, GalleryActivity.class);
-                    i.putExtra(GalleryActivity.EVENT_ID, mEvent.getmId());
-                    startActivity(i);
-                }
-            });
-        } else {    // uri not valid
-            // toast
-            Toast.makeText(this, getString(R.string.uri_parse_filed), Toast.LENGTH_LONG).show();
-            // delete invalid entry in database
-            new DeleteImageByEventKeyApi(this, mEvent.getmId()).exec();
-            // recursive call initImage to init as no images
-            initImage();
-        }
-    }
-
-    // fix bug previous version 0.7.7
-    private boolean checkUriValid(String uri) {
-        try {
-            Cursor cursor = getContentResolver().query(
-                    Uri.parse(uri),
-                    new String[] {MediaStore.Images.Media.DATA},
-                    null, null, null
-            );
-            if (cursor.getCount() > 0) {
-                cursor.close();
-                return true;
+        mAddImageText.setVisibility(View.INVISIBLE);
+        Glide.with(this)
+                .load(imageUri)
+                .into(mImageBackDrop);
+        mImageBackDrop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EventDetailActivity.this, GalleryActivity.class);
+                i.putExtra(GalleryActivity.EVENT_ID, mEvent.getmId());
+                startActivity(i);
             }
-        } catch (SecurityException e) {
-            return false;
-        }
-        return false;
+        });
     }
 
     @Override
@@ -240,7 +209,6 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
-            Glide.with(this).load(data.getData()).into(mImageBackDrop);
             Uri mImageUri = data.getData();
             if (Build.VERSION.SDK_INT >= 19) {
                 final int takeFlags = data.getFlags()
@@ -249,7 +217,9 @@ public class EventDetailActivity extends AppCompatActivity {
                 //noinspection ResourceType
                 getContentResolver().takePersistableUriPermission(mImageUri, takeFlags);
             }
-            new AddImageApi(EventDetailActivity.this, mEvent.getmId(), mImageUri.toString()).exec();
+            // convert uri to path
+            String path = FileUtils.uriToPath(this, mImageUri);
+            new AddImageApi(EventDetailActivity.this, mEvent.getmId(), path).exec();
             initImage();
         }
     }
