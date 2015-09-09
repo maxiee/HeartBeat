@@ -1,5 +1,27 @@
 #心动 ChangeLog
 
+##v0.7.8
+
+发布日期: 20150909
+
+1. 重构数据库的图片储存部分
+
+2. 老版本图库数据自动迁移
+
+3. 改进大图浏览页面
+
+建议在升级前备份数据库，以免图库数据丢失。
+
+Release date: 20150828
+
+1. Refactoring the image storing part of the database.
+
+2. Image added in older versions will migrate to new type automatically.
+
+3. Improve the gallery page.
+
+It is recommended to back up your database before updating in order to avoid missing data.
+
 ##v0.7.7
 
 发布日期: 20150828
