@@ -29,7 +29,6 @@ import com.maxiee.heartbeat.database.api.GetOneEventApi;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.ThoughtTimeaxisAdapter;
 import com.maxiee.heartbeat.ui.dialog.EditEventDialog;
-import com.maxiee.heartbeat.ui.dialog.NewThoughtDialog;
 
 import java.util.ArrayList;
 
@@ -81,10 +80,6 @@ public class EventDetailActivity extends AppCompatActivity {
         mEvent =  new GetOneEventApi(this, mId).exec();
         mTvEvent.setText(mEvent.getmEvent());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ThoughtTimeaxisAdapter(
-                new GetAllThoughtApi(this, mEvent.getmId()).exec()
-        );
-        mRecyclerView.setAdapter(mAdapter);
 
         updateTagView();
 
@@ -131,22 +126,35 @@ public class EventDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewThoughtDialog dialog = new NewThoughtDialog(EventDetailActivity.this, mId);
-                dialog.setOnAddFinishedListener(new NewThoughtDialog.OnAddFinishedListener() {
-                    @Override
-                    public void update() {
-                        mEvent = new GetOneEventApi(EventDetailActivity.this, mId).exec();
-                        mAdapter = new ThoughtTimeaxisAdapter(
-                                new GetAllThoughtApi(EventDetailActivity.this, mEvent.getmId()).exec()
-                        );
-                        mRecyclerView.setAdapter(mAdapter);
-                    }
-                });
-                dialog.show();
+//                NewThoughtDialog dialog = new NewThoughtDialog(EventDetailActivity.this, mId);
+//                dialog.setOnAddFinishedListener(new NewThoughtDialog.OnAddFinishedListener() {
+//                    @Override
+//                    public void update() {
+//                        mEvent = new GetOneEventApi(EventDetailActivity.this, mId).exec();
+//                        mAdapter = new ThoughtTimeaxisAdapter(
+//                                new GetAllThoughtApi(EventDetailActivity.this, mEvent.getmId()).exec()
+//                        );
+//                        mRecyclerView.setAdapter(mAdapter);
+//                    }
+//                });
+//                dialog.show();
+                Intent i = new Intent(EventDetailActivity.this, AddEditThoughtActivity.class);
+                i.putExtra(AddEditThoughtActivity.MODE, AddEditThoughtActivity.MODE_NEW);
+                i.putExtra(AddEditThoughtActivity.EVENT_KEY, mId);
+                startActivity(i);
             }
         });
 
         initImage();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter = new ThoughtTimeaxisAdapter(
+                new GetAllThoughtApi(this, mEvent.getmId()).exec()
+        );
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initImage() {
