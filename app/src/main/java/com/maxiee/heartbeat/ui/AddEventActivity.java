@@ -29,6 +29,7 @@ import com.maxiee.heartbeat.database.api.AddLabelsApi;
 import com.maxiee.heartbeat.database.api.AddThoughtApi;
 import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
 import com.maxiee.heartbeat.database.api.GetOneLabelApi;
+import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.dialog.NewLabelDialog;
 
 import java.util.ArrayList;
@@ -236,7 +237,13 @@ public class AddEventActivity extends AppCompatActivity{
                     mStrEvent).exec();
 
             // add thought
-            new AddThoughtApi(AddEventActivity.this, eventKey, mStrFirstThought).exec();
+            new AddThoughtApi(
+                    AddEventActivity.this,
+                    eventKey,
+                    mStrFirstThought,
+                    Thoughts.Thought.HAS_NO_RES,
+                    Thoughts.Thought.HAS_NO_PATH
+            ).exec();
 
             // add labels
             ArrayList<Integer> labelsKey = new AddLabelsApi(
