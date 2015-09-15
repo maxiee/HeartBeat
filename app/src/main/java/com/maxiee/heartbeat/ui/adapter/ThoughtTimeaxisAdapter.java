@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maxiee.heartbeat.R;
@@ -103,6 +104,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvOrder, tvThought, tvTime;
+        public ImageView mImage;
         public final View mView;
         public Context mContext;
         public String sortingType;
@@ -114,6 +116,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
             tvOrder = (TextView) itemView.findViewById(R.id.tv_order);
             tvThought = (TextView) itemView.findViewById(R.id.tv_thought);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
+            mImage = (ImageView) itemView.findViewById(R.id.image_thought);
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
             sortingType = sp.getString("time_axis_sorting", "0");
         }
