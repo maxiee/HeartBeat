@@ -10,8 +10,6 @@ import com.maxiee.heartbeat.database.tables.ThoughtsTable;
 import com.maxiee.heartbeat.model.Thoughts;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 
 /**
@@ -88,6 +86,8 @@ public class GetAllThoughtApi extends BaseDBApi {
             ret.add(new Thoughts.Thought(key, thought, time));
         }
 
+        setRes(mContext, ret);
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         String sorting = sp.getString("time_axis_sorting", "0");
         if (sorting.equals("1")) {
@@ -95,5 +95,19 @@ public class GetAllThoughtApi extends BaseDBApi {
         }
 
         return ret;
+    }
+
+    private void setRes(Context context, Thoughts thoughts) {
+        for (int i=0; i<thoughts.length(); i++) {
+            Thoughts.Thought thought = thoughts.get(i);
+            GetThoughtResByKey getRes = new GetThoughtResByKey(context, thought.getKey());
+            getRes.exec();
+            int resType = getRes.getType();
+            String resPath = "";
+            if (resType != Thoughts.Thought.HAS_NO_RES) {
+                resPath = getRes.getPath();
+            }
+            thought.setTypeAndPath(resType, resPath);
+        }
     }
 }
