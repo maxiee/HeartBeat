@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.database.api.AddThoughtApi;
 
 /**
  * Created by maxiee on 15-6-14.
@@ -21,6 +20,7 @@ public class NewThoughtDialog extends AppCompatDialog {
 
     private int mEventKey;
     private Toolbar mToolbar;
+    private Toolbar mTools;
     private EditText mEditThought;
     private String mTextThought;
     private OnAddFinishedListener mCallback;
@@ -44,6 +44,7 @@ public class NewThoughtDialog extends AppCompatDialog {
         setContentView(R.layout.dialog_new_thought);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mTools = (Toolbar) findViewById(R.id.tools);
         mEditThought = (EditText) findViewById(R.id.edit_thought);
 
         mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -77,6 +78,7 @@ public class NewThoughtDialog extends AppCompatDialog {
 
         String title = getContext().getString(R.string.add_thought);
         mToolbar.setTitle(title);
+
     }
 
     private class AddThoughtTask extends AsyncTask<Void,Void,Void> {
@@ -96,10 +98,10 @@ public class NewThoughtDialog extends AppCompatDialog {
 
         @Override
         protected Void doInBackground(Void... params) {
-            new AddThoughtApi(
-                    getContext(),
-                    mEventKey,
-                    mTextThought).exec();
+//            new AddThoughtApi(
+//                    getContext(),
+//                    mEventKey,
+//                    mTextThought).exec();
             mAddSuccess = true;
             return null;
         }
