@@ -98,4 +98,5 @@
         <item>由新到旧</item>
     </string-array>
     <string name="uri_parse_filed">图片解析失败.\n请重新添加.</string>
+    <string name="dataerror">数据错误，请尝试退出界面重新添加。</string>
 </resources>
