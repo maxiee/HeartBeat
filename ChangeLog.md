@@ -1,5 +1,17 @@
 #心动 ChangeLog
 
+##v0.7.9
+
+发布日期: 20150917
+
+1. 现在可以添加带图感想啦！
+2. 增强感想编辑功能（无图的加图、加图的换图、感想删除）
+
+Release date: 20150917
+
+1. Now we can add thoughts with image!
+2. Improved thought editing (add image to non-image thought, change thought image, delete thoughts) 
+
 ##v0.7.8
 
 发布日期: 20150909
@@ -12,7 +24,7 @@
 
 建议在升级前备份数据库，以免图库数据丢失。
 
-Release date: 20150828
+Release date: 20150909
 
 1. Refactoring the image storing part of the database.
 
