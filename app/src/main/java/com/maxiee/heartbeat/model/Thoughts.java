@@ -62,7 +62,7 @@ public class Thoughts {
         private String mThought;
         private long mTimeStamp;
         private int mResType = HAS_NO_RES;
-        private String mResPath;
+        private String mResPath = "";
 
         public Thought(int key, String mThought, long mTimeStamp) {
             this.key = key;
@@ -91,5 +91,11 @@ public class Thoughts {
             mResType = resType;
             mResPath = path;
         }
+
+        public boolean hasImage() { return mResType == RES_IMAGE; }
+
+        public String getPath() { return mResPath; }
+
+        public int getResType() { return mResType; }
     }
 }
