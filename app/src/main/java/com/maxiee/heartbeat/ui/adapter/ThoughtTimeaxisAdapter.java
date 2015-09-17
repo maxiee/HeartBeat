@@ -1,20 +1,22 @@
 package com.maxiee.heartbeat.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.model.Thoughts;
-import com.maxiee.heartbeat.ui.dialog.EditThoughtDialog;
+import com.maxiee.heartbeat.ui.AddEditThoughtActivity;
+import com.maxiee.heartbeat.ui.GalleryActivity;
 
 
 /**
@@ -65,35 +67,34 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         holder.tvThought.setText(mThoughtList.get(position).getThought());
         holder.tvTime.setText(TimeUtils.parseTime(holder.mContext, time));
 
+        if (mThoughtList.get(position).hasImage()) {
+            holder.mImage.setVisibility(View.VISIBLE);
+            Glide.with(holder.mContext).load(mThoughtList.get(position).getPath()).into(holder.mImage);
+            holder.mImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(holder.mContext, GalleryActivity.class);
+                    i.putExtra(GalleryActivity.PATH, mThoughtList.get(position).getPath());
+                    holder.mContext.startActivity(i);
+                }
+            });
+        } else {
+            holder.mImage.setVisibility(View.GONE);
+        }
+
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                EditThoughtDialog dialog = new EditThoughtDialog(
-                        holder.mContext,
-                        mThoughtList.get(position).getKey(),
-                        mThoughtList.get(position).getThought()
-                );
-                dialog.setOnAddFinishedListener(new EditThoughtDialog.OnAddFinishedListener() {
-                    @Override
-                    public void update(String newThought) {
-                        mThoughtList.get(position).setThought(newThought);
-                        holder.tvThought.setText(newThought);
-                    }
-
-                    @Override
-                    public void remove() {
-                        mThoughtList.remove(position);
-                        notifyDataSetChanged();
-                    }
-                });
-                dialog.show();
+                Intent i = new Intent(holder.mContext, AddEditThoughtActivity.class);
+                i.putExtra(AddEditThoughtActivity.MODE, AddEditThoughtActivity.MODE_EDIT);
+                i.putExtra(AddEditThoughtActivity.THOUGHT_ID, mThoughtList.get(position).getKey());
+                i.putExtra(AddEditThoughtActivity.THOUGHT, mThoughtList.get(position).getThought());
+                i.putExtra(Thoughts.Thought.THOUGHT_RES, mThoughtList.get(position).getResType());
+                i.putExtra(Thoughts.Thought.THOUGHT_PATH, mThoughtList.get(position).getPath());
+                holder.mContext.startActivity(i);
                 return true;
             }
         });
-        Log.d("增删测试",
-                String.valueOf(mThoughtList.get(position).getKey()) + ": " +
-                mThoughtList.get(position).getThought()
-        );
     }
 
     @Override
