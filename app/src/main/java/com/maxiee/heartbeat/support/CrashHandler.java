@@ -7,8 +7,6 @@ import android.util.Log;
 
 import com.maxiee.heartbeat.database.api.AddCrashApi;
 
-import org.apache.http.util.ExceptionUtils;
-
 /**
  * Created by maxiee on 15-7-11.
  *
