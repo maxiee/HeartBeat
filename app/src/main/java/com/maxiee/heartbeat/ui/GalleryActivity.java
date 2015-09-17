@@ -16,6 +16,7 @@ import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
  */
 public class GalleryActivity extends AppCompatActivity {
     public static final String EVENT_ID = "event_id";
+    public static final String PATH = "path";
     private ImageView mImage;
 
     @Override
@@ -24,6 +25,10 @@ public class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         int eventId = getIntent().getIntExtra(EVENT_ID, -1);
+        String path = "";
+        if (eventId == -1) {
+            path = getIntent().getStringExtra(PATH);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Color.BLACK);
@@ -36,6 +41,8 @@ public class GalleryActivity extends AppCompatActivity {
         if (eventId != -1) {
             final String imagePath = new GetImageByEventKeyApi(this, eventId).exec();
             Glide.with(this).load(imagePath).into(mImage);
+        } else {
+            Glide.with(this).load(path).into(mImage);
         }
     }
 
