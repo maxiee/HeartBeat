@@ -3,6 +3,7 @@ package com.maxiee.heartbeat.database.api;
 import android.content.Context;
 
 import com.maxiee.heartbeat.database.tables.EventThoughtRelationTable;
+import com.maxiee.heartbeat.database.tables.ThoughtResTable;
 import com.maxiee.heartbeat.database.tables.ThoughtsTable;
 
 /**
@@ -25,6 +26,11 @@ public class DeleteThoughtByKeyApi extends BaseDBApi{
         mDatabaseHelper.getWritableDatabase().delete(
                 ThoughtsTable.NAME,
                 ThoughtsTable.ID + "=?",
+                new String[] {String.valueOf(mThoughtKey)}
+        );
+        mDatabaseHelper.getWritableDatabase().delete(
+                ThoughtResTable.NAME,
+                ThoughtResTable.THOUGHT_ID + "=?",
                 new String[] {String.valueOf(mThoughtKey)}
         );
     }
