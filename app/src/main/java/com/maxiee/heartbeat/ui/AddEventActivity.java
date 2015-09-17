@@ -69,6 +69,8 @@ public class AddEventActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setTitle("");
+
         mEditEvent = (EditText) findViewById(R.id.edit_event);
         mEditFirstThought = (EditText) findViewById(R.id.first_thought);
         mTagViewRecent = (TagView) findViewById(R.id.tagview_added);

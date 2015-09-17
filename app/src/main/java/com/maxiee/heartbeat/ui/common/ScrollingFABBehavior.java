@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.maxiee.heartbeat.BuildConfig;
-import com.maxiee.heartbeat.R;
-
 /**
  * Created by maxiee on 15-7-2.
  *
@@ -67,7 +64,7 @@ public class ScrollingFABBehavior extends FloatingActionButton.Behavior {
                         }
                     }).start();
         } else {
-            Animation anim = AnimationUtils.loadAnimation(button.getContext(), R.anim.fab_out);
+            Animation anim = AnimationUtils.loadAnimation(button.getContext(), android.support.design.R.anim.design_fab_in);
             anim.setInterpolator(INTERPOLATOR);
             anim.setDuration(200L);
             anim.setAnimationListener(new Animation.AnimationListener() {
@@ -95,7 +92,7 @@ public class ScrollingFABBehavior extends FloatingActionButton.Behavior {
                     .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
                     .start();
         } else {
-            Animation anim = AnimationUtils.loadAnimation(button.getContext(), R.anim.fab_in);
+            Animation anim = AnimationUtils.loadAnimation(button.getContext(), android.support.design.R.anim.design_fab_out);
             anim.setDuration(200L);
             anim.setInterpolator(INTERPOLATOR);
             button.startAnimation(anim);

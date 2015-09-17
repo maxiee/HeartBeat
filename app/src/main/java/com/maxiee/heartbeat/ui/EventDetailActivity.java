@@ -69,6 +69,8 @@ public class EventDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setTitle("");
+
         mTvEvent = (TextView) findViewById(R.id.tv_event);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mTagView = (TagView) findViewById(R.id.tagview);

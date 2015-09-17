@@ -79,7 +79,7 @@ public class EditEventDialog extends AppCompatDialog{
             }
         });
 
-        mToolbar.inflateMenu(R.menu.dialog_edit_thought);
+        mToolbar.inflateMenu(R.menu.dialog_edit_event);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

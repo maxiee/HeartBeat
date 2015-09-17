@@ -1,10 +1,8 @@
 package com.maxiee.heartbeat.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +13,6 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -53,6 +50,8 @@ public class LabelDetailActivity extends AppCompatActivity{
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle("");
 
         mLabelHint = (TextView) findViewById(R.id.label_hint);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
