@@ -99,4 +99,7 @@
     </string-array>
     <string name="uri_parse_filed">图片解析失败.\n请重新添加.</string>
     <string name="dataerror">数据错误，请尝试退出界面重新添加。</string>
+    <string name="long_image">生成长图</string>
+    <string name="view">查看</string>
+    <string name="generate_ok">生成成功. 文件位于:\n</string>
 </resources>
