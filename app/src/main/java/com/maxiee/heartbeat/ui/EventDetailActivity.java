@@ -1,6 +1,7 @@
 package com.maxiee.heartbeat.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
@@ -219,7 +222,8 @@ public class EventDetailActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.long_iamge) {
-            generateLongImage();
+//            generateLongImage();
+            new LongImageTask().execute();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -253,51 +257,148 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void generateLongImage() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int width = displaymetrics.widthPixels;
+    private class LongImageTask extends AsyncTask<Void, Integer, Void> {
+        private FrameLayout mFl;
+        private ProgressDialog progressDialog;
+        private Canvas mBitmapHolder;
+        private int mWidth;
+        private Bitmap mBitmap;
+        private View mView;
+        private TextView mTv;
+        private ImageView mIv;
+        private CardView mCv;
+        private TextView mTvOrder;
+        private TextView mTvTime;
+        private int mYPos = 0;
 
-        FrameLayout fl = new FrameLayout(this);
-        fl.setBackgroundColor(ContextCompat.getColor(this, R.color.window_background));
-        View item = getLayoutInflater().inflate(R.layout.item_thought_timeaxis, fl);
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(EventDetailActivity.this);
+            progressDialog.setMessage(getString(R.string.generating));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            FrameLayout mFl = new FrameLayout(EventDetailActivity.this);
+            mFl.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            mWidth = displaymetrics.widthPixels;
 
-        int height = measureViews(item, width);
+            mView = getLayoutInflater().inflate(R.layout.item_thought_timeaxis, mFl);
 
-        Log.d("maxiee", "生成Bitmap:" + String.valueOf(width) + "," + String.valueOf(height));
-        Bitmap bitmap = Bitmap.createBitmap(
-                width,
-                height,
-                Bitmap.Config.ARGB_8888);
-        Canvas bitmapHolder = new Canvas(bitmap);
+            mTv = (TextView) mView.findViewById(R.id.tv_thought);
+            mIv = (ImageView) mView.findViewById(R.id.image_thought);
+            mCv = (CardView) mView.findViewById(R.id.card);
+            mTvOrder = (TextView) mView.findViewById(R.id.tv_order);
+            mTvTime = (TextView) mView.findViewById(R.id.tv_time);
+        }
 
-        drawViews(item, bitmapHolder, width);
+        @Override
+        protected Void doInBackground(Void... params) {
+            int height = measureViews(mView, mWidth);
 
-        final String savedPath = FileUtils.saveLongImage(EventDetailActivity.this, bitmap);
-        if (!savedPath.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(
-                    EventDetailActivity.this,
-                    R.style.AppTheme_Dialog);
-            builder.setTitle(getString(R.string.long_image));
-            builder.setMessage(getString(R.string.generate_ok) + savedPath);
-            builder.setCancelable(false);
-            builder.setPositiveButton(R.string.view, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("file://" + savedPath), "image/*");
-                    startActivity(intent);
-                    dialog.cancel();
+            Log.d("maxiee", "生成Bitmap:" + String.valueOf(mWidth) + "," + String.valueOf(height));
+            mBitmap = Bitmap.createBitmap(
+                    mWidth,
+                    height,
+                    Bitmap.Config.ARGB_8888);
+            mBitmapHolder = new Canvas(mBitmap);
+
+            if (mImagePath != null) publishProgress(-2);//backdrop
+            publishProgress(-1);//event card
+            for (int i=0; i<mThoughts.length(); i++) {
+                publishProgress(i);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            int progress = values[0];
+            if (progress == -2) {
+                // draw backdrop
+                if (mImagePath != null) {
+                    int backDropHeight = mImageBackDrop.getMeasuredHeight();
+                    mImageBackDrop.layout(0, 0, mWidth, backDropHeight);
+                    mImageBackDrop.buildDrawingCache();
+                    Bitmap backDropBitmap = mImageBackDrop.getDrawingCache();
+                    if (backDropBitmap != null) {
+                        mBitmapHolder.drawBitmap(backDropBitmap, 0, 0, null);
+                    }
+                    mYPos += backDropHeight;
                 }
-            });
-            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
+            }
+            else if (progress == -1) {
+                // draw cardview
+                int cardEventHeight = mCardEvent.getMeasuredHeight();
+                mCardEvent.layout(0, 0, mWidth, cardEventHeight);
+                mCardEvent.buildDrawingCache();
+                Bitmap eventBitmap = mCardEvent.getDrawingCache();
+                if (eventBitmap != null) {
+                    mBitmapHolder.drawBitmap(eventBitmap, 0, mYPos, null);
                 }
-            });
-            builder.show();
+                mYPos += cardEventHeight;
+            } else if (progress >= 0) {
+                // draw item
+                Bitmap itemBitmap;
+                int childHeight;
+
+                    mTv.setText(mThoughts.get(progress).getThought());
+                    mTvOrder.setText(getOrder(progress, mThoughts.length()));
+                    long time = mThoughts.get(progress).getTimeStamp();
+                    mTvTime.setText(TimeUtils.parseTime(EventDetailActivity.this, time));
+                    if (mThoughts.get(progress).hasImage()) {
+                        mIv.setVisibility(View.VISIBLE);
+                        Bitmap bmp = loadBitmap(mWidth, LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(progress).getPath());
+                        mIv.setImageBitmap(bmp);
+                    } else {
+                        mIv.setVisibility(View.GONE);
+                    }
+                    mView.measure(View.MeasureSpec.makeMeasureSpec(mWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                    childHeight = mView.getMeasuredHeight();
+                    mView.layout(0, 0, mWidth, childHeight);
+                    mView.buildDrawingCache();
+                    itemBitmap = mView.getDrawingCache();
+                    if (itemBitmap != null) {
+                        mBitmapHolder.drawBitmap(itemBitmap, 0, mYPos, null);
+                    }
+                    mView.destroyDrawingCache();
+                    mYPos += childHeight;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+//            drawViews(mView, mBitmapHolder, mWidth);
+            String s = FileUtils.saveLongImage(EventDetailActivity.this, mBitmap);
+            progressDialog.cancel();
+            if (!s.isEmpty()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        EventDetailActivity.this,
+                        R.style.AppTheme_Dialog);
+                builder.setTitle(getString(R.string.long_image));
+                builder.setMessage(getString(R.string.generate_ok) + s);
+                builder.setCancelable(false);
+                final String path = s;
+                builder.setPositiveButton(R.string.view, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse("file://" + path), "image/*");
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            } else {
+                Toast.makeText(EventDetailActivity.this, getString(R.string.add_failed), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -334,65 +435,7 @@ public class EventDetailActivity extends AppCompatActivity {
         return height;
     }
 
-    private void drawViews(View item, Canvas bitmapHolder, int width) {
-        TextView tv = (TextView) item.findViewById(R.id.tv_thought);
-        ImageView iv = (ImageView) item.findViewById(R.id.image_thought);
-        CardView cv = (CardView) item.findViewById(R.id.card);
-        TextView tvOrder = (TextView) item.findViewById(R.id.tv_order);
-        TextView tvTime = (TextView) item.findViewById(R.id.tv_time);
-        item.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        int screenWidth = tv.getMeasuredWidth();
-        int yPos = 0;
-        // draw backdrop
-        if (mImagePath != null) {
-            int backDropHeight = mImageBackDrop.getMeasuredHeight();
-            mImageBackDrop.layout(0, 0, width, backDropHeight);
-            mImageBackDrop.buildDrawingCache();
-            Bitmap backDropBitmap = mImageBackDrop.getDrawingCache();
-            if (backDropBitmap != null) {
-                bitmapHolder.drawBitmap(backDropBitmap, 0, 0, null);
-            }
-            yPos += backDropHeight;
-        }
-        // draw cardview
-        int cardEventHeight = mCardEvent.getMeasuredHeight();
-        mCardEvent.layout(0, 0, width, cardEventHeight);
-        mCardEvent.buildDrawingCache();
-        Bitmap eventBitmap = mCardEvent.getDrawingCache();
-        if (eventBitmap != null) {
-            bitmapHolder.drawBitmap(eventBitmap, 0, yPos, null);
-        }
-        yPos += cardEventHeight;
-        // drww item
-        Bitmap itemBitmap;
-        int childHeight;
-        int rvItemNum = mThoughts.length();
-        for (int i=0; i<rvItemNum; i++) {
-            tv.setText(mThoughts.get(i).getThought());
-            tvOrder.setText(getOrder(i, mThoughts.length()));
-            long time = mThoughts.get(i).getTimeStamp();
-            tvTime.setText(TimeUtils.parseTime(this, time));
-            if (mThoughts.get(i).hasImage()) {
-                iv.setVisibility(View.VISIBLE);
-                Bitmap bmp = loadBitmap(screenWidth, LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(i).getPath());
-                iv.setImageBitmap(bmp);
-            } else {
-                iv.setVisibility(View.GONE);
-            }
-            item.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            childHeight = item.getMeasuredHeight();
-            item.layout(0, 0, width, childHeight);
-            item.buildDrawingCache();
-            itemBitmap = item.getDrawingCache();
-            if (itemBitmap != null) {
-                bitmapHolder.drawBitmap(itemBitmap, 0, yPos, null);
-            }
-            item.destroyDrawingCache();
-            yPos += childHeight;
-        }
-    }
-
-    private Bitmap loadBitmap(int reqWidth, int reqHeight, String path) {
+    private static Bitmap loadBitmap(int reqWidth, int reqHeight, String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
