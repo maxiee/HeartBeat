@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,11 +25,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -269,7 +274,9 @@ public class EventDetailActivity extends AppCompatActivity {
         private CardView mCv;
         private TextView mTvOrder;
         private TextView mTvTime;
+        private LinearLayout mLL;
         private int mYPos = 0;
+        private int mHeight = 0;
 
         @Override
         protected void onPreExecute() {
@@ -290,16 +297,35 @@ public class EventDetailActivity extends AppCompatActivity {
             mCv = (CardView) mView.findViewById(R.id.card);
             mTvOrder = (TextView) mView.findViewById(R.id.tv_order);
             mTvTime = (TextView) mView.findViewById(R.id.tv_time);
+
+            mLL = new LinearLayout(EventDetailActivity.this);
+            mLL.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
+            ViewGroup.LayoutParams LLParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
+            mLL.setLayoutParams(LLParams);
+            mLL.setOrientation(LinearLayout.HORIZONTAL);
+            mLL.setPadding(24, 0, 0, 0);
+            mLL.setGravity(Gravity.CENTER_VERTICAL);
+            ImageView icon = new ImageView(EventDetailActivity.this);
+            icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            icon.setImageDrawable(ContextCompat.getDrawable(EventDetailActivity.this, R.mipmap.ic_launcher));
+            mLL.addView(icon);
+            TextView hb = new TextView(EventDetailActivity.this);
+            hb.setText("@" + getString(R.string.app_name));
+            mLL.addView(hb);
+            mLL.measure(View.MeasureSpec.makeMeasureSpec(mWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            mHeight += mLL.getMeasuredHeight();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            int height = measureViews(mView, mWidth);
+            mHeight += measureViews(mView, mWidth);
 
-            Log.d("maxiee", "生成Bitmap:" + String.valueOf(mWidth) + "," + String.valueOf(height));
+
+
+            Log.d("maxiee", "生成Bitmap:" + String.valueOf(mWidth) + "," + String.valueOf(mHeight));
             mBitmap = Bitmap.createBitmap(
                     mWidth,
-                    height,
+                    mHeight,
                     Bitmap.Config.ARGB_8888);
             mBitmapHolder = new Canvas(mBitmap);
 
@@ -308,6 +334,7 @@ public class EventDetailActivity extends AppCompatActivity {
             for (int i=0; i<mThoughts.length(); i++) {
                 publishProgress(i);
             }
+            publishProgress(-3);
             return null;
         }
 
@@ -337,6 +364,15 @@ public class EventDetailActivity extends AppCompatActivity {
                     mBitmapHolder.drawBitmap(eventBitmap, 0, mYPos, null);
                 }
                 mYPos += cardEventHeight;
+            } else if (progress == -3) {
+                mLL.layout(0, 0, mWidth, mLL.getMeasuredHeight());
+                Log.d("maxiee", "llMeasureH:" + String.valueOf(mLL.getMeasuredHeight()));
+                mLL.buildDrawingCache();
+                Bitmap b = mLL.getDrawingCache();
+                if (b != null) {
+                    Log.d("maxiee", "Logo不为空");
+                    mBitmapHolder.drawBitmap(b, 0, mYPos, null);
+                }
             } else if (progress >= 0) {
                 // draw item
                 Bitmap itemBitmap;
@@ -372,6 +408,10 @@ public class EventDetailActivity extends AppCompatActivity {
             String s = FileUtils.saveLongImage(EventDetailActivity.this, mBitmap);
             progressDialog.cancel();
             if (!s.isEmpty()) {
+                try {
+                    Log.d("maxiee", "地址:" + s);
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + s)));
+                } catch (Exception e) {e.printStackTrace();}
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         EventDetailActivity.this,
                         R.style.AppTheme_Dialog);
@@ -432,6 +472,7 @@ public class EventDetailActivity extends AppCompatActivity {
             item.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             height += item.getMeasuredHeight();
         }
+        height += 100; // logo
         return height;
     }
 
@@ -454,7 +495,50 @@ public class EventDetailActivity extends AppCompatActivity {
         }
         options.inJustDecodeBounds = false;
         options.inSampleSize = inSampleSize;
-        return BitmapFactory.decodeFile(path, options);
+        Bitmap b =  BitmapFactory.decodeFile(path, options);
+        int orientation = 1;
+        try {
+            ExifInterface exif = new ExifInterface(path);
+            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+        } catch (Exception e) {e.printStackTrace();}
+        Log.d("maxiee", "方向:" + String.valueOf(orientation));
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case 2:
+                matrix.setScale(-1, 1);
+                break;
+            case 3:
+                matrix.setRotate(180);
+                break;
+            case 4:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case 5:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case 6:
+                matrix.setRotate(90);
+                break;
+            case 7:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case 8:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return b;
+        }
+        try {
+            Bitmap oriented = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+            b.recycle();
+            return oriented;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return b;
+        }
     }
 
     private String getOrder(int position, int length) {
