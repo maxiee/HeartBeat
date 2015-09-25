@@ -1,5 +1,16 @@
 #心动 ChangeLog
 
+##v0.8.0
+
+
+发布日期: 20150925
+
+1. 事件详情页生成长微博（长图）
+
+Release date: 20150925
+
+1. Generate long image from event detail page. 
+
 ##v0.7.9
 
 发布日期: 20150917
