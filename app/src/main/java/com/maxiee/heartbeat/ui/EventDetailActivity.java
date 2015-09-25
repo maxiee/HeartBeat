@@ -310,7 +310,7 @@ public class EventDetailActivity extends AppCompatActivity {
             icon.setImageDrawable(ContextCompat.getDrawable(EventDetailActivity.this, R.mipmap.ic_launcher));
             mLL.addView(icon);
             TextView hb = new TextView(EventDetailActivity.this);
-            hb.setText("@" + getString(R.string.app_name));
+            hb.setText("@心动小分队");
             mLL.addView(hb);
             mLL.measure(View.MeasureSpec.makeMeasureSpec(mWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             mHeight += mLL.getMeasuredHeight();
@@ -384,7 +384,7 @@ public class EventDetailActivity extends AppCompatActivity {
                     mTvTime.setText(TimeUtils.parseTime(EventDetailActivity.this, time));
                     if (mThoughts.get(progress).hasImage()) {
                         mIv.setVisibility(View.VISIBLE);
-                        Bitmap bmp = loadBitmap(mWidth, LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(progress).getPath());
+                        Bitmap bmp = loadBitmap(mTv.getMeasuredWidth(), LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(progress).getPath());
                         mIv.setImageBitmap(bmp);
                     } else {
                         mIv.setVisibility(View.GONE);
@@ -454,7 +454,7 @@ public class EventDetailActivity extends AppCompatActivity {
         TextView tv = (TextView) item.findViewById(R.id.tv_thought);
         ImageView iv = (ImageView) item.findViewById(R.id.image_thought);
         CardView cv = (CardView) item.findViewById(R.id.card);
-        item.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        item.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         int screenWidth = tv.getMeasuredWidth();
         iv.setVisibility(View.GONE);
 
@@ -501,7 +501,6 @@ public class EventDetailActivity extends AppCompatActivity {
             ExifInterface exif = new ExifInterface(path);
             orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
         } catch (Exception e) {e.printStackTrace();}
-        Log.d("maxiee", "方向:" + String.valueOf(orientation));
         Matrix matrix = new Matrix();
         switch (orientation) {
             case 2:
