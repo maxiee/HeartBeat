@@ -147,6 +147,7 @@ public class AddEditThoughtActivity extends AppCompatActivity {
                 if (mResType == mResTypeOld &&
                         mResPathOld.equals(mResPath)) {
                     Log.d(TAG, "Res not change!");
+                    new UpdateThoughtTask().execute(UpdateThoughtTask.RES_DO_NOTHING);
                     return true;
                 }
                 Log.d(TAG, "Res changed, update it.");
