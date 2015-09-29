@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by maxiee on 15-6-11.
@@ -59,6 +63,8 @@ public class AddEventActivity extends AppCompatActivity{
     private TextView mTvAddImage;
     private ImageView mImageBackDrop;
     private Uri mImageUri;
+
+    private boolean mExitEnsure = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +180,40 @@ public class AddEventActivity extends AppCompatActivity{
                 //noinspection ResourceType
                 getContentResolver().takePersistableUriPermission(mImageUri, takeFlags);
             }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            ensureExit();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ensureExit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void ensureExit() {
+        if (!mExitEnsure) {
+            mExitEnsure = true;
+            Toast.makeText(this, getString(R.string.exit_next_time), Toast.LENGTH_SHORT).show();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mExitEnsure = false;
+                }
+            }, 2000);
+        } else {
+            this.onBackPressed();
         }
     }
 
