@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.maxiee.heartbeat.database.api.DeleteThoughtByKeyApi;
 import com.maxiee.heartbeat.database.api.UpdateThoughtApi;
 import com.maxiee.heartbeat.database.api.UpdateThoughtResByKey;
 import com.maxiee.heartbeat.model.Thoughts;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by maxiee on 15-9-15.
@@ -54,6 +58,8 @@ public class AddEditThoughtActivity extends AppCompatActivity {
     private String mResPath = "";
     private int mResTypeOld = Thoughts.Thought.HAS_NO_RES;
     private String mResPathOld = "";
+
+    private boolean mExitEnsure = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +184,34 @@ public class AddEditThoughtActivity extends AppCompatActivity {
             finish();
         }
         if (id == android.R.id.home) {
-            this.onBackPressed();
+            ensureExit();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ensureExit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void ensureExit() {
+        if (!mExitEnsure) {
+            mExitEnsure = true;
+            Toast.makeText(this, getString(R.string.exit_next_time), Toast.LENGTH_SHORT).show();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mExitEnsure = false;
+                }
+            }, 2000);
+        } else {
+            this.onBackPressed();
+        }
     }
 
     private boolean checkThoughtValid() {
