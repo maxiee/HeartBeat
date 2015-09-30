@@ -103,6 +103,8 @@
     <string name="generate_ok">Generated. Location:\n</string>
     <string name="generating">Generating…</string>
     <string name="exit_next_time">Press back again to exit this page.</string>
+    <string name="donate_title">Donate</string>
+    <string name="donate_summary">AliPay:</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

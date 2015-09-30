@@ -104,4 +104,6 @@
     <string name="generate_ok">生成成功. 文件位于:\n</string>
     <string name="generating">正在生成…</string>
     <string name="exit_next_time">再次点击返回退出本页</string>
+    <string name="donate_title">捐赠</string>
+    <string name="donate_summary">支付宝:</string>
 </resources>

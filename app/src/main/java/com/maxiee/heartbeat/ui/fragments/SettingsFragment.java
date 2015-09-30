@@ -1,6 +1,8 @@
 package com.maxiee.heartbeat.ui.fragments;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.backup.BackupManager;
@@ -27,6 +30,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private final static String Weibo_URL = "http://weibo.com/maxiee";
     private final static String EMAIL = "maxieewong@gmail.com";
     private final static String XXXXL = "http://coolapk.com/u/421881";
+    private final static String DONATE_MAIL = "maxer_ray@163.com";
 
     private Preference mPatternPref;
     private Preference mVersionPref;
@@ -38,6 +42,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mBackupSDPref;
     private Preference mBackupCloudPref;
     private Preference mRestorePref;
+    private Preference mDonatePref;
     private SharedPreferences mPrefs;
 
     private String mPattern;
@@ -57,6 +62,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mBackupSDPref = (Preference) findPreference("backup_sd");
         mBackupCloudPref = (Preference) findPreference("backup_cloud");
         mRestorePref = (Preference) findPreference("restore");
+        mDonatePref = (Preference) findPreference("donate");
 
         String version = "Unknown";
         try {
@@ -68,6 +74,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mVersionPref.setSummary(version);
         mGitHubPref.setOnPreferenceClickListener(this);
         mGitHubPref.setSummary(GITHUB_URL);
+        mDonatePref.setOnPreferenceClickListener(this);
+        mDonatePref.setSummary(getString(R.string.donate_summary) + " " + DONATE_MAIL);
         mWeiboPref.setOnPreferenceClickListener(this);
         mWeiboPref.setSummary(Weibo_URL);
         mCrashPref.setSummary(getString(R.string.settings_crash_summary));
@@ -137,6 +145,14 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             if (i.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivity(i);
             }
+            return true;
+        }
+        if (preference == mDonatePref) {
+            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Donate", DONATE_MAIL);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(getActivity(), getString(R.string.copy_finished), Toast.LENGTH_LONG).show();
+            return true;
         }
         return false;
     }

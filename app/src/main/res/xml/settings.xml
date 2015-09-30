@@ -56,6 +56,10 @@
             android:title="@string/settings_github" />
 
         <Preference
+            android:key="donate"
+            android:title="@string/donate_title" />
+
+        <Preference
             android:key="weibo"
             android:title="@string/settings_weibo" />
 
