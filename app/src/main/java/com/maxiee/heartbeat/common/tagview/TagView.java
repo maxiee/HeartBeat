@@ -161,7 +161,12 @@ public class TagView extends RelativeLayout {
             // inflate tag layout
             View tagLayout = (View) LayoutInflater.from(mContext).inflate(R.layout.tagview_item, this, false);
             tagLayout.setId(listIndex);
-            tagLayout.setBackground(getSelector(tag)); //
+            int sdk = android.os.Build.VERSION.SDK_INT;
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                tagLayout.setBackgroundDrawable(getSelector(tag));
+            } else {
+                tagLayout.setBackground(getSelector(tag));
+            }
 
             // tag text 把单个Tag布局里的标签文本拿出来
             TextView tagView = (TextView) tagLayout.findViewById(R.id.tv_tag_item_contain);
