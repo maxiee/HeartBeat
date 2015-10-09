@@ -105,6 +105,22 @@
     <string name="exit_next_time">Press back again to exit this page.</string>
     <string name="donate_title">Donate</string>
     <string name="donate_summary">AliPay:</string>
+    <string name="tut_1_event">This is an event: your emotional moments recorded here. [Click me!]</string>
+    <string name="tut_1_thought_1" >This is a thought: record your thoughts about this moment.</string>
+    <string name="tut_1_thought_2" >You can add a cover image for your event by click the image on the top.</string>
+    <string name="tut_1_thought_3" >Add labels to your event, to organize your life.</string>
+    <string name="tut_2_event" >Click me to learn how to edit events and thoughts.</string>
+    <string name="tut_2_thought_1" >Long press the text of the event, you can edit/delete the event in a pop up dialog.</string>
+    <string name="tut_2_thought_2" >Long press the text of the thought, you can edit/delete the thought in a new page.</string>
+    <string name="tut_2_thought_3" >If you have added a cover image, you can change it by clicking it.</string>
+    <string name="tut_3_event" >Click me to learn how to add a thought with image.</string>
+    <string name="tut_3_thought_1" >When adding a thought, you can add an image at the same time.</string>
+    <string name="tut_3_thought_2" >It will make your moment more emotional.</string>
+    <string name="tut_4_event" >Click me to learn the last part of this tutourial: generating long image.</string>
+    <string name="tut_4_thought_1" >At the top-right corner of the screen, there is a film button.</string>
+    <string name="tut_4_thought_2" >Click it to generate a long image of this event.</string>
+    <string name="tut_4_thought_3" >Share your beautiful moments to friends!</string>
+    <string name="tut_4_thought_4" >Now the tutorial ends, but your emotional life just begins!</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
