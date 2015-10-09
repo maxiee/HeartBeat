@@ -8,7 +8,7 @@
 2. 修复 4.0.4 系统下 FC 问题
 3. 在设置中加入捐赠，如果心动对您有所帮助，欢迎请我喝杯咖啡^_^
 
-Release date: 20150925
+Release date: 20150930
 
 1. Double-confirm when pressing back on add event page and add thought page.
 2. Fix FC problem under Android 4.0.4.
