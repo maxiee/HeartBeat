@@ -3,7 +3,7 @@
     <string name="app_name">心动</string>
     <string name="action_settings">设置</string>
     <string name="add">添加</string>
-    <string name="add_event">心动瞬间\t\t(喜/怒/哀/乐)</string>
+    <string name="add_event">心动瞬间</string>
     <string name="add_failed">添加失败</string>
     <string name="add_image">添加图片...</string>
     <string name="add_ok">添加成功</string>
