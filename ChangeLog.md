@@ -1,5 +1,19 @@
 #心动 ChangeLog
 
+##v0.8.2
+
+发布日期: 20151012
+
+1. 为初次使用的用户添加引导教程
+2. 添加事件页面文案调整
+3. 大图页面全屏
+
+Release date: 20151012
+
+1. Add a tutorial for new user at the first start
+2. Adjsut the title of event-adding page
+3. Fullscreen of the gallery page.
+
 ##v0.8.1
 
 发布日期: 20150930
