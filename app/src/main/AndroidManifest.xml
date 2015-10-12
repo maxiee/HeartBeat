@@ -34,7 +34,9 @@
             android:parentActivityName=".ui.CrashListActivity" />
         <activity android:name=".ui.SearchResultActivity" />
         <activity android:name=".ui.PatternActivity" />
-        <activity android:name=".ui.GalleryActivity" />
+        <activity
+            android:name=".ui.GalleryActivity"
+            android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".ui.AddEditThoughtActivity" />
     </application>
 
