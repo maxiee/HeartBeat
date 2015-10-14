@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.EventDetailActivity;
@@ -28,6 +30,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     private ArrayList<Event> mEventList;
 
     public EventListAdapter(ArrayList<Event> mEventList) {
+        this.mEventList = mEventList;
+    }
+
+    public void setData(ArrayList<Event> mEventList) {
         this.mEventList = mEventList;
     }
 
@@ -54,9 +60,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 )
         );
 
-        Log.d(TAG, "事件列表项目");
-        Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
-        Log.d(TAG, "名称:" + event.getmEvent());
+//        Log.d(TAG, "事件列表项目");
+//        Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
+//        Log.d(TAG, "名称:" + event.getmEvent());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +75,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 ((Activity) context).startActivityForResult(intent, EventDetailActivity.EVENT_DETAIL);
             }
         });
+
+        String imagePath = new GetImageByEventKeyApi(holder.mContext, event.getmId()).exec();
+
+        if (imagePath != null) {
+            holder.mCoverImage.setVisibility(View.VISIBLE);
+            Glide.with(holder.mContext)
+                    .load(imagePath)
+                    .centerCrop()
+                    .into(holder.mCoverImage);
+        } else {
+            holder.mCoverImage.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -80,6 +98,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         public TextView tvEvent, tvTime,tvThoughtCount;
         public final View mView;
         public Context mContext;
+        public ImageView mCoverImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -87,6 +106,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             this.tvEvent = (TextView) itemView.findViewById(R.id.tv_event);
             this.tvTime = (TextView) itemView.findViewById(R.id.tv_time);
             this.tvThoughtCount = (TextView) itemView.findViewById(R.id.tv_thought_count);
+            this.mCoverImage = (ImageView) itemView.findViewById(R.id.image_cover);
             mContext = itemView.getContext();
         }
     }
