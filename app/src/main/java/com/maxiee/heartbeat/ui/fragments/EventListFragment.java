@@ -1,5 +1,7 @@
 package com.maxiee.heartbeat.ui.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 public class EventListFragment extends Fragment {
     private static final String TAG = EventListFragment.class.getSimpleName();
 
+    private static final String SP_VIEW_MODE = "event_list_view_mode";
     private static final int VIEW_MODE_LIST = 0;
     private static final int VIEW_MODE_STAGGERED = 1;
 
@@ -40,6 +43,7 @@ public class EventListFragment extends Fragment {
     private MenuItem mViewModeMenu;
     private LinearLayoutManager mLinearLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
+    private SharedPreferences mPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +53,10 @@ public class EventListFragment extends Fragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerview);
         mLinearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mViewMode = VIEW_MODE_STAGGERED;
-        mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+        mPrefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        mViewMode = mPrefs.getInt(SP_VIEW_MODE, VIEW_MODE_STAGGERED);
+        if (mViewMode == VIEW_MODE_STAGGERED) mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+        if (mViewMode == VIEW_MODE_LIST) mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mEventList = new GetAllEventApi(getActivity()).exec();
         mAdapter = new EventListAdapter(mEventList);
         updateEventList();
@@ -79,7 +85,7 @@ public class EventListFragment extends Fragment {
                 mViewMode = VIEW_MODE_LIST;
             }
             mViewModeMenu.setIcon(getViewModeIconRes());
-            // TODO 更新 SP
+            mPrefs.edit().putInt(SP_VIEW_MODE, mViewMode).apply();
             return true;
         }
         return false;
