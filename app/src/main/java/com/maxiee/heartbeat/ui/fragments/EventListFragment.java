@@ -2,9 +2,13 @@ package com.maxiee.heartbeat.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,11 +28,18 @@ import java.util.ArrayList;
 public class EventListFragment extends Fragment {
     private static final String TAG = EventListFragment.class.getSimpleName();
 
+    private static final int VIEW_MODE_LIST = 0;
+    private static final int VIEW_MODE_STAGGERED = 1;
+
     private RecyclerView mRecyclerView;
     private RelativeLayout mEmptyLayout;
     private ImageView mImageEmpty;
     private ArrayList<Event> mEventList;
     private EventListAdapter mAdapter;
+    private int mViewMode;
+    private MenuItem mViewModeMenu;
+    private LinearLayoutManager mLinearLayoutManager;
+    private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,13 +47,42 @@ public class EventListFragment extends Fragment {
         mEmptyLayout = (RelativeLayout) v.findViewById(R.id.empty);
         mImageEmpty = (ImageView) v.findViewById(R.id.image_empty);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerview);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mLinearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
+        mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mViewMode = VIEW_MODE_STAGGERED;
+        mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
         mEventList = new GetAllEventApi(getActivity()).exec();
         mAdapter = new EventListAdapter(mEventList);
         updateEventList();
         setHasOptionsMenu(true);
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_eventlist_type, menu);
+        mViewModeMenu = menu.findItem(R.id.type);
+        mViewModeMenu.setIcon(getViewModeIconRes());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.type) {
+            int currentViewMode = mViewMode;
+            if (currentViewMode == VIEW_MODE_LIST) {
+                mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+                mViewMode = VIEW_MODE_STAGGERED;
+            }
+            if (currentViewMode == VIEW_MODE_STAGGERED) {
+                mRecyclerView.setLayoutManager(mLinearLayoutManager);
+                mViewMode = VIEW_MODE_LIST;
+            }
+            mViewModeMenu.setIcon(getViewModeIconRes());
+            // TODO 更新 SP
+            return true;
+        }
+        return false;
     }
 
     public void updateEventList() {
@@ -64,6 +104,15 @@ public class EventListFragment extends Fragment {
         if (!newEvents.isEmpty()) {
             mEventList.addAll(0, newEvents);
             mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private int getViewModeIconRes() {
+        if (mViewMode == VIEW_MODE_LIST) return R.drawable.ic_action_dashboard;
+        else if (mViewMode == VIEW_MODE_STAGGERED) return R.drawable.ic_action_list;
+        else {
+            mViewMode = VIEW_MODE_STAGGERED;
+            return R.drawable.ic_action_list;
         }
     }
 }
