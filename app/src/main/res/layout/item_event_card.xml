@@ -9,21 +9,31 @@
     app:cardElevation="3dp"
     android:layout_marginTop="3dp"
     android:layout_marginBottom="3dp"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp">
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/image_cover"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/tv_event"
-            android:layout_marginBottom="10dp"/>
+            android:layout_below="@id/image_cover"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +41,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tv_time"
             android:layout_below="@id/tv_event"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,7 +52,8 @@
             android:id="@+id/tv_thought_count"
             android:layout_below="@id/tv_event"
             android:layout_alignParentRight="true"
-            android:text="0"/>
+            android:text="0"
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:layout_width="12dp"
