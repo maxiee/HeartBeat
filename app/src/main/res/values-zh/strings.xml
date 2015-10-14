@@ -122,4 +122,5 @@
     <string name="tut_4_thought_2">点击它即可将当前界面生成一张长图(长微博).</string>
     <string name="tut_4_thought_3">美好瞬间自然要与朋友分享, 记得在微博上 @心动小分队 喔^o^</string>
     <string name="tut_4_thought_4">教程到这里就结束了, 但你的心动之旅刚刚开启!</string>
+    <string name="change_view_mode">切换视图</string>
 </resources>

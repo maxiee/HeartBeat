@@ -121,6 +121,7 @@
     <string name="tut_4_thought_2" >Click it to generate a long image of this event.</string>
     <string name="tut_4_thought_3" >Share your beautiful moments to friends!</string>
     <string name="tut_4_thought_4" >Now the tutorial ends, but your emotional life just begins!</string>
+    <string name="change_view_mode">Change View Mode</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
