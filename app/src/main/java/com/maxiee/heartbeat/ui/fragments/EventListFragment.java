@@ -2,8 +2,8 @@ package com.maxiee.heartbeat.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +22,13 @@ import java.util.ArrayList;
  * Created by maxiee on 15-6-12.
  */
 public class EventListFragment extends Fragment {
+    private static final String TAG = EventListFragment.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private RelativeLayout mEmptyLayout;
     private ImageView mImageEmpty;
+    private ArrayList<Event> mEventList;
+    private EventListAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,17 +36,20 @@ public class EventListFragment extends Fragment {
         mEmptyLayout = (RelativeLayout) v.findViewById(R.id.empty);
         mImageEmpty = (ImageView) v.findViewById(R.id.image_empty);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mEventList = new GetAllEventApi(getActivity()).exec();
+        mAdapter = new EventListAdapter(mEventList);
         updateEventList();
+        setHasOptionsMenu(true);
         return v;
     }
 
     public void updateEventList() {
-        ArrayList<Event> eventList = new GetAllEventApi(getActivity()).exec();
-        if (!eventList.isEmpty()) {
+        if (!mEventList.isEmpty()) {
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
-            mRecyclerView.setAdapter(new EventListAdapter(eventList));
+            mRecyclerView.setAdapter(mAdapter);
         } else {
             mRecyclerView.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
@@ -54,6 +60,10 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateEventList();
+        ArrayList<Event> newEvents = new GetAllEventApi(getContext()).exec();
+        if (!newEvents.isEmpty()) {
+            mEventList.addAll(0, newEvents);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
