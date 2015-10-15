@@ -78,14 +78,21 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
         String imagePath = new GetImageByEventKeyApi(holder.mContext, event.getmId()).exec();
 
+        int marginTBHasImage = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_has_image_margin_tb);
+        int marginTBNoImage = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_no_image_margin_tb);
+        int marginLR = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_image_margin_lr);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.tvEvent.getLayoutParams();
+
         if (imagePath != null) {
             holder.mCoverImage.setVisibility(View.VISIBLE);
             Glide.with(holder.mContext)
                     .load(imagePath)
                     .centerCrop()
                     .into(holder.mCoverImage);
+            params.setMargins(marginLR, marginTBHasImage, marginLR, marginTBHasImage);
         } else {
             holder.mCoverImage.setVisibility(View.GONE);
+            params.setMargins(marginLR, marginTBNoImage, marginLR, marginTBNoImage);
         }
     }
 
