@@ -5,5 +5,5 @@
         android:id="@+id/long_iamge"
         android:title="@string/long_image"
         app:showAsAction="always"
-        android:icon="@drawable/ic_action_camera_roll" />
+        android:icon="@drawable/ic_action_theaters" />
 </menu>
