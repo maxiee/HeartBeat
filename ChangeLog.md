@@ -1,5 +1,23 @@
 #心动 ChangeLog
 
+##v0.8.3
+
+发布日期: 20151017
+
+1. 事件列表添加瀑布流效果
+2. 事件卡片全新设计，显示事件封面
+3. 修复标签云只有一个 Tag 不显示的 Bug
+4. 替换事件详情页长图生成图标
+5. 今日页面调整
+
+Release date: 20151017
+
+1. Add staggered－grid view mode in Event List.
+2. New design of event cards, now showing the cover images.
+3. Fixed the bug in Label Cloud of tag not showing when there is only one.
+4. Change the long image generation icon in Event Detail page.
+5. Adjust the layout of Today page. 
+
 ##v0.8.2
 
 发布日期: 20151012
