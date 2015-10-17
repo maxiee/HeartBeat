@@ -257,6 +257,7 @@ public class AddEventActivity extends AppCompatActivity{
     }
 
     private class AddEventTask extends DialogAsyncTask {
+        private int mEventKey;
 
         public AddEventTask(Context context) {
             super(context);
@@ -267,6 +268,9 @@ public class AddEventActivity extends AppCompatActivity{
             if (mTaskSuccess) {
                 setResult(ADD_EVENT_RESULT_OK);
             }
+            Intent i = new Intent(AddEventActivity.this, EventDetailActivity.class);
+            i.putExtra(EventDetailActivity.EXTRA_NAME, mEventKey);
+            startActivity(i);
             finish();
         }
 
@@ -274,14 +278,14 @@ public class AddEventActivity extends AppCompatActivity{
         protected String doInBackground(Void... params) {
 
             // add event
-            int eventKey = (int) new AddEventApi(
+            mEventKey = (int) new AddEventApi(
                     AddEventActivity.this,
                     mStrEvent).exec();
 
             // add thought
             new AddThoughtApi(
                     AddEventActivity.this,
-                    eventKey,
+                    mEventKey,
                     mStrFirstThought,
                     Thoughts.Thought.HAS_NO_RES,
                     Thoughts.Thought.HAS_NO_PATH
@@ -296,7 +300,7 @@ public class AddEventActivity extends AppCompatActivity{
             for (int labelkey: labelsKey) {
                 new AddEventLabelRelationApi(
                         AddEventActivity.this,
-                        eventKey,
+                        mEventKey,
                         labelkey
                 ).exec();
             }
@@ -304,11 +308,11 @@ public class AddEventActivity extends AppCompatActivity{
             if (mImageUri != null) {
                 // convert uri to path
                 String path = FileUtils.uriToPath(AddEventActivity.this, mImageUri);
-                new AddImageApi(AddEventActivity.this, eventKey, path).exec();
+                new AddImageApi(AddEventActivity.this, mEventKey, path).exec();
             }
 
             Log.d(TAG, "添加事件");
-            Log.d(TAG, "id: " + String.valueOf(eventKey));
+            Log.d(TAG, "id: " + String.valueOf(mEventKey));
             Log.d(TAG, "labels: " + mLabels.toString());
             Log.d(TAG, "labels_key: " + labelsKey.toString());
             mTaskSuccess = true;
