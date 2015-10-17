@@ -2,7 +2,6 @@ package com.maxiee.heartbeat.database.api;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.maxiee.heartbeat.database.tables.EventLabelRelationTable;
 
@@ -40,7 +39,7 @@ public class GetLabelsAndFreqApi extends BaseDBApi {
             ret.put(labelId,cursor.getCount());
             cursor.close();
         }
-        Log.d("map_put", ret.toString());
+//        Log.d("map_put", ret.toString());
         return ret;
     }
 
