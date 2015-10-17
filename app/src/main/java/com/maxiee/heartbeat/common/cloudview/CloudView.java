@@ -2,8 +2,6 @@ package com.maxiee.heartbeat.common.cloudview;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingChildHelper;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -177,7 +175,8 @@ public class CloudView extends ViewGroup {
                 start = child.getLeft();
                 currentLineWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
                 currentLineHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            } else if (child.getLeft() != start) { // not the last
+            }
+            if (child.getLeft() != start) { // not the last
                 currentLineHeight = Math.max(
                         currentLineHeight, child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
                 currentLineWidth += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
