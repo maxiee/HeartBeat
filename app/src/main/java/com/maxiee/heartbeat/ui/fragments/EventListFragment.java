@@ -106,6 +106,7 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mEventList.clear();
         ArrayList<Event> newEvents = new GetAllEventApi(getContext()).exec();
         if (!newEvents.isEmpty()) {
             mEventList.addAll(0, newEvents);
