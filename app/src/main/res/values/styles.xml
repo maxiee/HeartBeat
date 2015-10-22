@@ -2,9 +2,16 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#00BCD4</item>
-        <item name="colorPrimaryDark">#00ACC1</item>
-        <item name="colorAccent">#EF9A9A</item>
+        <item name="colorPrimary">@color/heartbeat_primary</item>
+        <item name="colorPrimaryDark">@color/heartbeat_primary_dark</item>
+        <item name="colorAccent">@color/heart_beat_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_test" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/test_primary</item>
+        <item name="colorPrimaryDark">@color/test_primary_dark</item>
+        <item name="colorAccent">@color/test_accent</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
@@ -15,9 +22,9 @@
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorPrimary">#00BCD4</item>
-        <item name="colorPrimaryDark">#00ACC1</item>
-        <item name="colorAccent">#EF9A9A</item>
+        <item name="colorPrimary">@color/heartbeat_primary</item>
+        <item name="colorPrimaryDark">@color/heartbeat_primary_dark</item>
+        <item name="colorAccent">@color/heart_beat_accent</item>
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">
