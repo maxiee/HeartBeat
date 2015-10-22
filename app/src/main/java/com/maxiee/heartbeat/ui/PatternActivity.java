@@ -4,16 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.eftimoff.patternview.PatternView;
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 /**
  * Created by maxiee on 15-7-29.
  */
-public class PatternActivity extends AppCompatActivity{
+public class PatternActivity extends BaseActivity{
     public final static String ACTION = "action";
     public final static int SET = 0;
     public final static int VERIFY = 1;

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +31,7 @@ import com.maxiee.heartbeat.database.api.AddThoughtApi;
 import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
 import com.maxiee.heartbeat.database.api.GetOneLabelApi;
 import com.maxiee.heartbeat.model.Thoughts;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.dialog.NewLabelDialog;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import java.util.TimerTask;
 /**
  * Created by maxiee on 15-6-11.
  */
-public class AddEventActivity extends AppCompatActivity{
+public class AddEventActivity extends BaseActivity{
 
     private final static String TAG = AddEventActivity.class.getSimpleName();
 

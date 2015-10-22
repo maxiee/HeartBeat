@@ -3,7 +3,6 @@ package com.maxiee.heartbeat.ui;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,13 +22,14 @@ import com.maxiee.heartbeat.database.api.GetEventsByLabelKeyApi;
 import com.maxiee.heartbeat.database.api.HasLabelApi;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 import java.util.ArrayList;
 
 /**
  * Created by maxiee on 15-6-27.
  */
-public class LabelDetailActivity extends AppCompatActivity{
+public class LabelDetailActivity extends BaseActivity{
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;

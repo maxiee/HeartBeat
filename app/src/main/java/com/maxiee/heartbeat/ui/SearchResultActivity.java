@@ -2,11 +2,9 @@ package com.maxiee.heartbeat.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,13 +15,14 @@ import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.database.api.EventSearchApi;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 import java.util.ArrayList;
 
 /**
  * Created by maxiee on 15-7-21.
  */
-public class SearchResultActivity extends AppCompatActivity{
+public class SearchResultActivity extends BaseActivity{
     private static final String TAG = SearchResultActivity.class.getSimpleName();
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;

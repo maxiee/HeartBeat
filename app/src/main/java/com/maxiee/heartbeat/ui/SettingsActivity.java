@@ -1,19 +1,17 @@
 package com.maxiee.heartbeat.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.backup.BackupManager;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.fragments.SettingsFragment;
 
 /**
  * Created by maxiee on 15-6-28.
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     private Toolbar mToolbar;
 

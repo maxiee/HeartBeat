@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +24,7 @@ import com.maxiee.heartbeat.database.api.DeleteThoughtByKeyApi;
 import com.maxiee.heartbeat.database.api.UpdateThoughtApi;
 import com.maxiee.heartbeat.database.api.UpdateThoughtResByKey;
 import com.maxiee.heartbeat.model.Thoughts;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,7 +32,7 @@ import java.util.TimerTask;
 /**
  * Created by maxiee on 15-9-15.
  */
-public class AddEditThoughtActivity extends AppCompatActivity {
+public class AddEditThoughtActivity extends BaseActivity {
     private final static String TAG = AddEditThoughtActivity.class.getSimpleName();
 
     public static final String MODE = "mode";

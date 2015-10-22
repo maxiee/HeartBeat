@@ -18,7 +18,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +49,7 @@ import com.maxiee.heartbeat.database.api.GetOneEventApi;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.adapter.ThoughtTimeaxisAdapter;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.dialog.EditEventDialog;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ import java.util.ArrayList;
 /**
  * Created by maxiee on 15-6-13.
  */
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivity extends BaseActivity {
     private final static String TAG = EventDetailActivity.class.getSimpleName();
 
     public static final String EXTRA_NAME = "id";

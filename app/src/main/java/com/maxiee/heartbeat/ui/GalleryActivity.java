@@ -2,7 +2,6 @@ package com.maxiee.heartbeat.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -10,11 +9,12 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 /**
  * Created by maxiee on 15-8-26.
  */
-public class GalleryActivity extends AppCompatActivity {
+public class GalleryActivity extends BaseActivity {
     public static final String EVENT_ID = "event_id";
     public static final String PATH = "path";
     private ImageView mImage;

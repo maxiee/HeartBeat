@@ -2,22 +2,17 @@ package com.maxiee.heartbeat.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,6 +24,7 @@ import android.view.View;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.support.CrashHandler;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.fragments.EventListFragment;
 import com.maxiee.heartbeat.ui.fragments.EventTodayFragment;
 import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
@@ -39,7 +35,7 @@ import com.quinny898.library.persistentsearch.SearchResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int SEARCH_HISTORY_SIZE = 5;
 

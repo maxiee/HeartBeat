@@ -4,9 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +12,12 @@ import android.widget.Toast;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.model.Crash;
+import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 /**
  * Created by maxiee on 15-7-11.
  */
-public class CrashDetailActivity extends AppCompatActivity {
+public class CrashDetailActivity extends BaseActivity {
 
     private Toolbar mToolbar;
     private TextView mTvCrash;
