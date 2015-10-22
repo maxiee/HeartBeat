@@ -30,7 +30,8 @@
             app:textPaddingBottom="3dp"
             app:textPaddingTop="3dp"
             app:textPaddingLeft="10dp"
-            app:textPaddingRight="10dp"/>
+            app:textPaddingRight="10dp"
+            app:label_background="?attr/colorAccent"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,7 +55,8 @@
                 app:textPaddingBottom="2dp"
                 app:textPaddingTop="2dp"
                 app:textPaddingLeft="7dp"
-                app:textPaddingRight="7dp" />
+                app:textPaddingRight="7dp"
+                app:label_background="?attr/colorAccent"/>
 
         </LinearLayout>
     </LinearLayout>

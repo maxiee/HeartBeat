@@ -101,7 +101,8 @@
                     app:textPaddingRight="7dp"
                     android:layout_below="@id/tv_event"
                     android:layout_toRightOf="@id/tv_time"
-                    android:gravity="right"/>
+                    android:gravity="right"
+                    app:label_background="?attr/colorAccent"/>
 
             </RelativeLayout>
 
