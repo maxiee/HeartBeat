@@ -8,6 +8,10 @@
             android:key="pattern"
             android:title="@string/settings_pattern" />
 
+        <Preference
+            android:key="change_theme"
+            android:title="@string/change_theme" />
+
         <ListPreference
             android:key="time_axis_sorting"
             android:title="@string/setting_timeaxis_sorting"

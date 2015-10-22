@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.backup.BackupManager;
+import com.maxiee.heartbeat.common.ThemeUtils;
 import com.maxiee.heartbeat.ui.CrashListActivity;
 import com.maxiee.heartbeat.ui.PatternActivity;
 
@@ -32,6 +33,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private final static String XXXXL = "http://coolapk.com/u/421881";
     private final static String DONATE_MAIL = "maxer_ray@163.com";
 
+    private Preference mThemePref;
     private Preference mPatternPref;
     private Preference mVersionPref;
     private Preference mGitHubPref;
@@ -52,6 +54,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
+        mThemePref = (Preference) findPreference("change_theme");
         mPatternPref = (Preference) findPreference("pattern");
         mVersionPref = (Preference) findPreference("version");
         mGitHubPref = (Preference) findPreference("github");
@@ -86,6 +89,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mBackupSDPref.setOnPreferenceClickListener(this);
         mBackupCloudPref.setOnPreferenceClickListener(this);
         mRestorePref.setOnPreferenceClickListener(this);
+        mThemePref.setOnPreferenceClickListener(this);
         initPattern();
     }
 
@@ -152,6 +156,10 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             ClipData clip = ClipData.newPlainText("Donate", DONATE_MAIL);
             clipboard.setPrimaryClip(clip);
             Toast.makeText(getActivity(), getString(R.string.copy_finished), Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (preference == mThemePref) {
+            ThemeUtils.chooseThemeDialog(getActivity());
             return true;
         }
         return false;
