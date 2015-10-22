@@ -66,6 +66,7 @@ public class TagView extends RelativeLayout {
     int textPaddingRight;
     int textPaddingTop;
     int texPaddingBottom;
+    int backgrond; //maxiee added
 
     public interface OnTagClickListener {
         void onTagClick(Tag tag, int position);
@@ -112,6 +113,7 @@ public class TagView extends RelativeLayout {
         this.textPaddingRight =(int) typeArray.getDimension(R.styleable.TagView_textPaddingRight, dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_RIGHT));
         this.textPaddingTop =(int) typeArray.getDimension(R.styleable.TagView_textPaddingTop, dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_TOP));
         this.texPaddingBottom =(int) typeArray.getDimension(R.styleable.TagView_textPaddingBottom, dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_BOTTOM));
+        this.backgrond = (int) typeArray.getColor(R.styleable.TagView_label_background, Constants.DEFAULT_TAG_LAYOUT_COLOR);
         typeArray.recycle();
     }
 
@@ -267,7 +269,7 @@ public class TagView extends RelativeLayout {
         StateListDrawable states = new StateListDrawable();
         GradientDrawable gd_normal = new GradientDrawable();
         // 填充颜色，绘制圆角
-        gd_normal.setColor(tag.layoutColor);
+        gd_normal.setColor(backgrond);
         gd_normal.setCornerRadius(tag.radius);
         // 绘制边框
         if (tag.layoutBorderSize>0){

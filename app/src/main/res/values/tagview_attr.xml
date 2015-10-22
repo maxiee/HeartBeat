@@ -7,5 +7,6 @@
         <attr name="textPaddingRight" format="dimension" />
         <attr name="textPaddingTop" format="dimension" />
         <attr name="textPaddingBottom" format="dimension" />
+        <attr name="label_background" format="color"/>
     </declare-styleable>
 </resources>
