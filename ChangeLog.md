@@ -1,5 +1,17 @@
 #心动 ChangeLog
 
+##v0.8.4
+
+发布日期: 20151024
+
+1. 更换主题功能
+2. 预置 7 款主题，如果您有好的建议一定要告诉我^o^
+
+Release date: 20151024
+
+1. Change theme
+2. Include 7 themes. If you have good suggestion please let me know ^o^
+
 ##v0.8.3.1
 
 发布日期: 20151017
