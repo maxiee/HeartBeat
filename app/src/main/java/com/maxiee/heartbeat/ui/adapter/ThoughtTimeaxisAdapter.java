@@ -3,8 +3,12 @@ package com.maxiee.heartbeat.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,13 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_thought_timeaxis, parent, false);
+        final TypedValue typedValue = new TypedValue();
+        parent.getContext().getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
+        int color = typedValue.data;
+        Drawable d = ContextCompat.getDrawable(parent.getContext(), R.drawable.circle_timeaxis);
+        d.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        View point = v.findViewById(R.id.time_point);
+        point.setBackgroundDrawable(d);
         return new ViewHolder(v);
     }
 

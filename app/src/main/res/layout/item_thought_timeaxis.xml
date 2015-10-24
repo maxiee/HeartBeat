@@ -29,7 +29,6 @@
             android:id="@+id/time_point"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:background="@drawable/circle_timeaxis"
             android:layout_marginTop="18dp"
             android:layout_marginLeft="14dp" />
 
