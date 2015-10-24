@@ -124,7 +124,12 @@
     <string name="change_view_mode">Change View Mode</string>
     <string name="change_theme">Change Theme</string>
     <string name="theme_heartbeat">HeartBeat</string>
-    <string name="theme_test">Test Theme</string>
+    <string name="theme_lemon">Lemon</string>
+    <string name="strawberry">Strawberry</string>
+    <string name="starry">Starry Night</string>
+    <string name="morning">Morning</string>
+    <string name="grape">Grape</string>
+    <string name="burberry">Burberry</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

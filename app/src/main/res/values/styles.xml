@@ -8,10 +8,45 @@
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
-    <style name="AppTheme_test" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/test_primary</item>
-        <item name="colorPrimaryDark">@color/test_primary_dark</item>
-        <item name="colorAccent">@color/test_accent</item>
+    <style name="AppTheme_lemon" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/lemon_primary</item>
+        <item name="colorPrimaryDark">@color/lemon_primary_dark</item>
+        <item name="colorAccent">@color/lemon_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_strawberry" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/strawberry_primary</item>
+        <item name="colorPrimaryDark">@color/strawberry_primary_dark</item>
+        <item name="colorAccent">@color/strawberry_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_starry" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/starry_primary</item>
+        <item name="colorPrimaryDark">@color/starry_primary_dark</item>
+        <item name="colorAccent">@color/starry_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_morning" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/morning_primary</item>
+        <item name="colorPrimaryDark">@color/morning_primary_dark</item>
+        <item name="colorAccent">@color/morning_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_grape" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/grape_primary</item>
+        <item name="colorPrimaryDark">@color/grape_primary_dark</item>
+        <item name="colorAccent">@color/grape_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_burberry" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/burberry_primary</item>
+        <item name="colorPrimaryDark">@color/burberry_primary_dark</item>
+        <item name="colorAccent">@color/burberry_accent</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 

@@ -125,5 +125,10 @@
     <string name="change_view_mode">切换视图</string>
     <string name="change_theme">更换主题</string>
     <string name="theme_heartbeat">心动</string>
-    <string name="theme_test">测试主题</string>
+    <string name="theme_lemon">青柠</string>
+    <string name="strawberry">草莓</string>
+    <string name="starry">星空</string>
+    <string name="morning">破晓</string>
+    <string name="grape">葡萄</string>
+    <string name="burberry">巴宝莉</string>
 </resources>

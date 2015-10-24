@@ -17,12 +17,22 @@ public class ThemeUtils {
 
     private static final int[] THEME_TITLES_RES = new int[] {
             R.string.theme_heartbeat,
-            R.string.theme_test
+            R.string.theme_lemon,
+            R.string.strawberry,
+            R.string.starry,
+            R.string.morning,
+            R.string.grape,
+            R.string.burberry
     };
 
     private static final int[] THEME_ACTIVITY_RES = new int[] {
             R.style.AppTheme,
-            R.style.AppTheme_test
+            R.style.AppTheme_lemon,
+            R.style.AppTheme_strawberry,
+            R.style.AppTheme_starry,
+            R.style.AppTheme_morning,
+            R.style.AppTheme_grape,
+            R.style.AppTheme_burberry
     };
 
     public static void chooseThemeDialog(final Context context) {

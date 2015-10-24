@@ -8,7 +8,27 @@
     <color name="heartbeat_primary_dark">#00ACC1</color>
     <color name="heart_beat_accent">#EF9A9A</color>
 
-    <color name="test_primary">#4CAF50</color>
-    <color name="test_primary_dark">#388E3C</color>
-    <color name="test_accent">#FFEA00</color>
+    <color name="lemon_primary">#4CAF50</color>
+    <color name="lemon_primary_dark">#388E3C</color>
+    <color name="lemon_accent">#FFD600</color>
+
+    <color name="strawberry_primary">#F44336</color>
+    <color name="strawberry_primary_dark">#D32F2F</color>
+    <color name="strawberry_accent">#FFAB00</color>
+
+    <color name="starry_primary">#303F9F</color>
+    <color name="starry_primary_dark">#1A237E</color>
+    <color name="starry_accent">#AEEA00</color>
+
+    <color name="morning_primary">#607D8B</color>
+    <color name="morning_primary_dark">#455A64</color>
+    <color name="morning_accent">#40C4FF</color>
+
+    <color name="grape_primary">#9C27B0</color>
+    <color name="grape_primary_dark">#7B1FA2</color>
+    <color name="grape_accent">#FF4081</color>
+
+    <color name="burberry_primary">#757575</color>
+    <color name="burberry_primary_dark">#424242</color>
+    <color name="burberry_accent">#FF9100</color>
 </resources>
