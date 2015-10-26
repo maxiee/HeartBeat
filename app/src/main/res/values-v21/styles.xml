@@ -1,0 +1,82 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/heartbeat_primary</item>
+        <item name="colorPrimaryDark">@color/heartbeat_primary_dark</item>
+        <item name="colorAccent">@color/heart_beat_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_lemon" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/lemon_primary</item>
+        <item name="colorPrimaryDark">@color/lemon_primary_dark</item>
+        <item name="colorAccent">@color/lemon_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_strawberry" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/strawberry_primary</item>
+        <item name="colorPrimaryDark">@color/strawberry_primary_dark</item>
+        <item name="colorAccent">@color/strawberry_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_starry" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/starry_primary</item>
+        <item name="colorPrimaryDark">@color/starry_primary_dark</item>
+        <item name="colorAccent">@color/starry_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_morning" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/morning_primary</item>
+        <item name="colorPrimaryDark">@color/morning_primary_dark</item>
+        <item name="colorAccent">@color/morning_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_grape" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/grape_primary</item>
+        <item name="colorPrimaryDark">@color/grape_primary_dark</item>
+        <item name="colorAccent">@color/grape_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme_burberry" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/burberry_primary</item>
+        <item name="colorPrimaryDark">@color/burberry_primary_dark</item>
+        <item name="colorAccent">@color/burberry_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="AppTheme.FullScreen" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/heartbeat_primary</item>
+        <item name="colorPrimaryDark">@color/heartbeat_primary_dark</item>
+        <item name="colorAccent">@color/heart_beat_accent</item>
+    </style>
+
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+</resources>
