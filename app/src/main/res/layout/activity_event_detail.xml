@@ -62,6 +62,7 @@
             android:id="@+id/card_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_margin="20dp">
 
             <RelativeLayout
