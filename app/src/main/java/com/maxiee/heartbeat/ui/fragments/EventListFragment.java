@@ -3,6 +3,7 @@ package com.maxiee.heartbeat.ui.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.database.api.GetAllEventApi;
-import com.maxiee.heartbeat.model.Event;
-import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
-
-import java.util.ArrayList;
+import com.maxiee.heartbeat.data.DataManager;
 
 /**
  * Created by maxiee on 15-6-12.
@@ -37,13 +34,12 @@ public class EventListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RelativeLayout mEmptyLayout;
     private ImageView mImageEmpty;
-    private ArrayList<Event> mEventList;
-    private EventListAdapter mAdapter;
     private int mViewMode;
     private MenuItem mViewModeMenu;
     private LinearLayoutManager mLinearLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private SharedPreferences mPrefs;
+    private DataManager mDataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,8 +53,7 @@ public class EventListFragment extends Fragment {
         mViewMode = mPrefs.getInt(SP_VIEW_MODE, VIEW_MODE_STAGGERED);
         if (mViewMode == VIEW_MODE_STAGGERED) mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
         if (mViewMode == VIEW_MODE_LIST) mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mEventList = new GetAllEventApi(getActivity()).exec();
-        mAdapter = new EventListAdapter(mEventList);
+        mDataManager = DataManager.getInstance(getContext());
         updateEventList();
         setHasOptionsMenu(true);
         return v;
@@ -92,10 +87,10 @@ public class EventListFragment extends Fragment {
     }
 
     public void updateEventList() {
-        if (!mEventList.isEmpty()) {
+        if (!mDataManager.isEventEmpty()) {
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
-            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(mDataManager.getEventAdapter());
         } else {
             mRecyclerView.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
@@ -106,11 +101,14 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mEventList.clear();
-        ArrayList<Event> newEvents = new GetAllEventApi(getContext()).exec();
-        if (!newEvents.isEmpty()) {
-            mEventList.addAll(0, newEvents);
-            mAdapter.notifyDataSetChanged();
+        mDataManager.notifyDataSetChanged();
+        if (mViewMode == VIEW_MODE_STAGGERED) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    mStaggeredGridLayoutManager.invalidateSpanAssignments();
+                }
+            });
         }
     }
 
