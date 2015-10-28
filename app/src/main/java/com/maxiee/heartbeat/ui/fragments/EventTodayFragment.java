@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.database.api.GetThoughtTodayCountApi;
-import com.maxiee.heartbeat.database.api.GetTodayEventApi;
-import com.maxiee.heartbeat.model.Event;
-import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
-
-import java.util.ArrayList;
+import com.maxiee.heartbeat.data.DataManager;
 
 /**
  * Created by maxiee on 15-6-23.
@@ -34,6 +28,7 @@ public class EventTodayFragment extends Fragment{
     private LinearLayout mMainLayout;
     private RelativeLayout mEmtpyLayout;
     private ImageView mImageEmpty;
+    private DataManager mDataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,21 +43,22 @@ public class EventTodayFragment extends Fragment{
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+
+        mDataManager = DataManager.getInstance(getContext());
         updateEventList();
 
         return v;
     }
 
     public void updateEventList() {
-        ArrayList<Event>  eventList = new GetTodayEventApi(getActivity()).exec();
-        if (eventList != null) {
+        if (!mDataManager.isTodayEmpty()) {
             mMainLayout.setVisibility(View.VISIBLE);
             mEmtpyLayout.setVisibility(View.GONE);
-            mRecyclerView.setAdapter(new EventListAdapter(eventList));
-            mTvEventCount.setText(String.valueOf(eventList.size()));
-            int thoughtCount = new GetThoughtTodayCountApi(getActivity()).exec();
+            mRecyclerView.setAdapter(mDataManager.getTodayAdapter());
+            mTvEventCount.setText(mDataManager.getTodayEventCountString());
+            int thoughtCount = mDataManager.getTodayThoughtCount();
             if (thoughtCount != -1) {
-                mTvThoughtCount.setText(String.valueOf(thoughtCount));
+                mTvThoughtCount.setText(mDataManager.getTodayThoughtCountString());
                 showTodayHint(thoughtCount);
             }
         } else {
@@ -75,6 +71,7 @@ public class EventTodayFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        mDataManager.notifyDataSetChanged();
         updateEventList();
     }
 
