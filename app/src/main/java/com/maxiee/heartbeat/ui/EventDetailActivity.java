@@ -62,9 +62,6 @@ public class EventDetailActivity extends BaseActivity {
 
     public static final String EXTRA_NAME = "id";
 
-    public final static int EVENT_DETAIL = 200;
-    public final static int EVENT_DETAIL_MODIFIED = 201;
-
     private static final int ADD_IMAGE = 1127;
 
     private static final int LONG_IMAGE_IMAGE_MAX_HEIGHT = 300;
@@ -141,12 +138,10 @@ public class EventDetailActivity extends BaseActivity {
                     public void update(String event) {
                         mTvEvent.setText(event);
                         updateTagView();
-                        setResult(EVENT_DETAIL_MODIFIED);
                     }
 
                     @Override
                     public void remove() {
-                        setResult(EVENT_DETAIL_MODIFIED);
                         finish();
                     }
                 });
