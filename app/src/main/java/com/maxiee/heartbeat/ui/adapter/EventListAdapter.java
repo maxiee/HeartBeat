@@ -1,6 +1,5 @@
 package com.maxiee.heartbeat.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,9 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
-import com.maxiee.heartbeat.database.api.DeleteEventByKeyApi;
-import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.DeleteThoughtsByEventKeyApi;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
 import com.maxiee.heartbeat.model.Event;
@@ -77,7 +74,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 intent.putExtra(
                         EventDetailActivity.EXTRA_NAME,
                         mEventList.get(position).getmId());
-                ((Activity) context).startActivityForResult(intent, EventDetailActivity.EVENT_DETAIL);
+                context.startActivity(intent);
             }
         });
 
@@ -93,11 +90,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            new DeleteEventByKeyApi(context, event.getmId()).exec();
-                            new DeleteImageByEventKeyApi(context, event.getmId()).exec();
-                            new DeleteThoughtsByEventKeyApi(context, event.getmId()).exec();
-                            mEventList.remove(position);
-                            notifyDataSetChanged();
+                            DataManager.getInstance(context).deleteEvent(event.getmId());
                         }
                     }
                 });
