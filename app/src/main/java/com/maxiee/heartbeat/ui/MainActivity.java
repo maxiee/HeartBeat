@@ -155,10 +155,10 @@ public class MainActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mViewPagerAdapter.addFrag(new EventListFragment(), getString(R.string.event_list), R.drawable.ic_action_reorder);
-        mViewPagerAdapter.addFrag(new EventTodayFragment(), getString(R.string.today), R.drawable.ic_action_today);
-        mViewPagerAdapter.addFrag(new LabelCloudFragment(), getString(R.string.labelCloud), R.drawable.ic_action_label);
-        mViewPagerAdapter.addFrag(new StatisticsFragment(), getString(R.string.statistics), R.drawable.ic_action_trending_up);
+        mViewPagerAdapter.addFrag(getString(R.string.event_list), R.drawable.ic_action_reorder);
+        mViewPagerAdapter.addFrag(getString(R.string.today), R.drawable.ic_action_today);
+        mViewPagerAdapter.addFrag(getString(R.string.labelCloud), R.drawable.ic_action_label);
+        mViewPagerAdapter.addFrag(getString(R.string.statistics), R.drawable.ic_action_trending_up);
         viewPager.setAdapter(mViewPagerAdapter);
     }
 
@@ -196,13 +196,7 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO: put these code to onResume!
-    }
-
     private class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
         private final List<Integer> mFragmentIconList = new ArrayList<>();
 
@@ -212,16 +206,19 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+            if (position == 0) return new EventListFragment();
+            if (position == 1) return new EventTodayFragment();
+            if (position == 2) return new LabelCloudFragment();
+            if (position == 3) return new StatisticsFragment();
+            return null;
         }
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+            return mFragmentTitleList.size();
         }
 
-        public void addFrag(Fragment fragment, String title, @DrawableRes int id) {
-            mFragmentList.add(fragment);
+        public void addFrag(String title, @DrawableRes int id) {
             mFragmentTitleList.add(title);
             mFragmentIconList.add(id);
         }

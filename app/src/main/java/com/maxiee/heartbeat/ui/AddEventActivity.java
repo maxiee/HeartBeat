@@ -23,13 +23,16 @@ import com.maxiee.heartbeat.common.DialogAsyncTask;
 import com.maxiee.heartbeat.common.FileUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.AddEventApi;
 import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
 import com.maxiee.heartbeat.database.api.AddImageApi;
 import com.maxiee.heartbeat.database.api.AddLabelsApi;
 import com.maxiee.heartbeat.database.api.AddThoughtApi;
 import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
+import com.maxiee.heartbeat.database.api.GetOneEventApi;
 import com.maxiee.heartbeat.database.api.GetOneLabelApi;
+import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.dialog.NewLabelDialog;
@@ -63,6 +66,7 @@ public class AddEventActivity extends BaseActivity{
     private TextView mTvAddImage;
     private ImageView mImageBackDrop;
     private Uri mImageUri;
+    private DataManager mDataManager;
 
     private boolean mExitEnsure = false;
 
@@ -83,6 +87,8 @@ public class AddEventActivity extends BaseActivity{
         mTagViewToAdd = (TagView) findViewById(R.id.tagview_to_add);
         mTvAddImage = (TextView) findViewById(R.id.add_imgae);
         mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
+
+        mDataManager = DataManager.getInstance(this);
 
         mTvAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,6 +315,11 @@ public class AddEventActivity extends BaseActivity{
                 // convert uri to path
                 String path = FileUtils.uriToPath(AddEventActivity.this, mImageUri);
                 new AddImageApi(AddEventActivity.this, mEventKey, path).exec();
+            }
+
+            Event newEvent = new GetOneEventApi(AddEventActivity.this, mEventKey).exec();
+            if(newEvent != null) {
+                mDataManager.addEvent(newEvent);
             }
 
             Log.d(TAG, "添加事件");

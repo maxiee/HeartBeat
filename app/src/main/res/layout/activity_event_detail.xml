@@ -2,29 +2,26 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true" >
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp" >
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" >
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -40,7 +37,7 @@
                     android:gravity="center"
                     android:text="@string/add_image"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white" />
 
             </FrameLayout>
 
@@ -65,6 +62,7 @@
             android:id="@+id/card_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_margin="20dp">
 
             <RelativeLayout

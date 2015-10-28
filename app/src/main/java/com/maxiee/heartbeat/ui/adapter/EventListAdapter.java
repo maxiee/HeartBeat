@@ -1,8 +1,9 @@
 package com.maxiee.heartbeat.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
 import com.maxiee.heartbeat.model.Event;
@@ -46,7 +48,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Event event = mEventList.get(position);
+        final Event event = mEventList.get(position);
 
         holder.tvEvent.setText(event.getmEvent());
         holder.tvTime.setText(
@@ -72,7 +74,28 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 intent.putExtra(
                         EventDetailActivity.EXTRA_NAME,
                         mEventList.get(position).getmId());
-                ((Activity) context).startActivityForResult(intent, EventDetailActivity.EVENT_DETAIL);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                final String[] items = new String[] {
+                        v.getContext().getString(R.string.delete)
+                };
+                final Context context = v.getContext();
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            DataManager.getInstance(context).deleteEvent(event.getmId());
+                        }
+                    }
+                });
+                builder.show();
+                return true;
             }
         });
 

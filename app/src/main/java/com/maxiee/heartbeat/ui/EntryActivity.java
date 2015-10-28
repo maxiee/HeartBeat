@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.AddEventApi;
 import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
 import com.maxiee.heartbeat.database.api.AddLabelsApi;
@@ -49,6 +50,7 @@ public class EntryActivity extends Activity {
     }
 
     void addTutorial() {
+        DataManager dataManager = DataManager.getInstance(this);
         ArrayList<String> labels = new ArrayList<>();
         labels.add(getString(R.string.app_name));
         int labelKey = new AddLabelsApi(this, labels).exec().get(0);
@@ -141,5 +143,7 @@ public class EntryActivity extends Activity {
                 Thoughts.Thought.HAS_NO_RES,
                 Thoughts.Thought.HAS_NO_PATH
         ).exec();
+        dataManager.reload();
+        dataManager.logInfo();
     }
 }
