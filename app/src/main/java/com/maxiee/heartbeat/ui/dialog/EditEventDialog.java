@@ -16,12 +16,10 @@ import android.widget.Toast;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
 import com.maxiee.heartbeat.database.api.AddLabelsApi;
-import com.maxiee.heartbeat.database.api.DeleteEventByKeyApi;
 import com.maxiee.heartbeat.database.api.DeleteEventLabelRelationApi;
-import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.DeleteThoughtsByEventKeyApi;
 import com.maxiee.heartbeat.database.api.GetEventsByLabelKeyApi;
 import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
 import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
@@ -51,6 +49,8 @@ public class EditEventDialog extends AppCompatDialog{
     private ArrayList<String> mLabelsBackup;
     private OnEditFinishedListener mCallback;
 
+    private DataManager mDataManager;
+
     public interface OnEditFinishedListener {
         void update(String event);
         void remove();
@@ -59,6 +59,7 @@ public class EditEventDialog extends AppCompatDialog{
     public EditEventDialog(Context context, Event event) {
         super(context, R.style.AppTheme_Dialog);
         mEvent = event;
+        mDataManager = DataManager.getInstance(context);
     }
 
     @Override
@@ -107,9 +108,7 @@ public class EditEventDialog extends AppCompatDialog{
                             new OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    new DeleteEventByKeyApi(getContext(), mEvent.getmId()).exec();
-                                    new DeleteImageByEventKeyApi(getContext(), mEvent.getmId()).exec();
-                                    new DeleteThoughtsByEventKeyApi(getContext(), mEvent.getmId()).exec();
+                                    mDataManager.deleteEvent(mEvent.getmId());
                                     dismiss();
                                     mCallback.remove();
                                 }
@@ -249,6 +248,7 @@ public class EditEventDialog extends AppCompatDialog{
                         new DeleteEventLabelRelationApi(getContext(), mEvent.getmId(), key).exec();
                     }
                 }
+            mDataManager.updateEvent(mEvent.getmId());
             return null;
         }
 
