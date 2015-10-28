@@ -40,12 +40,13 @@ public class GetTodayEventApi extends BaseDBApi {
                 null, null, null
         );
 
+        ArrayList<Event> ret = new ArrayList<>();
         if (cursor.getCount() < 1) {
-            return null;
+            cursor.close();
+            return ret;
         }
 
         cursor.moveToFirst();
-        ArrayList<Event> ret = new ArrayList<>();
         do {
             int id = cursor.getInt(
                     cursor.getColumnIndex(EventsTable.ID)
@@ -64,7 +65,6 @@ public class GetTodayEventApi extends BaseDBApi {
         } while (cursor.moveToNext());
 
         cursor.close();
-
         return ret;
     }
 }
