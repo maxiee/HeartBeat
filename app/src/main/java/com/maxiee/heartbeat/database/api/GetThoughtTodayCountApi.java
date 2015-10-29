@@ -41,7 +41,7 @@ public class GetThoughtTodayCountApi extends BaseDBApi {
         cursor.close();
 
         if (count < 1) {
-            return -1;
+            return 0;
         }
 
         return count;
