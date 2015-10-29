@@ -12,6 +12,7 @@ import com.maxiee.heartbeat.database.api.GetThoughtTodayCountApi;
 import com.maxiee.heartbeat.database.api.GetTodayEventApi;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
+import com.maxiee.heartbeat.ui.adapter.TodayEventAdapter;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class DataManager {
     private ArrayList<Event> mEventList;
     private EventListAdapter mEventAdapter;
     private ArrayList<Event> mTodayList;
-    private EventListAdapter mTodayAdapter;
+    private TodayEventAdapter mTodayAdapter;
     private int mCountTodayEvent;
     private int mCountTodayThought;
     private static DataManager mInstance;
@@ -42,7 +43,7 @@ public class DataManager {
         mEventList = new GetAllEventApi(context).exec();
         mEventAdapter = new EventListAdapter(mEventList);
         mTodayList = new GetTodayEventApi(context).exec();
-        mTodayAdapter = new EventListAdapter(mTodayList);
+        mTodayAdapter = new TodayEventAdapter(mTodayList);
         countTodayEvent();
         countTodayThought();
     }
@@ -62,7 +63,7 @@ public class DataManager {
         return mEventAdapter;
     }
 
-    public EventListAdapter getTodayAdapter() {
+    public TodayEventAdapter getTodayAdapter() {
         return mTodayAdapter;
     }
 
