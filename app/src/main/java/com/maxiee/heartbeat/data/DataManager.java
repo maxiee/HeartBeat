@@ -3,6 +3,7 @@ package com.maxiee.heartbeat.data;
 import android.content.Context;
 import android.util.Log;
 
+import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.database.api.DeleteEventByKeyApi;
 import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.DeleteThoughtsByEventKeyApi;
@@ -29,6 +30,7 @@ public class DataManager {
     private TodayEventAdapter mTodayAdapter;
     private int mCountTodayEvent;
     private int mCountTodayThought;
+    private int mToday;
     private static DataManager mInstance;
 
     public static DataManager getInstance(Context context) {
@@ -46,6 +48,7 @@ public class DataManager {
         mTodayAdapter = new TodayEventAdapter(mTodayList);
         countTodayEvent();
         countTodayThought();
+        mToday = TimeUtils.getToday();
     }
 
     public void reload() {
@@ -116,6 +119,7 @@ public class DataManager {
         int indexToday = findFromList(key, mTodayList);
         if (indexToday >= 0) mTodayList.remove(indexToday);
         notifyDataSetChanged();
+        checkNewDay();
     }
 
     public void updateEvent(int key) {
@@ -134,6 +138,7 @@ public class DataManager {
 
         if (indexEvent >= 0) mEventList.set(indexEvent, e);
         if (indexToday >= 0) mTodayList.set(indexToday, e);
+        checkNewDay();
     }
 
     private static int findFromList(int key, ArrayList<Event> list) {
@@ -143,6 +148,15 @@ public class DataManager {
             }
         }
         return -1;
+    }
+
+    public void checkNewDay() {
+        int day = TimeUtils.getToday();
+        if (day != mToday) {
+            mToday = day;
+            mTodayList.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void logInfo() {
