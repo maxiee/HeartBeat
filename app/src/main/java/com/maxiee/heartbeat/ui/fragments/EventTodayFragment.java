@@ -56,6 +56,7 @@ public class EventTodayFragment extends Fragment{
     public void onResume() {
         super.onResume();
         mDataManager.notifyDataSetChanged();
+        mDataManager.checkNewDay();
         updateEventList();
     }
 
