@@ -102,6 +102,7 @@ public class EventListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mDataManager.notifyDataSetChanged();
+        mDataManager.checkNewDay();
         if (mViewMode == VIEW_MODE_STAGGERED) {
             new Handler().post(new Runnable() {
                 @Override
