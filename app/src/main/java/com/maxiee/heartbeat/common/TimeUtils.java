@@ -77,4 +77,9 @@ public class TimeUtils {
         long diff = latestEventTime - earlistEventTime;
         return (int) (diff / MS_ONE_DAY);
     }
+
+    public static int getToday() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
 }
