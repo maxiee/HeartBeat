@@ -1,5 +1,25 @@
 #心动 ChangeLog
 
+##v0.8.5
+
+发布日期: 20151101
+
+1. 事件列表长按删除
+2. 修复删除所有事件后崩溃 Bug
+3. 事件卡片等控件添加触摸效果
+4. 代码重构，提高数据管理效率
+5. 今日页面提示文字随列表滚动
+6. 由于新版本涉及底层代码重构，建议在使用新版本前先备份数据
+
+Release date: 20151101
+
+1. Long press to delete a event
+2. Bug fix: crash when delete all events
+3. Add touch effect to event cards and other widgets
+4. Code refactoring, improve performance of data managing
+5. The hint text in Today page now scrolling with the list
+6. We recommend that you back up your data before using the new version
+
 ##v0.8.4
 
 发布日期: 20151024
@@ -222,3 +242,4 @@ Release date: 20150828
 2. 事件及事件标签的修改与删除，在事件详情页长按操作。
 3. 添加崩溃报告功能，位于「设置」->「崩溃报告」。
 4. 修复 FC 问题。
+
