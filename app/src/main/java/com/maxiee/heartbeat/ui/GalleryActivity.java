@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
@@ -11,6 +12,7 @@ import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by maxiee on 15-8-26.
@@ -39,6 +41,13 @@ public class GalleryActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mImage = (PhotoView) findViewById(R.id.imageview);
+
+        mImage.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                finish();
+            }
+        });
 
         if (eventId != -1) {
             final String imagePath = new GetImageByEventKeyApi(this, eventId).exec();
