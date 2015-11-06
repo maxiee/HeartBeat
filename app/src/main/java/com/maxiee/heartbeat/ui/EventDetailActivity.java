@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,6 +26,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -269,6 +272,7 @@ public class EventDetailActivity extends BaseActivity {
         private CardView mCv;
         private TextView mTvOrder;
         private TextView mTvTime;
+        private View mPoint;
         private LinearLayout mLL;
         private int mYPos = 0;
         private int mHeight = 0;
@@ -292,6 +296,14 @@ public class EventDetailActivity extends BaseActivity {
             mCv = (CardView) mView.findViewById(R.id.card);
             mTvOrder = (TextView) mView.findViewById(R.id.tv_order);
             mTvTime = (TextView) mView.findViewById(R.id.tv_time);
+            mPoint = (View) mView.findViewById(R.id.time_point);
+
+            final TypedValue typedValue = new TypedValue();
+            getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
+            int color = typedValue.data;
+            Drawable d = ContextCompat.getDrawable(EventDetailActivity.this, R.drawable.circle_timeaxis);
+            d.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            mPoint.setBackgroundDrawable(d);
 
             mLL = new LinearLayout(EventDetailActivity.this);
             mLL.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
@@ -314,8 +326,6 @@ public class EventDetailActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             mHeight += measureViews(mView, mWidth);
-
-
 
             Log.d("maxiee", "生成Bitmap:" + String.valueOf(mWidth) + "," + String.valueOf(mHeight));
             mBitmap = Bitmap.createBitmap(
