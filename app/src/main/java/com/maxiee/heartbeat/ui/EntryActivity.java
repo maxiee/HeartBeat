@@ -13,7 +13,6 @@ import com.maxiee.heartbeat.database.api.AddEventApi;
 import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
 import com.maxiee.heartbeat.database.api.AddLabelsApi;
 import com.maxiee.heartbeat.database.api.AddThoughtApi;
-import com.maxiee.heartbeat.database.api.GetAllEventApi;
 import com.maxiee.heartbeat.model.Thoughts;
 
 import java.util.ArrayList;
@@ -23,13 +22,17 @@ import java.util.ArrayList;
  */
 public class EntryActivity extends Activity {
 
+    public static final String IS_FIRST_USE = "is_first";
+
+    private DataManager mDataManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mDataManager = DataManager.getInstance(this);
         // 首次使用添加引导教程
-        boolean newUser = new GetAllEventApi(this).exec().isEmpty();
-        if (newUser) {
+        if (mDataManager.isEventEmpty() && isFirstUse()) {
             Log.d("maxiee", "捕捉到一只新用户!生成引导教程...");
             addTutorial();
         }
@@ -49,8 +52,20 @@ public class EntryActivity extends Activity {
         }
     }
 
-    void addTutorial() {
-        DataManager dataManager = DataManager.getInstance(this);
+    private boolean isFirstUse() {
+        SharedPreferences sp = getSharedPreferences("hb", MODE_PRIVATE);
+        boolean isFirst = sp.getBoolean(IS_FIRST_USE, true);
+        if (isFirst) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(IS_FIRST_USE, false);
+            editor.apply();
+            return true;
+        }
+        return false;
+    }
+
+    private void addTutorial() {
+
         ArrayList<String> labels = new ArrayList<>();
         labels.add(getString(R.string.app_name));
         int labelKey = new AddLabelsApi(this, labels).exec().get(0);
@@ -143,7 +158,7 @@ public class EntryActivity extends Activity {
                 Thoughts.Thought.HAS_NO_RES,
                 Thoughts.Thought.HAS_NO_PATH
         ).exec();
-        dataManager.reload();
-        dataManager.logInfo();
+        mDataManager.reload();
+        mDataManager.logInfo();
     }
 }
