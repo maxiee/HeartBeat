@@ -1,5 +1,20 @@
 #心动 ChangeLog
 
+##v0.8.6
+
+发布日期: 20151107
+
+1. 修复添加事件页面返回主界面再回来被遮住
+2. 修复生成长微博时时间轴圆点不显示
+3. 引导教程清空后不再重复删除
+
+Release date: 20151107
+
+1. Fix the event adding not showing when switch to home screen then back
+2. Fix the point in timeaxis of the long image not showing
+3. Tutorial won't generate repeatly when you delete them
+
+
 ##v0.8.5
 
 发布日期: 20151101
