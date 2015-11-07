@@ -18,6 +18,7 @@
         <activity android:name="com.maxiee.heartbeat.ui.MainActivity" />
         <activity
             android:name="com.maxiee.heartbeat.ui.AddEventActivity"
+            android:launchMode="singleTask"
             android:parentActivityName="com.maxiee.heartbeat.ui.MainActivity" />
         <activity android:name="com.maxiee.heartbeat.ui.EventDetailActivity"
             android:parentActivityName="com.maxiee.heartbeat.ui.MainActivity" />
