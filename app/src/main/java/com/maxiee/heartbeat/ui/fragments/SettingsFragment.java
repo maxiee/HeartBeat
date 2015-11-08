@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.backup.BackupManager;
 import com.maxiee.heartbeat.common.ThemeUtils;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.ui.CrashListActivity;
 import com.maxiee.heartbeat.ui.PatternActivity;
 
@@ -219,6 +220,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESTORE_REQUEST && resultCode == Activity.RESULT_OK) {
             BackupManager.restore(getActivity(), data);
+            DataManager dm = DataManager.getInstance(getActivity());
+            dm.reload();
         }
     }
 }
