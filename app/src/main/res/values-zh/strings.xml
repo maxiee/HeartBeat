@@ -36,7 +36,7 @@
     <string name="event_empty">美好的事情你还没有记录呢</string>
     <string name="event_list">事件列表</string>
     <string name="filetype_error">文件类型错误，请选择正确备份文件</string>
-    <string name="first_thought">此刻感想</string>
+    <string name="first_thought">此刻感想 (可选)</string>
     <string name="firtime">初刻</string>
     <string name="hour_ago">小时前</string>
     <string name="icon_thanks_title">致谢 @XXXXL</string>

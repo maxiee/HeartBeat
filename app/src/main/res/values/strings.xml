@@ -2,7 +2,7 @@
     <string name="app_name">HeartBeat</string>
     <string name="action_settings">Settings</string>
     <string name="add_event">Emotional moment</string>
-    <string name="first_thought">Current thought</string>
+    <string name="first_thought">Current thought (Optional)</string>
     <string name="notempty">Content can\'t be empty…</string>
     <string name="firtime">1st</string>
     <string name="sectime">2nd</string>
