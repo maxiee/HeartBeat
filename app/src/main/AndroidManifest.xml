@@ -38,7 +38,8 @@
         <activity
             android:name=".ui.GalleryActivity"
             android:theme="@style/AppTheme.FullScreen" />
-        <activity android:name=".ui.AddEditThoughtActivity" />
+        <activity android:name=".ui.AddEditThoughtActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
     </application>
 
 </manifest>
