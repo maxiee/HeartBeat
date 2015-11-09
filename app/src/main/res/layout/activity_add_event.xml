@@ -25,7 +25,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -84,6 +84,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/first_thought_layout"
                     android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
@@ -146,7 +147,7 @@
         android:id="@+id/fab"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end"
-        android:src="@drawable/ic_action_add"
+        android:src="@drawable/ic_action_done"
         android:layout_margin="16dp"
         android:clickable="true"
         app:elevation="6dp"
