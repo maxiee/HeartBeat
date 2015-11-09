@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -49,6 +50,8 @@ public class AddEditThoughtActivity extends BaseActivity {
     private EditText mEditThought;
     private ImageView mImage;
     private String mTextThought;
+
+    private ImageButton mAddImageButton;
 
     private int mMode;
     private int mEventKey = INVALID_EVENT_KEY;
@@ -91,6 +94,28 @@ public class AddEditThoughtActivity extends BaseActivity {
 
         mImage = (ImageView) findViewById(R.id.image);
         mEditThought = (EditText) findViewById(R.id.edit_thought);
+
+        mAddImageButton = (ImageButton) findViewById(R.id.add_imgae);
+        mAddImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT < 19) {
+                    Intent i = new Intent();
+                    i.setType("image/*");
+                    i.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(
+                            Intent.createChooser(i, getString(R.string.add_image)),
+                            ADD_IMAGE);
+                } else {
+                    Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    i.addCategory(Intent.CATEGORY_OPENABLE);
+                    i.setType("image/*");
+                    startActivityForResult(
+                            Intent.createChooser(i, getString(R.string.add_image)),
+                            ADD_IMAGE);
+                }
+            }
+        });
 
         if (mMode == MODE_NEW) setTitle(getString(R.string.add_thought));
         if (mMode == MODE_EDIT) setTitle(getString(R.string.dialog_edit_thought));
@@ -158,24 +183,6 @@ public class AddEditThoughtActivity extends BaseActivity {
                 }
                 Log.d(TAG, "Res changed, update it.");
                 new UpdateThoughtTask().execute(UpdateThoughtTask.RES_UPDATE);
-            }
-            return true;
-        }
-        if (id == R.id.add_imgae) {
-            if (Build.VERSION.SDK_INT < 19) {
-                Intent i = new Intent();
-                i.setType("image/*");
-                i.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(
-                        Intent.createChooser(i, getString(R.string.add_image)),
-                        ADD_IMAGE);
-            } else {
-                Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                i.addCategory(Intent.CATEGORY_OPENABLE);
-                i.setType("image/*");
-                startActivityForResult(
-                        Intent.createChooser(i, getString(R.string.add_image)),
-                        ADD_IMAGE);
             }
             return true;
         }

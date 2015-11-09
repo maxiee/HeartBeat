@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -28,9 +27,29 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_marginRight="24dp"
         android:layout_marginLeft="24dp"
         android:scaleType="fitCenter"
         android:visibility="gone"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/colorPrimary">
+
+        <ImageButton
+            android:id="@+id/add_imgae"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_action_photo"
+            android:padding="10dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"/>
+
+    </LinearLayout>
+
 </LinearLayout>
