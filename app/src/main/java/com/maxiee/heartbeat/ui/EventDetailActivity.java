@@ -53,7 +53,6 @@ import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.adapter.ThoughtTimeaxisAdapter;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
-import com.maxiee.heartbeat.ui.dialog.EditEventDialog;
 
 import java.util.ArrayList;
 
@@ -108,13 +107,10 @@ public class EventDetailActivity extends BaseActivity {
         mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
         mCardEvent = (View) findViewById(R.id.card_event);
         mAddImageText = (TextView) findViewById(R.id.add_imgae);
-
-        mEvent =  new GetOneEventApi(this, mId).exec();
-        mTvEvent.setText(mEvent.getmEvent());
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        updateTagView();
+        mEvent =  new GetOneEventApi(this, mId).exec();
 
         mTagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
@@ -132,23 +128,9 @@ public class EventDetailActivity extends BaseActivity {
         mCardEvent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                EditEventDialog dialog = new EditEventDialog(
-                        EventDetailActivity.this,
-                        mEvent
-                );
-                dialog.setOnEditFinishedListener(new EditEventDialog.OnEditFinishedListener() {
-                    @Override
-                    public void update(String event) {
-                        mTvEvent.setText(event);
-                        updateTagView();
-                    }
-
-                    @Override
-                    public void remove() {
-                        finish();
-                    }
-                });
-                dialog.show();
+                Intent i = new Intent(EventDetailActivity.this, AddEventActivity.class);
+                i.putExtra(AddEventActivity.ID_EVENT_MODIFY, mId);
+                startActivity(i);
                 return true;
             }
         });
@@ -163,16 +145,18 @@ public class EventDetailActivity extends BaseActivity {
                 startActivity(i);
             }
         });
-
-        initImage();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mEvent =  new GetOneEventApi(this, mId).exec();
+        mTvEvent.setText(mEvent.getmEvent());
         mThoughts = new GetAllThoughtApi(this, mEvent.getmId()).exec();
         mAdapter = new ThoughtTimeaxisAdapter(mThoughts);
         mRecyclerView.setAdapter(mAdapter);
+        initImage();
+        updateTagView();
     }
 
     private void initImage() {
