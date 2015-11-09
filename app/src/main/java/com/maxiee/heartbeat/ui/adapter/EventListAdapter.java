@@ -18,6 +18,7 @@ import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
 import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.ui.AddEventActivity;
 import com.maxiee.heartbeat.ui.EventDetailActivity;
 
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 final String[] items = new String[] {
+                        v.getContext().getString(R.string.dialog_edit_event),
                         v.getContext().getString(R.string.delete)
                 };
                 final Context context = v.getContext();
@@ -90,6 +92,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
+                            Intent i = new Intent(context, AddEventActivity.class);
+                            i.putExtra(AddEventActivity.ID_EVENT_MODIFY, event.getmId());
+                            context.startActivity(i);
+                        }
+                        if (which == 1) {
                             DataManager.getInstance(context).deleteEvent(event.getmId());
                         }
                     }
