@@ -81,7 +81,7 @@ public class EventDetailActivity extends BaseActivity {
     private View mCardEvent;
     private long mId;
     private TextView mAddImageText;
-    private String mImagePath;
+    private Image mImage;
     private Thoughts mThoughts;
     private String mSortingType;
 
@@ -161,8 +161,8 @@ public class EventDetailActivity extends BaseActivity {
     }
 
     private void initImage() {
-        Image i = ImageUtils.getImageByEventId(this, mEvent.getId());
-        if (i == null) {
+        mImage = ImageUtils.getImageByEventId(this, mEvent.getId());
+        if (mImage == null) {
             mAddImageText.setVisibility(View.VISIBLE);
             mImageBackDrop.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,7 +184,7 @@ public class EventDetailActivity extends BaseActivity {
         }
         mAddImageText.setVisibility(View.INVISIBLE);
         Glide.with(this)
-                .load(i.getPath())
+                .load(mImage.getPath())
                 .into(mImageBackDrop);
         mImageBackDrop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,7 +316,7 @@ public class EventDetailActivity extends BaseActivity {
                     Bitmap.Config.ARGB_8888);
             mBitmapHolder = new Canvas(mBitmap);
 
-            if (mImagePath != null) publishProgress(-2);//backdrop
+            if (mImage != null) publishProgress(-2);//backdrop
             publishProgress(-1);//event card
             for (int i=0; i<mThoughts.length(); i++) {
                 publishProgress(i);
@@ -330,7 +330,7 @@ public class EventDetailActivity extends BaseActivity {
             int progress = values[0];
             if (progress == -2) {
                 // draw backdrop
-                if (mImagePath != null) {
+                if (mImage != null) {
                     int backDropHeight = mImageBackDrop.getMeasuredHeight();
                     mImageBackDrop.layout(0, 0, mWidth, backDropHeight);
                     mImageBackDrop.buildDrawingCache();
@@ -432,7 +432,7 @@ public class EventDetailActivity extends BaseActivity {
     private int measureViews(View item, int width) {
         int height = 0;
 
-        if (mImagePath != null) {
+        if (mImage != null) {
             height += mImageBackDrop.getMeasuredHeight();
         }
 
