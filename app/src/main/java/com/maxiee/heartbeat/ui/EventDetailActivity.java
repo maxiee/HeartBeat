@@ -266,7 +266,7 @@ public class EventDetailActivity extends BaseActivity {
             progressDialog.show();
             FrameLayout mFl = new FrameLayout(EventDetailActivity.this);
             mFl.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
-            mCardEvent.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
+            mCardEvent.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, android.support.v7.cardview.R.color.cardview_light_background));
             DisplayMetrics displaymetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             mWidth = displaymetrics.widthPixels;
