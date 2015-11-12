@@ -4,18 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.maxiee.heartbeat.common.TimeUtils;
-import com.maxiee.heartbeat.database.api.DeleteEventByKeyApi;
-import com.maxiee.heartbeat.database.api.DeleteImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.DeleteThoughtsByEventKeyApi;
-import com.maxiee.heartbeat.database.api.GetAllEventApi;
-import com.maxiee.heartbeat.database.api.GetOneEventApi;
-import com.maxiee.heartbeat.database.api.GetThoughtTodayCountApi;
-import com.maxiee.heartbeat.database.api.GetTodayEventApi;
+import com.maxiee.heartbeat.database.utils.EventUtils;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
 import com.maxiee.heartbeat.ui.adapter.TodayEventAdapter;
-
-import java.util.ArrayList;
 
 /**
  * Created by maxiee on 15/10/28.
@@ -24,12 +18,10 @@ public class DataManager {
     private static final String TAG = DataManager.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<Event> mEventList;
+    private EventManager mEventManager;
+    private TodayManager mTodayManager;
     private EventListAdapter mEventAdapter;
-    private ArrayList<Event> mTodayList;
     private TodayEventAdapter mTodayAdapter;
-    private int mCountTodayEvent;
-    private int mCountTodayThought;
     private int mToday;
     private static DataManager mInstance;
 
@@ -42,24 +34,18 @@ public class DataManager {
 
     private DataManager(Context context) {
         mContext = context;
-        mEventList = new GetAllEventApi(context).exec();
-        mEventAdapter = new EventListAdapter(mEventList);
-        mTodayList = new GetTodayEventApi(context).exec();
-        mTodayAdapter = new TodayEventAdapter(mTodayList);
-        countTodayEvent();
-        countTodayThought();
+        mEventManager = new EventManager(mContext);
+        mTodayManager = new TodayManager(mContext);
+        mEventAdapter = new EventListAdapter(mEventManager.getEvents());
+        mTodayAdapter = new TodayEventAdapter(mTodayManager.getEvents());
         mToday = TimeUtils.getToday();
     }
 
     public void reload() {
-        mEventList.clear();
-        mTodayList.clear();
-        mEventList = new GetAllEventApi(mContext).exec();
-        mTodayList = new GetTodayEventApi(mContext).exec();
-        mEventAdapter.setData(mEventList);
-        mTodayAdapter.setData(mTodayList);
-        countTodayEvent();
-        countTodayThought();
+        mEventManager.reload();
+        mTodayManager.reload();
+        mEventAdapter.setData(mEventManager.getEvents());
+        mTodayAdapter.setData(mTodayManager.getEvents());
     }
 
     public EventListAdapter getEventAdapter() {
@@ -71,96 +57,62 @@ public class DataManager {
     }
 
     public boolean isEventEmpty() {
-        return mEventList.isEmpty();
+        return mEventManager.isEmpty();
     }
 
     public boolean isTodayEmpty() {
-        return mTodayList.isEmpty();
+        return mTodayManager.isEmpty();
     }
 
-    private void countTodayEvent() {
-        mCountTodayEvent = mTodayList.size();
-    }
-
-    private void countTodayThought() {
-        mCountTodayThought = new GetThoughtTodayCountApi(mContext).exec();
-    }
-
-    public String getTodayEventCountString() {
-        return String.valueOf(mCountTodayEvent);
+    public int getTodayEventCount() {
+        return mTodayManager.countTodayEvent();
     }
 
     public int getTodayThoughtCount() {
-        return mCountTodayThought;
-    }
-
-    public String getTodayThoughtCountString() {
-        return String.valueOf(mCountTodayThought);
+        return mTodayManager.countTodayThought();
     }
 
     public void notifyDataSetChanged() {
-        countTodayEvent();
-        countTodayThought();
         mEventAdapter.notifyDataSetChanged();
         mTodayAdapter.notifyDataSetChanged();
     }
 
     public void addEvent(Event event) {
-        mEventList.add(0, event);
-        mTodayList.add(0, event);
+        // TODO move the code of DB-adding here
+        mEventManager.addEvent(event);
+        mTodayManager.addEvent(event);
     }
 
-    public void deleteEvent(int key) {
-        new DeleteEventByKeyApi(mContext, key).exec();
-        new DeleteImageByEventKeyApi(mContext, key).exec();
-        new DeleteThoughtsByEventKeyApi(mContext, key).exec();
-        int indexEvent = findFromList(key, mEventList);
-        if (indexEvent >= 0) mEventList.remove(indexEvent);
-        int indexToday = findFromList(key, mTodayList);
-        if (indexToday >= 0) mTodayList.remove(indexToday);
+    public void deleteEvent(long key) {
+        // TODO wrap the deleting code to utils
+        EventUtils.deleteEvent(mContext, key);
+        ImageUtils.deleteByEventId(mContext, key);
+        ThoughtUtils.deleteByEventId(mContext, key);
+        mEventManager.deleteEvent(key);
+        mEventManager.deleteEvent(key);
         notifyDataSetChanged();
         checkNewDay();
     }
 
-    public void updateEvent(int key) {
-        int indexEvent = findFromList(key, mEventList);
-        int indexToday = findFromList(key, mTodayList);
-
-        if (indexEvent == -1 && indexToday == -1) {
-            return;
-        }
-
-        Event e = new GetOneEventApi(mContext, key).exec();
-
-        if (e == null) {
-            return;
-        }
-
-        if (indexEvent >= 0) mEventList.set(indexEvent, e);
-        if (indexToday >= 0) mTodayList.set(indexToday, e);
+    public void updateEvent(long key) {
+        Event e = EventUtils.getEvent(mContext, key);
+        if (e == null) return;
+        mEventManager.updateEvent(e);
+        mTodayManager.updateEvent(e);
         checkNewDay();
-    }
-
-    private static int findFromList(int key, ArrayList<Event> list) {
-        for (int i=0; i<list.size(); i++) {
-            if (list.get(i).getmId() == key) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public void checkNewDay() {
         int day = TimeUtils.getToday();
         if (day != mToday) {
             mToday = day;
-            mTodayList.clear();
+            mTodayManager.reload();
             notifyDataSetChanged();
         }
     }
 
     public void logInfo() {
-        Log.d(TAG, "EventList size:" + String.valueOf(mEventList.size()));
-        Log.d(TAG, "TodayList size:" + String.valueOf(mTodayList.size()));
+        Log.d(TAG, "EventList size:" + String.valueOf(mEventManager.size()));
+        Log.d(TAG, "TodayList size:" + String.valueOf(mTodayManager.size()));
     }
 }
