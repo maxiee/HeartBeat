@@ -6,7 +6,7 @@ package com.maxiee.heartbeat.model;
 public class Event {
     private String mEvent;
     private long timestamp;
-    private int mId;
+    private long mId;
 
     public Event(
             int id,
@@ -17,7 +17,16 @@ public class Event {
         this.timestamp = timestamp;
     }
 
-    public String getmEvent() {
+    public Event(
+            long id,
+            String mEvent,
+            long timestamp) {
+        this.mId = (int) id;
+        this.mEvent = mEvent;
+        this.timestamp = timestamp;
+    }
+
+    public String getEvent() {
         return mEvent;
     }
 
@@ -25,7 +34,7 @@ public class Event {
         return timestamp;
     }
 
-    public int getmId() {
+    public long getId() {
         return mId;
     }
 }

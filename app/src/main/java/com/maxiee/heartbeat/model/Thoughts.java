@@ -58,19 +58,19 @@ public class Thoughts {
         public static final String HAS_NO_PATH = "";
         public static final int RES_IMAGE = 0;
 
-        private int key;
+        private long key;
         private String mThought;
         private long mTimeStamp;
         private int mResType = HAS_NO_RES;
         private String mResPath = "";
 
-        public Thought(int key, String mThought, long mTimeStamp) {
+        public Thought(long key, String mThought, long mTimeStamp) {
             this.key = key;
             this.mThought = mThought;
             this.mTimeStamp = mTimeStamp;
         }
 
-        public int getKey() {
+        public long getKey() {
             return key;
         }
 

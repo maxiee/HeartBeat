@@ -4,15 +4,15 @@ package com.maxiee.heartbeat.model;
  * Created by maxiee on 15-7-10.
  */
 public class Label {
-    private int mKey;
+    private long mId;
     private String mLabel;
 
-    public Label(int key, String label) {
-        this.mKey = key;
+    public Label(long key, String label) {
+        this.mId = key;
         this.mLabel = label;
     }
 
-    public int getKey() {return mKey;}
+    public long getId() {return mId;}
 
     public String getLabel() {return mLabel;}
 }
