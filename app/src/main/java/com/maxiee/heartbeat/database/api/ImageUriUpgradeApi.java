@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.maxiee.heartbeat.common.FileUtils;
 import com.maxiee.heartbeat.database.tables.ImageTable;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
 
 /**
  * Created by maxiee on 15-9-8.
@@ -49,7 +50,7 @@ public class ImageUriUpgradeApi {
         if (uri.startsWith(URI_CONTENT_PREFIX)) {
             String ret = FileUtils.uriToPath(context, Uri.parse(uri));
             if (ret == null) {  // delete
-                DeleteImageByImageKeyApi.exec(db, id);
+                ImageUtils.deleteByImageId(context, id);
             } else { // update
                 ContentValues values = new ContentValues();
                 values.put(ImageTable.URI, ret);

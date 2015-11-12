@@ -15,9 +15,10 @@ import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.data.DataManager;
-import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.model.Image;
 import com.maxiee.heartbeat.ui.EventDetailActivity;
 
 import java.util.ArrayList;
@@ -65,21 +66,18 @@ public class TodayEventAdapter extends RecyclerView.Adapter<TodayEventAdapter.Vi
         if (holder.mViewType == ITEM_VIEW_TYPE_ITEM) {
             final Event event = mEventList.get(position - 1);
 
-            holder.tvEvent.setText(event.getmEvent());
+            holder.tvEvent.setText(event.getEvent());
             holder.tvTime.setText(
                     TimeUtils.parseTime(
                             holder.mView.getContext(),
                             event.getTimestamp()));
 
             holder.tvThoughtCount.setText(
-                    String.valueOf(
-                            new ThoughtCountByEventApi(holder.mContext, event.getmId()).exec()
-                    )
-            );
+                    String.valueOf(ThoughtUtils.getEventCount(holder.mContext, event.getId())));
 
 //        Log.d(TAG, "事件列表项目");
-//        Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
-//        Log.d(TAG, "名称:" + event.getmEvent());
+//        Log.d(TAG, "编号:" + String.valueOf(event.getId()));
+//        Log.d(TAG, "名称:" + event.getEvent());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,7 +86,7 @@ public class TodayEventAdapter extends RecyclerView.Adapter<TodayEventAdapter.Vi
                     Intent intent = new Intent(context, EventDetailActivity.class);
                     intent.putExtra(
                             EventDetailActivity.EXTRA_NAME,
-                            mEventList.get(position - 1).getmId());
+                            mEventList.get(position - 1).getId());
                     context.startActivity(intent);
                 }
             });
@@ -105,7 +103,7 @@ public class TodayEventAdapter extends RecyclerView.Adapter<TodayEventAdapter.Vi
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {
-                                DataManager.getInstance(context).deleteEvent(event.getmId());
+                                DataManager.getInstance(context).deleteEvent(event.getId());
                             }
                         }
                     });
@@ -114,17 +112,17 @@ public class TodayEventAdapter extends RecyclerView.Adapter<TodayEventAdapter.Vi
                 }
             });
 
-            String imagePath = new GetImageByEventKeyApi(holder.mContext, event.getmId()).exec();
+            Image i = ImageUtils.getImageByEventId(holder.mContext, event.getId());
 
             int marginTBHasImage = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_has_image_margin_tb);
             int marginTBNoImage = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_no_image_margin_tb);
             int marginLR = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_image_margin_lr);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.tvEvent.getLayoutParams();
 
-            if (imagePath != null) {
+            if (i != null) {
                 holder.mCoverImage.setVisibility(View.VISIBLE);
                 Glide.with(holder.mContext)
-                        .load(imagePath)
+                        .load(i.getPath())
                         .centerCrop()
                         .into(holder.mCoverImage);
                 params.setMargins(marginLR, marginTBHasImage, marginLR, marginTBHasImage);
@@ -134,8 +132,8 @@ public class TodayEventAdapter extends RecyclerView.Adapter<TodayEventAdapter.Vi
             }
         } else {
             DataManager dm = DataManager.getInstance(holder.mContext);
-            holder.tvEventCount.setText(dm.getTodayEventCountString());
-            holder.tvThoughtCount.setText(dm.getTodayThoughtCountString());
+            holder.tvEventCount.setText(String.valueOf(dm.getTodayEventCount()));
+            holder.tvThoughtCount.setText(String.valueOf(dm.getTodayThoughtCount()));
             showTodayHint(dm.getTodayThoughtCount(), holder.tvTodayHint, holder.mContext);
         }
     }

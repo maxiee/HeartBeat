@@ -14,8 +14,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.cloudview.CloudView;
-import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
-import com.maxiee.heartbeat.database.api.GetOneLabelApi;
+import com.maxiee.heartbeat.database.utils.LabelUtils;
 import com.maxiee.heartbeat.ui.LabelDetailActivity;
 
 import java.util.ArrayList;
@@ -50,14 +49,14 @@ public class LabelCloudFragment extends Fragment{
 
     public void updateCloud() {
 
-        Map<Integer,Integer> allLabels = new GetLabelsAndFreqApi(getActivity()).exec();
+        Map<Long,Integer> allLabels = LabelUtils.getFreq(getActivity());
         List<Pair<String, Integer>> labels = new LinkedList<>();
 
         if (allLabels != null) {
-            ArrayList<Map.Entry<Integer, Integer>> list = new ArrayList<>(allLabels.entrySet());
-            for (Map.Entry<Integer, Integer> label: list) {
+            ArrayList<Map.Entry<Long, Integer>> list = new ArrayList<>(allLabels.entrySet());
+            for (Map.Entry<Long, Integer> label: list) {
                 labels.add(new Pair<String, Integer>(
-                        new GetOneLabelApi(getActivity(), label.getKey()).exec(),
+                        LabelUtils.getLabelByLabelId(getActivity(), label.getKey()).getLabel(),
                         label.getValue()));
             }
         }

@@ -18,9 +18,10 @@ import android.widget.TextView;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
-import com.maxiee.heartbeat.database.api.GetEventsByLabelKeyApi;
-import com.maxiee.heartbeat.database.api.HasLabelApi;
+import com.maxiee.heartbeat.database.utils.EventUtils;
+import com.maxiee.heartbeat.database.utils.LabelUtils;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 
@@ -62,14 +63,16 @@ public class LabelDetailActivity extends BaseActivity{
         mAccentColor = accentValue.data;
 
         if (mLabel != null) {
-            int labelKey = new HasLabelApi(this, mLabel).exec();
+            long labelKey = LabelUtils.hasLabel(this, mLabel);
             updateEventList(labelKey);
             showHintText();
         }
     }
 
-    public void updateEventList(int labelKey) {
-        mEventList = new GetEventsByLabelKeyApi(this, labelKey).exec();
+    public void updateEventList(long labelKey) {
+        // Temp Label
+        Label label = new Label(labelKey, "");
+        mEventList = EventUtils.getEvents(this, label);
         mRecyclerView.setAdapter(new EventListAdapter(mEventList));
     }
 

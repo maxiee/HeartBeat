@@ -25,22 +25,13 @@ import com.maxiee.heartbeat.common.FileUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
 import com.maxiee.heartbeat.data.DataManager;
-import com.maxiee.heartbeat.database.api.AddEventApi;
-import com.maxiee.heartbeat.database.api.AddEventLabelRelationApi;
-import com.maxiee.heartbeat.database.api.AddImageApi;
-import com.maxiee.heartbeat.database.api.AddLabelsApi;
-import com.maxiee.heartbeat.database.api.AddThoughtApi;
-import com.maxiee.heartbeat.database.api.DeleteEventLabelRelationApi;
-import com.maxiee.heartbeat.database.api.GetEventsByLabelKeyApi;
-import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.GetLabelsAndFreqApi;
-import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
-import com.maxiee.heartbeat.database.api.GetOneEventApi;
-import com.maxiee.heartbeat.database.api.GetOneLabelApi;
-import com.maxiee.heartbeat.database.api.HasLabelApi;
-import com.maxiee.heartbeat.database.api.UpdateEventApi;
-import com.maxiee.heartbeat.database.api.UpdateImageByKeyApi;
+import com.maxiee.heartbeat.database.utils.EventUtils;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
+import com.maxiee.heartbeat.database.utils.LabelUtils;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.model.Image;
+import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.dialog.NewLabelDialog;
@@ -85,7 +76,7 @@ public class AddEventActivity extends BaseActivity{
     private boolean mIsModify = false;
     private boolean mExitEnsure = false;
 
-    private int mEventId;
+    private long mEventId;
     private String mStrEventBackup;
     private ArrayList<String> mLabelsBackup = new ArrayList<>();
     private String mImagePath;
@@ -104,17 +95,19 @@ public class AddEventActivity extends BaseActivity{
         setTitle("");
 
         Intent i = getIntent();
-        mEventId = i.getIntExtra(ID_EVENT_MODIFY, EVENT_NO_ID);
+        mEventId = i.getLongExtra(ID_EVENT_MODIFY, EVENT_NO_ID);
         if (mEventId != EVENT_NO_ID) {
             mIsModify = true;
-            Event e = new GetOneEventApi(this, mEventId).exec();
-            mStrEventBackup = e.getmEvent();
+            Event e = EventUtils.getEvent(this, mEventId);
+            mStrEventBackup = e.getEvent();
             mEditEvent.setText(mStrEventBackup);
-            mLabels = new GetLabelsByEventKeyApi(this, mEventId).exec();
-            if (mLabels == null) mLabels = new ArrayList<>();
+            // TODO hack
+            ArrayList<Label> labels = LabelUtils.getLabelsByEvent(this, e);
+            for (Label l : labels) mLabels.add(l.getLabel());
             mLabelsBackup = new ArrayList<>(mLabels);
-            mImagePath = new GetImageByEventKeyApi(this, mEventId).exec();
-            if (mImagePath != null) {
+            Image image = ImageUtils.getImageByEventId(this, mEventId);
+            if (image != null) {
+                mImagePath = image.getPath();
                 mTvAddImage.setText(R.string.change_image);
                 Glide.with(this).load(mImagePath).into(mImageBackDrop);
                 mImagePathBackup = mImagePath;
@@ -278,22 +271,19 @@ public class AddEventActivity extends BaseActivity{
     }
 
     public void initTagsRecent() {
-        Map<Integer, Integer> recentLabels =
-                new GetLabelsAndFreqApi(this).exec();
+        Map<Long, Integer> recentLabels = LabelUtils.getFreq(this);
         if (recentLabels == null) {
             return;
         }
-        ArrayList<Map.Entry<Integer,Integer>> list = new ArrayList<>(recentLabels.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
+        ArrayList<Map.Entry<Long,Integer>> list = new ArrayList<>(recentLabels.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Long, Integer>>() {
             @Override
-            public int compare(Map.Entry<Integer, Integer> lhs, Map.Entry<Integer, Integer> rhs) {
+            public int compare(Map.Entry<Long, Integer> lhs, Map.Entry<Long, Integer> rhs) {
                 return rhs.getValue() - lhs.getValue();
             }
         });
-        for (Map.Entry<Integer,Integer> labelId : list) {
-            Tag tag = new Tag(
-                    new GetOneLabelApi(this, labelId.getKey()).exec()
-            );
+        for (Map.Entry<Long,Integer> labelId : list) {
+            Tag tag = new Tag(LabelUtils.getLabelByLabelId(this, labelId.getKey()).getLabel());
             tag.hasExtraInfo = true;
             tag.extraInfoString = " x" + String.valueOf(labelId.getValue());
             tag.layoutColor = getResources().getColor(R.color.tag_gray);
@@ -303,56 +293,34 @@ public class AddEventActivity extends BaseActivity{
     }
 
     private class AddEventTask extends AsyncTask<Void, Void, Void> {
-        private int mEventKey;
+        private long mEventKey;
 
         @Override
         protected Void doInBackground(Void... params) {
 
             // add event
-            mEventKey = (int) new AddEventApi(
-                    AddEventActivity.this,
-                    mStrEvent).exec();
+            Event newEvent = EventUtils.addEvent(AddEventActivity.this, mStrEvent);
+            mEventKey = newEvent.getId();
 
             // add thought
             if (!mStrFirstThought.isEmpty()) {
-                new AddThoughtApi(
-                        AddEventActivity.this,
-                        mEventKey,
-                        mStrFirstThought,
-                        Thoughts.Thought.HAS_NO_RES,
-                        Thoughts.Thought.HAS_NO_PATH
-                ).exec();
+                ThoughtUtils.addThought(AddEventActivity.this, mEventKey, mStrFirstThought, Thoughts.Thought.HAS_NO_RES, Thoughts.Thought.HAS_NO_PATH);
             }
 
             // add labels
-            ArrayList<Integer> labelsKey = new AddLabelsApi(
-                    AddEventActivity.this,
-                    mLabels
-            ).exec();
-
-            for (int labelkey: labelsKey) {
-                new AddEventLabelRelationApi(
-                        AddEventActivity.this,
-                        mEventKey,
-                        labelkey
-                ).exec();
-            }
+            LabelUtils.addLabels(AddEventActivity.this, mEventKey, mLabels);
 
             if (mImageUri != null) {
                 // convert uri to path
                 String path = FileUtils.uriToPath(AddEventActivity.this, mImageUri);
-                new AddImageApi(AddEventActivity.this, mEventKey, path).exec();
+                ImageUtils.addImage(AddEventActivity.this, mEventKey, path);
             }
 
-            Event newEvent = new GetOneEventApi(AddEventActivity.this, mEventKey).exec();
-            if(newEvent != null) {
-                mDataManager.addEvent(newEvent);
-            }
+            mDataManager.addEvent(newEvent);
 
             Log.d(TAG, "添加事件");
             Log.d(TAG, "id: " + String.valueOf(mEventKey));
             Log.d(TAG, "labels: " + mLabels.toString());
-            Log.d(TAG, "labels_key: " + labelsKey.toString());
             return null;
         }
 
@@ -370,35 +338,39 @@ public class AddEventActivity extends BaseActivity{
         @Override
         protected Void doInBackground(Void... params) {
             if (!mStrEventBackup.equals(mStrEvent)) {
-                new UpdateEventApi(AddEventActivity.this, mEventId, mStrEvent).exec();
+                // TODO temp Event
+                Event e = new Event(mEventId, mStrEvent, 0);
+                EventUtils.updateEvent(AddEventActivity.this, e);
             }
             if (mHasImage && !mImagePath.equals(mImagePathBackup)) {
                 // update
-                new UpdateImageByKeyApi(AddEventActivity.this, mEventId, mImagePath).exec();
+                ImageUtils.updateImageByEventId(AddEventActivity.this, mEventId, mImagePath);
             } else if (!mHasImage && mImagePath != null) {
                 // add
-                new AddImageApi(AddEventActivity.this, mEventId, mImagePath).exec();
+                ImageUtils.addImage(AddEventActivity.this, mEventId, mImagePath);
             }
             for (String l: mLabels) {
-                int labelKey = new HasLabelApi(AddEventActivity.this, l).exec();
-                if (labelKey == HasLabelApi.NOT_FOUND) {
-                    ArrayList<Integer> labelId = new AddLabelsApi(AddEventActivity.this, l).exec();
-                    new AddEventLabelRelationApi(AddEventActivity.this, mEventId, labelId.get(0)).exec();
+                long labelKey = LabelUtils.hasLabel(AddEventActivity.this, l);
+                if (labelKey == LabelUtils.NOT_FOUND) {
+                    LabelUtils.addLabel(AddEventActivity.this, mEventId, l);
                 } else {
-                    ArrayList<Event> events = new GetEventsByLabelKeyApi(AddEventActivity.this, labelKey).exec();
+                    // TODO temp label
+                    Label label = new Label(labelKey, "");
+                    ArrayList<Event> events = EventUtils.getEvents(AddEventActivity.this, label);
                     boolean alreadyHas = false;
                     for (Event event:events)
-                        if (event.getmId() == mEventId)
+                        if (event.getId() == mEventId)
                             alreadyHas = true;
-                    if (!alreadyHas)
-                        new AddEventLabelRelationApi(AddEventActivity.this, mEventId, labelKey).exec();
+                    if (!alreadyHas) {
+                        LabelUtils.addRelation(AddEventActivity.this, mEventId, labelKey);
+                    }
                 }
             }
             for (String l:mLabelsBackup)
                 if (!mLabels.contains(l)) {
-                    int key = new HasLabelApi(AddEventActivity.this, l).exec();
-                    if (key != HasLabelApi.NOT_FOUND) {
-                        new DeleteEventLabelRelationApi(AddEventActivity.this, mEventId, key).exec();
+                    long key = LabelUtils.hasLabel(AddEventActivity.this, l);
+                    if (key != LabelUtils.NOT_FOUND) {
+                        LabelUtils.deleteRelation(AddEventActivity.this, mEventId, key);
                     }
                 }
             mDataManager.updateEvent(mEventId);

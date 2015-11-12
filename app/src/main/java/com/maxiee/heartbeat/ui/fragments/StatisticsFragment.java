@@ -4,10 +4,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +29,10 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
-import com.maxiee.heartbeat.database.api.GetAllEventApi;
 import com.maxiee.heartbeat.database.api.GetCountByNameApi;
 import com.maxiee.heartbeat.database.api.GetCountSpecDayApi;
-import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
+import com.maxiee.heartbeat.database.utils.EventUtils;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
 
 import java.util.ArrayList;
@@ -199,9 +195,9 @@ public class StatisticsFragment extends Fragment{
         Map<Integer, Integer> freqCount = new TreeMap<>();
         Map<Event, Integer> eventsMap = new HashMap<>();
 
-        ArrayList<Event> events = new GetAllEventApi(getActivity()).exec();
+        ArrayList<Event> events = EventUtils.getAllEvents(getActivity());
         for (Event event: events) {
-            int count = new ThoughtCountByEventApi(getActivity(), event.getmId()).exec();
+            int count = ThoughtUtils.getEventCount(getActivity(), event.getId());
             eventsMap.put(event, count);
             if (!freqCount.containsKey(count)) {
                 freqCount.put(count, 1);

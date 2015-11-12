@@ -15,9 +15,10 @@ import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.data.DataManager;
-import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.ThoughtCountByEventApi;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.model.Image;
 import com.maxiee.heartbeat.ui.AddEventActivity;
 import com.maxiee.heartbeat.ui.EventDetailActivity;
 
@@ -51,21 +52,17 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Event event = mEventList.get(position);
 
-        holder.tvEvent.setText(event.getmEvent());
+        holder.tvEvent.setText(event.getEvent());
         holder.tvTime.setText(
                 TimeUtils.parseTime(
                         holder.mView.getContext(),
                         event.getTimestamp()));
 
-        holder.tvThoughtCount.setText(
-                String.valueOf(
-                        new ThoughtCountByEventApi(holder.mContext, event.getmId()).exec()
-                )
-        );
+        holder.tvThoughtCount.setText(String.valueOf(ThoughtUtils.getEventCount(holder.mContext, event.getId())));
 
 //        Log.d(TAG, "事件列表项目");
-//        Log.d(TAG, "编号:" + String.valueOf(event.getmId()));
-//        Log.d(TAG, "名称:" + event.getmEvent());
+//        Log.d(TAG, "编号:" + String.valueOf(event.getId()));
+//        Log.d(TAG, "名称:" + event.getEvent());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +71,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 Intent intent = new Intent(context, EventDetailActivity.class);
                 intent.putExtra(
                         EventDetailActivity.EXTRA_NAME,
-                        mEventList.get(position).getmId());
+                        mEventList.get(position).getId());
                 context.startActivity(intent);
             }
         });
@@ -83,7 +80,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                final String[] items = new String[] {
+                final String[] items = new String[]{
                         v.getContext().getString(R.string.dialog_edit_event),
                         v.getContext().getString(R.string.delete)
                 };
@@ -93,11 +90,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             Intent i = new Intent(context, AddEventActivity.class);
-                            i.putExtra(AddEventActivity.ID_EVENT_MODIFY, event.getmId());
+                            i.putExtra(AddEventActivity.ID_EVENT_MODIFY, event.getId());
                             context.startActivity(i);
                         }
                         if (which == 1) {
-                            DataManager.getInstance(context).deleteEvent(event.getmId());
+                            DataManager.getInstance(context).deleteEvent(event.getId());
                         }
                     }
                 });
@@ -106,17 +103,17 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             }
         });
 
-        String imagePath = new GetImageByEventKeyApi(holder.mContext, event.getmId()).exec();
+        Image i = ImageUtils.getImageByEventId(holder.mContext, event.getId());
 
         int marginTBHasImage = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_has_image_margin_tb);
         int marginTBNoImage = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_no_image_margin_tb);
         int marginLR = (int) holder.mContext.getResources().getDimension(R.dimen.item_event_image_margin_lr);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.tvEvent.getLayoutParams();
 
-        if (imagePath != null) {
+        if (i != null) {
             holder.mCoverImage.setVisibility(View.VISIBLE);
             Glide.with(holder.mContext)
-                    .load(imagePath)
+                    .load(i.getPath())
                     .centerCrop()
                     .into(holder.mCoverImage);
             params.setMargins(marginLR, marginTBHasImage, marginLR, marginTBHasImage);

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 import uk.co.senab.photoview.PhotoView;
@@ -27,7 +27,7 @@ public class GalleryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        int eventId = getIntent().getIntExtra(EVENT_ID, -1);
+        long eventId = getIntent().getLongExtra(EVENT_ID, -1);
         String path = "";
         if (eventId == -1) {
             path = getIntent().getStringExtra(PATH);
@@ -50,7 +50,7 @@ public class GalleryActivity extends BaseActivity {
         });
 
         if (eventId != -1) {
-            final String imagePath = new GetImageByEventKeyApi(this, eventId).exec();
+            String imagePath = ImageUtils.getImageByEventId(this, eventId).getPath();
             Glide.with(this).load(imagePath).into(mImage);
         } else {
             Glide.with(this).load(path).into(mImage);

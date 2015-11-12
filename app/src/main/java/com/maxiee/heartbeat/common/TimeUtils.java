@@ -82,4 +82,14 @@ public class TimeUtils {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
+
+    public static long getTodayMillis() {
+        Calendar date = Calendar.getInstance();
+        date.set(
+            date.get(Calendar.YEAR),
+            date.get(Calendar.MONTH),
+            date.get(Calendar.DAY_OF_MONTH),
+            0, 0);
+        return date.getTimeInMillis();
+    }
 }

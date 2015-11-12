@@ -44,12 +44,13 @@ import com.maxiee.heartbeat.common.FileUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
-import com.maxiee.heartbeat.database.api.AddImageApi;
-import com.maxiee.heartbeat.database.api.GetAllThoughtApi;
-import com.maxiee.heartbeat.database.api.GetImageByEventKeyApi;
-import com.maxiee.heartbeat.database.api.GetLabelsByEventKeyApi;
-import com.maxiee.heartbeat.database.api.GetOneEventApi;
+import com.maxiee.heartbeat.database.utils.EventUtils;
+import com.maxiee.heartbeat.database.utils.ImageUtils;
+import com.maxiee.heartbeat.database.utils.LabelUtils;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.model.Image;
+import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.adapter.ThoughtTimeaxisAdapter;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
@@ -78,7 +79,7 @@ public class EventDetailActivity extends BaseActivity {
     private TextView mTvTime;
     private ImageView mImageBackDrop;
     private View mCardEvent;
-    private int mId;
+    private long mId;
     private TextView mAddImageText;
     private String mImagePath;
     private Thoughts mThoughts;
@@ -90,7 +91,7 @@ public class EventDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_event_detail);
 
         Intent intent = getIntent();
-        mId = intent.getIntExtra(EXTRA_NAME, -1);
+        mId = intent.getLongExtra(EXTRA_NAME, -1);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         mSortingType = sp.getString("time_axis_sorting", "0");
@@ -110,7 +111,7 @@ public class EventDetailActivity extends BaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mEvent =  new GetOneEventApi(this, mId).exec();
+        mEvent = EventUtils.getEvent(this, mId);
 
         mTagView.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
@@ -150,9 +151,9 @@ public class EventDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mEvent =  new GetOneEventApi(this, mId).exec();
-        mTvEvent.setText(mEvent.getmEvent());
-        mThoughts = new GetAllThoughtApi(this, mEvent.getmId()).exec();
+        mEvent = EventUtils.getEvent(this, mId);
+        mTvEvent.setText(mEvent.getEvent());
+        mThoughts = ThoughtUtils.getThoughtsByEventId(this, mEvent.getId());
         mAdapter = new ThoughtTimeaxisAdapter(mThoughts);
         mRecyclerView.setAdapter(mAdapter);
         initImage();
@@ -160,8 +161,8 @@ public class EventDetailActivity extends BaseActivity {
     }
 
     private void initImage() {
-        mImagePath = new GetImageByEventKeyApi(this, mEvent.getmId()).exec();
-        if (mImagePath == null) {
+        Image i = ImageUtils.getImageByEventId(this, mEvent.getId());
+        if (i == null) {
             mAddImageText.setVisibility(View.VISIBLE);
             mImageBackDrop.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,13 +184,13 @@ public class EventDetailActivity extends BaseActivity {
         }
         mAddImageText.setVisibility(View.INVISIBLE);
         Glide.with(this)
-                .load(mImagePath)
+                .load(i.getPath())
                 .into(mImageBackDrop);
         mImageBackDrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(EventDetailActivity.this, GalleryActivity.class);
-                i.putExtra(GalleryActivity.EVENT_ID, mEvent.getmId());
+                i.putExtra(GalleryActivity.EVENT_ID, mEvent.getId());
                 startActivity(i);
             }
         });
@@ -217,12 +218,8 @@ public class EventDetailActivity extends BaseActivity {
 
     public void updateTagView() {
         mTagView.clear();
-        ArrayList<String> labels = new GetLabelsByEventKeyApi(this, mEvent.getmId()).exec();
-        if (labels != null) {
-            for (String label: labels) {
-                mTagView.addTag(new Tag(label));
-            }
-        }
+        ArrayList<Label> labels = LabelUtils.getLabelsByEvent(this, mEvent);
+        for (Label l : labels) mTagView.addTag(new Tag(l.getLabel()));
     }
 
     @Override
@@ -239,7 +236,7 @@ public class EventDetailActivity extends BaseActivity {
             }
             // convert uri to path
             String path = FileUtils.uriToPath(this, mImageUri);
-            new AddImageApi(EventDetailActivity.this, mEvent.getmId(), path).exec();
+            ImageUtils.addImage(EventDetailActivity.this, mEvent.getId(), path);
             initImage();
         }
     }

@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.database.api.EventSearchApi;
+import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
@@ -63,7 +63,7 @@ public class SearchResultActivity extends BaseActivity{
     }
 
     public void updateEventList(String search) {
-        ArrayList<Event> eventList = new EventSearchApi(this, search).exec();
+        ArrayList<Event> eventList = EventUtils.searchEvent(this, search);
         if (!eventList.isEmpty()) {
             mRecyclerView.setAdapter(new EventListAdapter(eventList));
         } else {

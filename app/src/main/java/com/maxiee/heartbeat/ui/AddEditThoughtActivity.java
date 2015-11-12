@@ -19,11 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.FileUtils;
-import com.maxiee.heartbeat.database.api.AddThoughtApi;
-import com.maxiee.heartbeat.database.api.AddThoughtResByKeyApi;
-import com.maxiee.heartbeat.database.api.DeleteThoughtByKeyApi;
-import com.maxiee.heartbeat.database.api.UpdateThoughtApi;
-import com.maxiee.heartbeat.database.api.UpdateThoughtResByKey;
+import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 
@@ -54,7 +50,7 @@ public class AddEditThoughtActivity extends BaseActivity {
     private ImageButton mAddImageButton;
 
     private int mMode;
-    private int mEventKey = INVALID_EVENT_KEY;
+    private long mEventKey = INVALID_EVENT_KEY;
     private int mThoughtKey = INVALID_THOUGHT_KEY;
 
     private int mResType = Thoughts.Thought.HAS_NO_RES;
@@ -73,7 +69,7 @@ public class AddEditThoughtActivity extends BaseActivity {
         mMode = intent.getIntExtra(MODE, MODE_NEW);
 
         if (mMode == MODE_NEW) {
-            mEventKey = intent.getIntExtra(EVENT_KEY, INVALID_EVENT_KEY);
+            mEventKey = intent.getLongExtra(EVENT_KEY, INVALID_EVENT_KEY);
         }
 
         if (mMode == MODE_EDIT) {
@@ -187,7 +183,7 @@ public class AddEditThoughtActivity extends BaseActivity {
             return true;
         }
         if (id == R.id.delete) {
-            new DeleteThoughtByKeyApi(this, mThoughtKey).exec();
+            ThoughtUtils.deleteByThoughtId(this, mThoughtKey);
             finish();
         }
         if (id == android.R.id.home) {
@@ -243,13 +239,7 @@ public class AddEditThoughtActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            new AddThoughtApi(
-                    AddEditThoughtActivity.this,
-                    mEventKey,
-                    mTextThought,
-                    mResType,
-                    mResPath
-            ).exec();
+            ThoughtUtils.addThought(AddEditThoughtActivity.this, mEventKey, mTextThought, mResType, mResPath);
             return null;
         }
 
@@ -270,26 +260,13 @@ public class AddEditThoughtActivity extends BaseActivity {
             int state = params[0];
             Log.d(TAG, "thoughtKey:" + String.valueOf(mThoughtKey));
             Log.d(TAG, "thought:" + mTextThought);
-            new UpdateThoughtApi(
-                    AddEditThoughtActivity.this,
-                    mThoughtKey,
-                    mTextThought
-            ).exec();
+            ThoughtUtils.updateThought(AddEditThoughtActivity.this, mThoughtKey, mTextThought);
             if (state == RES_DO_NOTHING) return null;
             if (state == RES_INSERT) {
-                new AddThoughtResByKeyApi(
-                        AddEditThoughtActivity.this,
-                        mThoughtKey,
-                        mResType,
-                        mResPath).exec();
+                ThoughtUtils.addRes(AddEditThoughtActivity.this, mThoughtKey, mResType, mResPath);
             }
             if (state == RES_UPDATE) {
-                new UpdateThoughtResByKey(
-                        AddEditThoughtActivity.this,
-                        mThoughtKey,
-                        mResType,
-                        mResPath
-                ).exec();
+                ThoughtUtils.updateRes(AddEditThoughtActivity.this, mThoughtKey, mResType, mResPath);
             }
             return null;
         }
