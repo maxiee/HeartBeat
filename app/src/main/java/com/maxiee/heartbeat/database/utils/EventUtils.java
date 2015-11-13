@@ -3,7 +3,6 @@ package com.maxiee.heartbeat.database.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.database.tables.EventsTable;
@@ -53,7 +52,6 @@ public class EventUtils {
     }
 
     public static Event getEvent(Context context, long id) {
-        Log.d(TAG, "getEvent:" + String.valueOf(id));
         Cursor cursor = DatabaseUtils.query(
                 context, EventsTable.NAME,
                 new String[]{EventsTable.ID, EventsTable.EVENT, EventsTable.TIMESTAMP},
