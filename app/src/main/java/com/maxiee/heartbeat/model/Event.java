@@ -37,4 +37,9 @@ public class Event {
     public long getId() {
         return mId;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[%d][%s]\n", mId, mEvent);
+    }
 }
