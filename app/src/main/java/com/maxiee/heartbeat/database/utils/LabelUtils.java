@@ -142,7 +142,12 @@ public class LabelUtils {
     public static ArrayList<Label> addLabels(Context context, ArrayList<String> labels) {
         ArrayList<Label> ret = new ArrayList<>();
         for (String l : labels) {
-            ret.add(addLabel(context, l));
+            long id = hasLabel(context, l);
+            if (id == NOT_FOUND) {
+                ret.add(addLabel(context, l));
+            } else {
+                ret.add(getLabelByLabelId(context, id));
+            }
         }
         return ret;
     }
