@@ -34,6 +34,10 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
         mThoughtList = thoughtList;
     }
 
+    public void setData(Thoughts thoughts) {
+        mThoughtList = thoughts;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
