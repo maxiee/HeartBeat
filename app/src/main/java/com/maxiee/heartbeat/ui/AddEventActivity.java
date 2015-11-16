@@ -66,6 +66,7 @@ public class AddEventActivity extends BaseActivity{
     @Bind(R.id.tagview_to_add)          TagView mTagViewToAdd;
     @Bind(R.id.add_imgae)               TextView mTvAddImage;
     @Bind(R.id.backdrop)                ImageView mImageBackDrop;
+    @Bind(R.id.header)                  View mHeaderView;
 
     private String mStrEvent;
     private String mStrFirstThought;
@@ -81,7 +82,7 @@ public class AddEventActivity extends BaseActivity{
     private ArrayList<String> mLabelsBackup = new ArrayList<>();
     private String mImagePath;
     private String mImagePathBackup;
-    private boolean mHasImage;
+    private boolean mHasImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class AddEventActivity extends BaseActivity{
                 mImagePath = image.getPath();
                 mTvAddImage.setText(R.string.change_image);
                 Glide.with(this).load(mImagePath).into(mImageBackDrop);
+                changeHeaderToImage();
                 mImagePathBackup = mImagePath;
                 mHasImage = true;
             } else {
@@ -205,6 +207,8 @@ public class AddEventActivity extends BaseActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
             Glide.with(this).load(data.getData()).into(mImageBackDrop);
+            mHasImage = true;
+            changeHeaderToImage();
             mImageUri = data.getData();
             mTvAddImage.setText(R.string.change_image);
             if (Build.VERSION.SDK_INT >= 19) {
@@ -242,6 +246,11 @@ public class AddEventActivity extends BaseActivity{
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void changeHeaderToImage() {
+        mHeaderView.setVisibility(View.GONE);
+        mImageBackDrop.setVisibility(View.VISIBLE);
     }
 
     private void ensureExit() {
