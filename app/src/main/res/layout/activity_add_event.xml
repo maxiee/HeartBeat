@@ -34,7 +34,6 @@
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="pin"
-                    android:src="@drawable/header001"
                     android:visibility="gone"/>
 
                 <com.maxiee.heartbeat.ui.common.mdheaderview.MDHeaderView

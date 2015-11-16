@@ -57,6 +57,9 @@ import com.maxiee.heartbeat.ui.common.BaseActivity;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by maxiee on 15-6-13.
  */
@@ -64,31 +67,34 @@ public class EventDetailActivity extends BaseActivity {
     private final static String TAG = EventDetailActivity.class.getSimpleName();
 
     public static final String EXTRA_NAME = "id";
-
     private static final int ADD_IMAGE = 1127;
-
     private static final int LONG_IMAGE_IMAGE_MAX_HEIGHT = 300;
 
+    private long mId;
     private Event mEvent;
 
-    private TextView mTvEvent;
-    private RecyclerView mRecyclerView;
+    @Bind(R.id.tv_event)        TextView mTvEvent;
+    @Bind(R.id.recyclerview)    RecyclerView mRecyclerView;
+    @Bind(R.id.tagview)         TagView mTagView;
+    @Bind(R.id.tv_time)         TextView mTvTime;
+    @Bind(R.id.backdrop)        ImageView mImageBackDrop;
+    @Bind(R.id.card_event)      View mCardEvent;
+    @Bind(R.id.add_imgae)       TextView mAddImageText;
+    @Bind(R.id.header)          View mHeaderView;
+
     private LinearLayoutManager mLayoutManager;
     private ThoughtTimeaxisAdapter mAdapter;
-    private TagView mTagView;
-    private TextView mTvTime;
-    private ImageView mImageBackDrop;
-    private View mCardEvent;
-    private long mId;
-    private TextView mAddImageText;
+
     private Image mImage;
     private Thoughts mThoughts;
     private String mSortingType;
+    private boolean mHasImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(EXTRA_NAME, -1);
@@ -101,13 +107,6 @@ public class EventDetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle("");
-        mTvEvent = (TextView) findViewById(R.id.tv_event);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        mTagView = (TagView) findViewById(R.id.tagview);
-        mTvTime = (TextView) findViewById(R.id.tv_time);
-        mImageBackDrop = (ImageView) findViewById(R.id.backdrop);
-        mCardEvent = (View) findViewById(R.id.card_event);
-        mAddImageText = (TextView) findViewById(R.id.add_imgae);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -146,6 +145,10 @@ public class EventDetailActivity extends BaseActivity {
                 startActivity(i);
             }
         });
+
+        mThoughts = ThoughtUtils.getThoughtsByEventId(this, mId);
+        mAdapter = new ThoughtTimeaxisAdapter(mThoughts);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -154,8 +157,7 @@ public class EventDetailActivity extends BaseActivity {
         mEvent = EventUtils.getEvent(this, mId);
         mTvEvent.setText(mEvent.getEvent());
         mThoughts = ThoughtUtils.getThoughtsByEventId(this, mEvent.getId());
-        mAdapter = new ThoughtTimeaxisAdapter(mThoughts);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setData(mThoughts);
         initImage();
         updateTagView();
     }
@@ -164,7 +166,7 @@ public class EventDetailActivity extends BaseActivity {
         mImage = ImageUtils.getImageByEventId(this, mEvent.getId());
         if (mImage == null) {
             mAddImageText.setVisibility(View.VISIBLE);
-            mImageBackDrop.setOnClickListener(new View.OnClickListener() {
+            mAddImageText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (Build.VERSION.SDK_INT < 19) {
@@ -180,20 +182,26 @@ public class EventDetailActivity extends BaseActivity {
                     }
                 }
             });
-            return;
+        } else {
+            changeHeaderToImage();
+            mAddImageText.setVisibility(View.INVISIBLE);
+            Glide.with(this)
+                    .load(mImage.getPath())
+                    .into(mImageBackDrop);
+            mImageBackDrop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(EventDetailActivity.this, GalleryActivity.class);
+                    i.putExtra(GalleryActivity.EVENT_ID, mEvent.getId());
+                    startActivity(i);
+                }
+            });
         }
-        mAddImageText.setVisibility(View.INVISIBLE);
-        Glide.with(this)
-                .load(mImage.getPath())
-                .into(mImageBackDrop);
-        mImageBackDrop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(EventDetailActivity.this, GalleryActivity.class);
-                i.putExtra(GalleryActivity.EVENT_ID, mEvent.getId());
-                startActivity(i);
-            }
-        });
+    }
+
+    private void changeHeaderToImage() {
+        mHeaderView.setVisibility(View.GONE);
+        mImageBackDrop.setVisibility(View.VISIBLE);
     }
 
     @Override
