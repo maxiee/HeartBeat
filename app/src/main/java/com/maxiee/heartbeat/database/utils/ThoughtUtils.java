@@ -135,7 +135,7 @@ public class ThoughtUtils {
         values.put(ThoughtsTable.THOUGHT, thought);
         DatabaseUtils.update(
                 context, ThoughtsTable.NAME, values,
-                ThoughtsTable.ID + "=",
+                ThoughtsTable.ID + "=?",
                 new String[]{String.valueOf(thoughtId)});
     }
 
@@ -181,7 +181,7 @@ public class ThoughtUtils {
         values.put(ThoughtResTable.PATH, path);
         DatabaseUtils.update(
                 context, ThoughtResTable.NAME, values,
-                ThoughtResTable.THOUGHT_ID + "=",
+                ThoughtResTable.THOUGHT_ID + "=?",
                 new String[] {String.valueOf(thoughtId)});
     }
 
