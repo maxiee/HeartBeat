@@ -158,6 +158,7 @@ public class EventDetailActivity extends BaseActivity {
         mTvEvent.setText(mEvent.getEvent());
         mThoughts = ThoughtUtils.getThoughtsByEventId(this, mEvent.getId());
         mAdapter.setData(mThoughts);
+        mAdapter.notifyDataSetChanged();
         initImage();
         updateTagView();
     }
