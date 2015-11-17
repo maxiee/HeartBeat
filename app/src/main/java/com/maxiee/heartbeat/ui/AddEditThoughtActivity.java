@@ -39,7 +39,7 @@ public class AddEditThoughtActivity extends BaseActivity {
     public static final int MODE_NEW = 0;
     public static final int MODE_EDIT = 1;
     public static final int INVALID_EVENT_KEY = -1;
-    public static final int INVALID_THOUGHT_KEY = 1;
+    public static final long INVALID_THOUGHT_KEY = -1;
     private static final int ADD_IMAGE = 1127;
 
     private Toolbar mToolbar;
@@ -51,7 +51,7 @@ public class AddEditThoughtActivity extends BaseActivity {
 
     private int mMode;
     private long mEventKey = INVALID_EVENT_KEY;
-    private int mThoughtKey = INVALID_THOUGHT_KEY;
+    private long mThoughtKey = INVALID_THOUGHT_KEY;
 
     private int mResType = Thoughts.Thought.HAS_NO_RES;
     private String mResPath = "";
@@ -73,7 +73,7 @@ public class AddEditThoughtActivity extends BaseActivity {
         }
 
         if (mMode == MODE_EDIT) {
-            mThoughtKey = intent.getIntExtra(THOUGHT_ID, INVALID_THOUGHT_KEY);
+            mThoughtKey = intent.getLongExtra(THOUGHT_ID, INVALID_THOUGHT_KEY);
             mTextThought = intent.getStringExtra(THOUGHT);
             mResType = intent.getIntExtra(
                     Thoughts.Thought.THOUGHT_RES,
