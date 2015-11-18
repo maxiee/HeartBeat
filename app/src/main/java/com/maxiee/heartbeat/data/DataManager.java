@@ -84,12 +84,11 @@ public class DataManager {
     }
 
     public void deleteEvent(long key) {
-        // TODO wrap the deleting code to utils
         EventUtils.deleteEvent(mContext, key);
         ImageUtils.deleteByEventId(mContext, key);
         ThoughtUtils.deleteByEventId(mContext, key);
         mEventManager.deleteEvent(key);
-        mEventManager.deleteEvent(key);
+        mTodayManager.deleteEvent(key);
         notifyDataSetChanged();
         checkNewDay();
     }
