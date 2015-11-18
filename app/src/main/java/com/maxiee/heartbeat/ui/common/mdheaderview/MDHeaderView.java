@@ -1,12 +1,11 @@
 package com.maxiee.heartbeat.ui.common.mdheaderview;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.ThemeUtils;
@@ -14,17 +13,15 @@ import com.maxiee.heartbeat.common.ThemeUtils;
 /**
  * Created by maxiee on 15/11/16.
  */
-public class MDHeaderView extends View {
+public class MDHeaderView extends ViewGroup {
 
-    public static final int TRI_NUMS = 4;
-    public static final float[] POSITION_X_DELTA = new float[] {0.3f, 0.3f, 0.3f, 0.3f};
-    public static final float[] SIZE_Y_DELTA = new float[] {0.3f, 0.2f, 0.4f, 0.6f};
+    public static final int TRI_NUMS = 6;
 
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int mColorPrimary;
     private int mColorPrimaryDark;
     private int mColorAccent;
-    private TriDrawable[] mDrawables;
+    private float[] mSizes;
+    private TriView[] mViews;
     private GradientDrawable mGD;
 
     public MDHeaderView(Context context) {
@@ -52,40 +49,36 @@ public class MDHeaderView extends View {
         float redStep = (Color.red(mColorAccent) - redBase) / TRI_NUMS;
         float greenStep = (Color.green(mColorAccent) - greenBase) / TRI_NUMS;
         float blueStep = (Color.blue(mColorAccent) - blueBase) / TRI_NUMS;
-        mDrawables = new TriDrawable[TRI_NUMS];
-        for (int i = 0; i < TRI_NUMS; i++) {
-            mDrawables[i] = new TriDrawable(Color.rgb(
+        mViews = new TriView[TRI_NUMS];
+        mSizes = new float[TRI_NUMS];
+        for (int i = TRI_NUMS - 1; i >= 0; i--) {
+            mSizes[i] = (float) Math.abs(Math.sin(Math.PI / 4 + Math.PI / (TRI_NUMS * 1.5f) * i));
+            mViews[i] = new TriView(context);
+            mViews[i].setColor(Color.rgb(
                     (int) (redBase + redStep * (TRI_NUMS - i)),
                     (int) (greenBase + greenStep * (TRI_NUMS - i)),
                     (int) (blueBase + blueStep * (TRI_NUMS - i))));
+            addView(mViews[i]);
         }
         mGD = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[] {mColorPrimaryDark, mColorPrimary});
+        setBackgroundDrawable(mGD);
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        float xPos = 0;
-        float width = w * 0.8f;
-        for (int i = 0; i < TRI_NUMS; i++) {
-            mDrawables[i].setBounds(
-                    (int) xPos,
-                    (int) (h * SIZE_Y_DELTA[i]),
-                    (int) (xPos + (1 - SIZE_Y_DELTA[i]) * width),
-                    h);
-            xPos = xPos + POSITION_X_DELTA[i] * width;
-        }
-        mGD.setBounds(0, 0, w, h);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        mGD.draw(canvas);
-        for (int i = TRI_NUMS - 1; i >=0; i--) {
-            mDrawables[i].draw(canvas);
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int width = getWidth();
+        int height = getHeight();
+        int weight = width / (TRI_NUMS + 2);
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(childCount - 1 - i);
+            childView.layout(
+                    weight * i,
+                    (int) (b - mSizes[i] * height),
+                    (int) (i * weight + mSizes[i] * height),
+                    b);
         }
     }
 }
