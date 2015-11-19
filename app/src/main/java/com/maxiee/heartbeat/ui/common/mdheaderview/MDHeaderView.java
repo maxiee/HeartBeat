@@ -1,5 +1,7 @@
 package com.maxiee.heartbeat.ui.common.mdheaderview;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -22,6 +24,7 @@ public class MDHeaderView extends ViewGroup {
     private int mColorAccent;
     private float[] mSizes;
     private TriView[] mViews;
+    private AnimatorSet[] mSets;
     private GradientDrawable mGD;
 
     public MDHeaderView(Context context) {
@@ -51,8 +54,10 @@ public class MDHeaderView extends ViewGroup {
         float blueStep = (Color.blue(mColorAccent) - blueBase) / TRI_NUMS;
         mViews = new TriView[TRI_NUMS];
         mSizes = new float[TRI_NUMS];
+        mSets = new AnimatorSet[TRI_NUMS];
         for (int i = TRI_NUMS - 1; i >= 0; i--) {
             mSizes[i] = (float) Math.abs(Math.sin(Math.PI / 4 + Math.PI / (TRI_NUMS * 1.5f) * i));
+            mSets[i] = new AnimatorSet();
             mViews[i] = new TriView(context);
             mViews[i].setColor(Color.rgb(
                     (int) (redBase + redStep * (TRI_NUMS - i)),
@@ -67,6 +72,11 @@ public class MDHeaderView extends ViewGroup {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
+
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int width = getWidth();
         int height = getHeight();
@@ -76,9 +86,15 @@ public class MDHeaderView extends ViewGroup {
             View childView = getChildAt(childCount - 1 - i);
             childView.layout(
                     weight * i,
-                    (int) (b - mSizes[i] * height),
+                    (int) (b + 1),
                     (int) (i * weight + mSizes[i] * height),
-                    b);
+                    (int) (b + mSizes[i] * height + 1));
+            mSets[i].playTogether(
+                    ObjectAnimator.ofFloat(mViews[i], "translationY", -mSizes[i] * height),
+                    ObjectAnimator.ofFloat(mViews[i], "alpha", 0f, 1f)
+            );
+            mSets[i].setStartDelay(150 + 50 * i);
+            mSets[i].setDuration(600).start();
         }
     }
 }
