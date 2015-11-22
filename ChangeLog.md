@@ -1,5 +1,29 @@
 #心动 ChangeLog
 
+##v0.8.7
+
+发布日期: 20151122
+
+1. 重写底层代码，代码更加清晰、简洁
+2. 全新的动画封面效果
+3. APK 体积减小 1MB
+4. 添加事件页中感想设为可选添加
+5. 添加感想页面界面调整
+6. 全新的事件修改页面
+7. 事件列表长按事件弹出编辑、删除选项
+6. 由于代码改动较大，建议及时备份数据。若在使用中遇到问题，欢迎与我联系 \^_^ 
+
+Release date: 20151122
+
+1. Rewrite the low-level code, clearer and more concise
+2. New animated cover image
+3. Reduce the apk by 1MB
+4. Now the thought in event-adding page is optional
+5. Adjust the thought-adding page
+6. New event-modify page
+7. Now you can edit/delete event by longclicking the item in event list
+8. We recommend that you back up your data before using the new version. Contact me if you encounter any problem \^_^ 
+
 ##v0.8.6
 
 发布日期: 20151107
