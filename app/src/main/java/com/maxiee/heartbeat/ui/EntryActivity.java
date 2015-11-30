@@ -126,12 +126,6 @@ public class EntryActivity extends Activity {
                 Thoughts.Thought.HAS_NO_RES,
                 Thoughts.Thought.HAS_NO_PATH
         );
-        ThoughtUtils.addThought(
-                this, eventKey,
-                getString(R.string.tut_2_thought_3),
-                Thoughts.Thought.HAS_NO_RES,
-                Thoughts.Thought.HAS_NO_PATH
-        );
 
         // Tut1
         eventKey = EventUtils.addEvent(this, getString(R.string.tut_1_event)).getId();
