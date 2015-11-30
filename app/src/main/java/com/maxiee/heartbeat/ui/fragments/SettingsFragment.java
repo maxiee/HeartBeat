@@ -139,7 +139,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         if (preference == mRestorePref) {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_GET_CONTENT);
-            i.setType("*/*");
+            i.setType("file/*");
             startActivityForResult(i, RESTORE_REQUEST);
             return true;
         }
