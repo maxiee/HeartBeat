@@ -71,21 +71,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_margin="20dp">
+            android:layout_margin="4dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingTop="30dp"
-                android:paddingBottom="10dp">
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:id="@+id/tv_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="20dp"/>
 
                 <TextView
@@ -93,6 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_event"
+                    android:layout_marginLeft="10dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                 <com.maxiee.heartbeat.common.tagview.TagView
@@ -105,6 +108,7 @@
                     app:textPaddingTop="2dp"
                     app:textPaddingLeft="7dp"
                     app:textPaddingRight="7dp"
+                    android:layout_marginRight="10dp"
                     android:layout_below="@id/tv_event"
                     android:layout_toRightOf="@id/tv_time"
                     android:gravity="right"

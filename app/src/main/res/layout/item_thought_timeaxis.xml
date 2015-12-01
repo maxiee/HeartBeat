@@ -2,15 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tv_order"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="right"
         android:text="order" />
 
@@ -22,47 +22,42 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="?attr/colorPrimaryDark"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
         <View
             android:id="@+id/time_point"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="14dp" />
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="4dp" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:foreground="?attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_thought"
@@ -74,12 +69,10 @@
                 <ImageView
                     android:id="@+id/image_thought"
                     android:visibility="gone"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-
-        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
