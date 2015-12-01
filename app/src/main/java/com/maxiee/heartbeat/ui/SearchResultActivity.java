@@ -16,6 +16,7 @@ import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
+import com.maxiee.heartbeat.ui.common.RecyclerInsetsDecoration;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,7 @@ public class SearchResultActivity extends BaseActivity{
         mImageEmpty = (ImageView) findViewById(R.id.image_empty);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(this));
 
         Intent i = getIntent();
         String search = i.getStringExtra("search");

@@ -24,6 +24,7 @@ import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
+import com.maxiee.heartbeat.ui.common.RecyclerInsetsDecoration;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,7 @@ public class LabelDetailActivity extends BaseActivity{
         mLabelHint = (TextView) findViewById(R.id.label_hint);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(this));
 
         TypedValue accentValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorAccent, accentValue, true);
