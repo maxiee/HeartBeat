@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.backup.BackupManager;
@@ -55,18 +55,18 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
-        mThemePref = (Preference) findPreference("change_theme");
-        mPatternPref = (Preference) findPreference("pattern");
-        mVersionPref = (Preference) findPreference("version");
-        mGitHubPref = (Preference) findPreference("github");
-        mWeiboPref = (Preference) findPreference("weibo");
-        mCrashPref = (Preference) findPreference("crash");
-        mEmailPref = (Preference) findPreference("email");
-        mThanksXXXXL = (Preference) findPreference("icon_thanks");
-        mBackupSDPref = (Preference) findPreference("backup_sd");
-        mBackupCloudPref = (Preference) findPreference("backup_cloud");
-        mRestorePref = (Preference) findPreference("restore");
-        mDonatePref = (Preference) findPreference("donate");
+        mThemePref =        findPreference("change_theme");
+        mPatternPref =      findPreference("pattern");
+        mVersionPref =      findPreference("version");
+        mGitHubPref =       findPreference("github");
+        mWeiboPref =        findPreference("weibo");
+        mCrashPref =        findPreference("crash");
+        mEmailPref =        findPreference("email");
+        mThanksXXXXL =      findPreference("icon_thanks");
+        mBackupSDPref =     findPreference("backup_sd");
+        mBackupCloudPref =  findPreference("backup_cloud");
+        mRestorePref =      findPreference("restore");
+        mDonatePref =       findPreference("donate");
 
         String version = "Unknown";
         try {
@@ -129,11 +129,16 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             return true;
         }
         if (preference == mBackupSDPref) {
-            BackupManager.backupSD(getActivity(), true);
+            if (BackupManager.backupSD(getActivity()) == null) {
+                Snackbar.make(getView(), getString(R.string.backup_failed), Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(getView(), getString(R.string.backup_ok), Snackbar.LENGTH_SHORT).show();
+            }
             return true;
         }
         if (preference == mBackupCloudPref) {
-            BackupManager.backupCloud(getActivity());
+            String ret = BackupManager.backupCloud(getActivity());
+            if (ret != null) Snackbar.make(getView(), ret, Snackbar.LENGTH_LONG).show();
             return true;
         }
         if (preference == mRestorePref) {
@@ -156,7 +161,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Donate", DONATE_MAIL);
             clipboard.setPrimaryClip(clip);
-            Toast.makeText(getActivity(), getString(R.string.copy_finished), Toast.LENGTH_LONG).show();
+            Snackbar.make(getView(), getString(R.string.copy_finished), Snackbar.LENGTH_LONG).show();
             return true;
         }
         if (preference == mThemePref) {
@@ -219,9 +224,10 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESTORE_REQUEST && resultCode == Activity.RESULT_OK) {
-            BackupManager.restore(getActivity(), data);
+            String ret = BackupManager.restore(getActivity(), data);
             DataManager dm = DataManager.getInstance(getActivity());
             dm.reload();
+            Snackbar.make(getView(), ret, Snackbar.LENGTH_LONG).show();
         }
     }
 }
