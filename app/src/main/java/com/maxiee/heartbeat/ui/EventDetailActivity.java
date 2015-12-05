@@ -20,7 +20,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -259,7 +258,6 @@ public class EventDetailActivity extends BaseActivity {
         private View mView;
         private TextView mTv;
         private ImageView mIv;
-        private CardView mCv;
         private TextView mTvOrder;
         private TextView mTvTime;
         private View mPoint;
@@ -284,7 +282,6 @@ public class EventDetailActivity extends BaseActivity {
 
             mTv = (TextView) mView.findViewById(R.id.tv_thought);
             mIv = (ImageView) mView.findViewById(R.id.image_thought);
-            mCv = (CardView) mView.findViewById(R.id.card);
             mTvOrder = (TextView) mView.findViewById(R.id.tv_order);
             mTvTime = (TextView) mView.findViewById(R.id.tv_time);
             mPoint = (View) mView.findViewById(R.id.time_point);
@@ -449,7 +446,6 @@ public class EventDetailActivity extends BaseActivity {
 
         TextView tv = (TextView) item.findViewById(R.id.tv_thought);
         ImageView iv = (ImageView) item.findViewById(R.id.image_thought);
-        CardView cv = (CardView) item.findViewById(R.id.card);
         item.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         int screenWidth = tv.getMeasuredWidth();
         iv.setVisibility(View.GONE);
