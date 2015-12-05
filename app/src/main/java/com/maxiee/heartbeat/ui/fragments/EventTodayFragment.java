@@ -13,28 +13,30 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.data.DataManager;
+import com.maxiee.heartbeat.ui.common.RecyclerInsetsDecoration;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by maxiee on 15-6-23.
  */
 public class EventTodayFragment extends Fragment{
 
-    private RecyclerView mRecyclerView;
-    private RelativeLayout mEmtpyLayout;
-    private ImageView mImageEmpty;
+    @Bind(R.id.recyclerview)    RecyclerView mRecyclerView;
+    @Bind(R.id.empty)           RelativeLayout mEmtpyLayout;
+    @Bind(R.id.image_empty)     ImageView mImageEmpty;
     private DataManager mDataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_today, container, false);
-
-        mEmtpyLayout = (RelativeLayout) v.findViewById(R.id.empty);
-        mImageEmpty = (ImageView) v.findViewById(R.id.image_empty);
-
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        ButterKnife.bind(this, v);
 
         mDataManager = DataManager.getInstance(getContext());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(getContext()));
+        mRecyclerView.setAdapter(mDataManager.getTodayAdapter());
         updateEventList();
 
         return v;
@@ -44,7 +46,7 @@ public class EventTodayFragment extends Fragment{
         if (!mDataManager.isTodayEmpty()) {
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmtpyLayout.setVisibility(View.GONE);
-            mRecyclerView.setAdapter(mDataManager.getTodayAdapter());
+            mDataManager.notifyDataSetChanged();
         } else {
             mRecyclerView.setVisibility(View.GONE);
             mEmtpyLayout.setVisibility(View.VISIBLE);
@@ -55,9 +57,13 @@ public class EventTodayFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        mDataManager.notifyDataSetChanged();
         mDataManager.checkNewDay();
         updateEventList();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }
