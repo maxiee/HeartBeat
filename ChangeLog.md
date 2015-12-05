@@ -1,5 +1,25 @@
 #心动 ChangeLog
 
+##v0.8.8
+
+发布日期: 20151205
+
+1. 事件列表布局调整
+2. 事件详情页布局调整
+3. 尝试修复虚拟导航栏背景异常
+4. 尝试修复恢复数据时调不出文件管理器
+5. 调整初次使用教程
+6. 修复今日页面跨日添加事件显示不出问题
+
+Release date: 20151205
+
+1. Adjust layout of event list
+2. Adjust layout of event detail
+3. Trying to fix wrong navigationbar background
+4. Trying to fix the problem of file explorer not opening while restoring data
+5. Ajust the first-using tutorial
+6. Bug fix: New added event not shown in Today page when a new day begains.
+
 ##v0.8.7
 
 发布日期: 20151122
