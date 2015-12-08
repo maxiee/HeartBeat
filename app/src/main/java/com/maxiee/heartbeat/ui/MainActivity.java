@@ -35,24 +35,27 @@ import com.quinny898.library.persistentsearch.SearchResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int SEARCH_HISTORY_SIZE = 5;
 
-    private Toolbar mToolbar;
-    private FloatingActionButton mFab;
+    @Bind(R.id.toolbar)     Toolbar mToolbar;
+    @Bind(R.id.fab)         FloatingActionButton mFab;
+    @Bind(R.id.searchbox)   SearchBox mSearchBox;
+
     private ViewPagerAdapter mViewPagerAdapter;
-    private SearchBox mSearchBox;
     private ArrayList<String> mSearchHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
         CrashHandler.register(this);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         setTitle("");
 
@@ -95,16 +98,13 @@ public class MainActivity extends BaseActivity {
                 )
         );
 
-        mSearchBox = (SearchBox) findViewById(R.id.searchbox);
-
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_MAIN);
                 i.setClass(MainActivity.this, AddEventActivity.class);
-                startActivityForResult(i, AddEventActivity.ADD_EVENT_REQUEST);
+                startActivity(i);
             }
         });
 
