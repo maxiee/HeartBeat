@@ -22,25 +22,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by maxiee on 15-6-24.
  */
 public class LabelCloudFragment extends Fragment{
 
-    private CloudView mCloudView;
-    private NestedScrollView mCloudLayout;
-    private RelativeLayout mEmptyLayout;
-    private ImageView mImageEmpty;
+    @Bind(R.id.cloud_view)      CloudView           mCloudView;
+    @Bind(R.id.cloud_layout)    NestedScrollView    mCloudLayout;
+    @Bind(R.id.empty)           RelativeLayout      mEmptyLayout;
+    @Bind(R.id.image_empty)     ImageView           mImageEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_label_cloud, container, false);
-
-        mCloudView = (CloudView) v.findViewById(R.id.cloud_view);
-        mCloudLayout = (NestedScrollView) v.findViewById(R.id.cloud_layout);
-        mEmptyLayout = (RelativeLayout) v.findViewById(R.id.empty);
-        mImageEmpty = (ImageView) v.findViewById(R.id.image_empty);
+        ButterKnife.bind(this, v);
 
         updateCloud();
 
@@ -86,5 +84,11 @@ public class LabelCloudFragment extends Fragment{
     public void onResume() {
         super.onResume();
         updateCloud();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }
