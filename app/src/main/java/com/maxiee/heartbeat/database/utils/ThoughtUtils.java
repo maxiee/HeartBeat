@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.database.DatabaseHelper;
 import com.maxiee.heartbeat.database.tables.EventThoughtRelationTable;
 import com.maxiee.heartbeat.database.tables.ThoughtResTable;
 import com.maxiee.heartbeat.database.tables.ThoughtsTable;
@@ -116,9 +117,11 @@ public class ThoughtUtils {
     }
 
     public static int getEventCount(Context context, long eventId) {
-        // TODO: 15/11/11 use count
-        Thoughts t = getThoughtsByEventId(context, eventId);
-        return t.length();
+        return (int) android.database.DatabaseUtils.queryNumEntries(
+                    DatabaseHelper.instance(context).getReadableDatabase(),
+                    EventThoughtRelationTable.NAME,
+                    EventThoughtRelationTable.EVENT_ID + "=?",
+                    new String[] {String.valueOf(eventId)});
     }
 
     public static void addThought(Context context, long eventId, String thought, int resType, String path) {
