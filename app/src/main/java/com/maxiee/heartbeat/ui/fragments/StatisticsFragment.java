@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +30,12 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.api.GetCountByNameApi;
 import com.maxiee.heartbeat.database.api.GetCountSpecDayApi;
-import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
+import com.maxiee.heartbeat.support.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,19 +44,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by maxiee on 15-7-15.
  */
 public class StatisticsFragment extends Fragment{
+    private static final String TAG = StatisticsFragment.class.getSimpleName();
     private final static int WEEK_COUNT = 7;
     private final static int DISTRIBUTION_COUNT = 10;
 
-    private CombinedChart mChart;
-    private PieChart mPieChart;
-    private TextView mTvEventCount;
-    private TextView mTvThoughtCount;
-    private TextView mTvDistriHint;
+    @Bind(R.id.chart) CombinedChart mChart;
+    @Bind(R.id.pie_chart) PieChart mPieChart;
+    @Bind(R.id.tv_event_count) TextView mTvEventCount;
+    @Bind(R.id.tv_thought_count) TextView mTvThoughtCount;
+    @Bind(R.id.distribution_hint) TextView mTvDistriHint;
     private int mAccentColor;
     private int mPrimaryColor;
     private int mPrimaryColorDark;
@@ -64,16 +70,12 @@ public class StatisticsFragment extends Fragment{
     private int mWasteBookCount; // 流水帐数目
     private CombinedData mCombinedData;
     private PieData mPieData;
+    private DataManager mDataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_statistics, container, false);
-
-        mTvEventCount = (TextView) v.findViewById(R.id.tv_event_count);
-        mTvThoughtCount = (TextView) v.findViewById(R.id.tv_thought_count);
-        mChart = (CombinedChart) v.findViewById(R.id.chart);
-        mPieChart = (PieChart) v.findViewById(R.id.pie_chart);
-        mTvDistriHint = (TextView) v.findViewById(R.id.distribution_hint);
+        ButterKnife.bind(this, v);
 
         TypedValue accentValue = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentValue, true);
@@ -83,45 +85,12 @@ public class StatisticsFragment extends Fragment{
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, accentValue, true);
         mPrimaryColorDark = accentValue.data;
 
-        new UpdateTask().execute();
+        mDataManager = DataManager.getInstance(getContext());
+
+        new UpdateCountTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new UpdateChartTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new UpdatePieChartTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return v;
-    }
-
-    private void getCount() {
-        mEventCount = new GetCountByNameApi(getActivity())
-                .exec(GetCountByNameApi.EVENT);
-        mThoughtCount = new GetCountByNameApi(getActivity())
-                .exec(GetCountByNameApi.THOUGHT);
-    }
-
-    private void initChart() {
-        mChart.setDoubleTapToZoomEnabled(false);
-        mChart.setTouchEnabled(false);
-        mChart.setDragEnabled(false);
-        mChart.setScaleEnabled(false);
-        mChart.setDescription("");
-        mChart.setBackgroundColor(getResources().getColor(R.color.window_background));
-        mChart.setDrawGridBackground(false);
-        mChart.setDrawBarShadow(false);
-        mChart.setDrawOrder(
-                new CombinedChart.DrawOrder[]{
-                        CombinedChart.DrawOrder.BAR,
-                        CombinedChart.DrawOrder.LINE
-                });
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setValueFormatter(new IntValueFormatter());
-        leftAxis.setDrawGridLines(false);
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setEnabled(false);
-    }
-
-    private void getChartData() {
-        mCombinedData = new CombinedData(TimeUtils.getWeekDateString());
-        mCombinedData.setData(getWeekEventData());
-        mCombinedData.setData(getWeekThoughtData());
     }
 
     private void initPieChart() {
@@ -138,64 +107,11 @@ public class StatisticsFragment extends Fragment{
         legend.setEnabled(false);
     }
 
-    private BarData getWeekEventData() {
-        BarData d = new BarData();
-
-        ArrayList<BarEntry> entries = new ArrayList<>();
-
-        for (int i=0; i<WEEK_COUNT; i++) {
-            entries.add(
-                    new BarEntry(
-                            new GetCountSpecDayApi(getActivity()).exec(
-                                    TimeUtils.calendarDaysBefore(WEEK_COUNT-i),
-                                    GetCountSpecDayApi.EVENT
-                            ),i
-                    )
-            );
-        }
-
-        BarDataSet set = new BarDataSet(entries, getString(R.string.event_count_text));
-        set.setColor(mPrimaryColorDark);
-        set.setValueFormatter(new IntValueFormatter());
-        d.addDataSet(set);
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        return d;
-    }
-
-    private LineData getWeekThoughtData() {
-        LineData d = new LineData();
-
-        ArrayList<Entry> entries = new ArrayList<>();
-
-        for (int i=0; i<WEEK_COUNT; i++) {
-            entries.add(
-                    new BarEntry(
-                            new GetCountSpecDayApi(getActivity()).exec(
-                                    TimeUtils.calendarDaysBefore(WEEK_COUNT-i),
-                                    GetCountSpecDayApi.THOUGHT
-                            ),i
-                    )
-            );
-        }
-
-        LineDataSet set = new LineDataSet(entries, getString(R.string.thought_count_text));
-        set.setColor(mAccentColor);
-        set.setLineWidth(2.5f);
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setCircleColor(mPrimaryColorDark);
-        set.setCircleSize(5f);
-        set.setFillColor(mPrimaryColor);
-        set.setDrawValues(true);
-        set.setValueFormatter(new IntValueFormatter());
-        d.addDataSet(set);
-        return d;
-    }
-
     private void getDistributionData() {
         Map<Integer, Integer> freqCount = new TreeMap<>();
         Map<Event, Integer> eventsMap = new HashMap<>();
 
-        ArrayList<Event> events = EventUtils.getAllEvents(getActivity());
+        ArrayList<Event> events = mDataManager.getEventManager().getEvents();
         for (Event event: events) {
             int count = ThoughtUtils.getEventCount(getActivity(), event.getId());
             eventsMap.put(event, count);
@@ -292,19 +208,16 @@ public class StatisticsFragment extends Fragment{
         }
     }
 
-    private class UpdateTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            initChart();
-            initPieChart();
-        }
+    private class UpdateCountTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
-            getCount();
-            getChartData();
-            getDistributionData();
+            StopWatch watch = new StopWatch(TAG, UpdateCountTask.class.getSimpleName());
+            mEventCount = new GetCountByNameApi(getActivity())
+                    .exec(GetCountByNameApi.EVENT);
+            mThoughtCount = new GetCountByNameApi(getActivity())
+                    .exec(GetCountByNameApi.THOUGHT);
+            watch.stop();
             return null;
         }
 
@@ -317,8 +230,123 @@ public class StatisticsFragment extends Fragment{
             mTvThoughtCount.setText(
                     String.valueOf(mThoughtCount)
             );
+        }
+    }
+
+    private class UpdateChartTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            mChart.setDoubleTapToZoomEnabled(false);
+            mChart.setTouchEnabled(false);
+            mChart.setDragEnabled(false);
+            mChart.setScaleEnabled(false);
+            mChart.setDescription("");
+            mChart.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.window_background));
+            mChart.setDrawGridBackground(false);
+            mChart.setDrawBarShadow(false);
+            mChart.setDrawOrder(
+                    new CombinedChart.DrawOrder[]{
+                            CombinedChart.DrawOrder.BAR,
+                            CombinedChart.DrawOrder.LINE
+                    });
+            YAxis leftAxis = mChart.getAxisLeft();
+            leftAxis.setValueFormatter(new IntValueFormatter());
+            leftAxis.setDrawGridLines(false);
+            XAxis xAxis = mChart.getXAxis();
+            xAxis.setDrawGridLines(false);
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            YAxis rightAxis = mChart.getAxisRight();
+            rightAxis.setEnabled(false);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            StopWatch watch = new StopWatch(TAG, UpdateChartTask.class.getSimpleName());
+            mCombinedData = new CombinedData(TimeUtils.getWeekDateString());
+            mCombinedData.setData(getWeekEventData());
+            mCombinedData.setData(getWeekThoughtData());
+            watch.stop();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
             mChart.setData(mCombinedData);
             mChart.invalidate();
+        }
+
+        private BarData getWeekEventData() {
+            BarData d = new BarData();
+
+            ArrayList<BarEntry> entries = new ArrayList<>();
+
+            for (int i=0; i<WEEK_COUNT; i++) {
+                entries.add(
+                        new BarEntry(
+                                new GetCountSpecDayApi(getActivity()).exec(
+                                        TimeUtils.calendarDaysBefore(WEEK_COUNT-i),
+                                        GetCountSpecDayApi.EVENT
+                                ),i
+                        )
+                );
+            }
+
+            BarDataSet set = new BarDataSet(entries, getString(R.string.event_count_text));
+            set.setColor(mPrimaryColorDark);
+            set.setValueFormatter(new IntValueFormatter());
+            d.addDataSet(set);
+            set.setAxisDependency(YAxis.AxisDependency.LEFT);
+            return d;
+        }
+
+        private LineData getWeekThoughtData() {
+            LineData d = new LineData();
+
+            ArrayList<Entry> entries = new ArrayList<>();
+
+            for (int i=0; i<WEEK_COUNT; i++) {
+                entries.add(
+                        new BarEntry(
+                                new GetCountSpecDayApi(getActivity()).exec(
+                                        TimeUtils.calendarDaysBefore(WEEK_COUNT-i),
+                                        GetCountSpecDayApi.THOUGHT
+                                ),i
+                        )
+                );
+            }
+
+            LineDataSet set = new LineDataSet(entries, getString(R.string.thought_count_text));
+            set.setColor(mAccentColor);
+            set.setLineWidth(2.5f);
+            set.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set.setCircleColor(mPrimaryColorDark);
+            set.setCircleSize(5f);
+            set.setFillColor(mPrimaryColor);
+            set.setDrawValues(true);
+            set.setValueFormatter(new IntValueFormatter());
+            d.addDataSet(set);
+            return d;
+        }
+    }
+
+    private class UpdatePieChartTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            initPieChart();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            StopWatch watch = new StopWatch(TAG, UpdatePieChartTask.class.getSimpleName());
+            getDistributionData();
+            watch.stop();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
             mPieChart.setData(mPieData);
             mPieChart.invalidate();
             showDistriHint();
