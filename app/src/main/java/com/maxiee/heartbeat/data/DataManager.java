@@ -48,6 +48,8 @@ public class DataManager {
         mTodayAdapter.setData(mTodayManager.getEvents());
     }
 
+    public EventManager getEventManager() {return  mEventManager;}
+
     public EventListAdapter getEventAdapter() {
         return mEventAdapter;
     }
