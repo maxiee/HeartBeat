@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.maxiee.heartbeat.database.DatabaseHelper;
 import com.maxiee.heartbeat.database.tables.EventLabelRelationTable;
 import com.maxiee.heartbeat.database.tables.LabelsTable;
 import com.maxiee.heartbeat.model.Event;
@@ -173,13 +174,12 @@ public class LabelUtils {
         ArrayList<Label> labels = LabelUtils.getAll(context);
         Map<Long, Integer> ret = new TreeMap<>();
         for (Label label : labels) {
-            Cursor cursor = DatabaseUtils.query(
-                    context, EventLabelRelationTable.NAME,
-                    new String[]{EventLabelRelationTable.LABEL_ID},
-                    EventLabelRelationTable.LABEL_ID + "=?",
-                    new String[]{String.valueOf(label.getId())});
-            ret.put(label.getId() ,cursor.getCount());
-            cursor.close();
+            int count = (int) android.database.DatabaseUtils.queryNumEntries(
+                        DatabaseHelper.instance(context).getReadableDatabase(),
+                        EventLabelRelationTable.NAME,
+                        EventLabelRelationTable.LABEL_ID + "=?",
+                        new String[]{String.valueOf(label.getId())});
+            ret.put(label.getId() ,count);
         }
         return ret;
     }
