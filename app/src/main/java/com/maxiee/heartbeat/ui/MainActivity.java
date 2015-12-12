@@ -25,6 +25,7 @@ import android.view.View;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.support.CrashHandler;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
+import com.maxiee.heartbeat.ui.common.HintSearchBox;
 import com.maxiee.heartbeat.ui.fragments.EventListFragment;
 import com.maxiee.heartbeat.ui.fragments.EventTodayFragment;
 import com.maxiee.heartbeat.ui.fragments.LabelCloudFragment;
@@ -44,7 +45,7 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)     Toolbar mToolbar;
     @Bind(R.id.fab)         FloatingActionButton mFab;
-    @Bind(R.id.searchbox)   SearchBox mSearchBox;
+    @Bind(R.id.searchbox)   HintSearchBox mSearchBox;
 
     private ViewPagerAdapter mViewPagerAdapter;
     private ArrayList<String> mSearchHistory;

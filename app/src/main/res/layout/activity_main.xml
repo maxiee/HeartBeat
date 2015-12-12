@@ -5,7 +5,7 @@
 
     <include layout="@layout/include_activity_main" />
 
-    <com.quinny898.library.persistentsearch.SearchBox
+    <com.maxiee.heartbeat.ui.common.HintSearchBox
         android:id="@+id/searchbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
