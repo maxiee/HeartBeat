@@ -72,6 +72,10 @@ public class StatisticsFragment extends Fragment{
     private PieData mPieData;
     private DataManager mDataManager;
 
+    private UpdateCountTask mUpdateCountTask;
+    private UpdateChartTask mUpdateChartTask;
+    private UpdatePieChartTask mUpdatePieChartTask;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_statistics, container, false);
@@ -87,121 +91,28 @@ public class StatisticsFragment extends Fragment{
 
         mDataManager = DataManager.getInstance(getContext());
 
-        new UpdateCountTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        new UpdateChartTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        new UpdatePieChartTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mUpdateCountTask = new UpdateCountTask();
+        mUpdateChartTask = new UpdateChartTask();
+        mUpdatePieChartTask = new UpdatePieChartTask();
+
+        mUpdateChartTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mUpdateCountTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mUpdatePieChartTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return v;
     }
 
-    private void initPieChart() {
-        mPieChart.setTouchEnabled(false);
-        mPieChart.setUsePercentValues(true);
-        mPieChart.setDescription("");
-        mPieChart.setDrawHoleEnabled(true);
-        mPieChart.setHoleColorTransparent(true);
-        mPieChart.setTransparentCircleColor(Color.WHITE);
-        mPieChart.setHoleRadius(40f);
-        mPieChart.setTransparentCircleRadius(45f);
-        mPieChart.setDrawCenterText(false);
-        Legend legend = mPieChart.getLegend();
-        legend.setEnabled(false);
-    }
-
-    private void getDistributionData() {
-        Map<Integer, Integer> freqCount = new TreeMap<>();
-        Map<Event, Integer> eventsMap = new HashMap<>();
-
-        ArrayList<Event> events = mDataManager.getEventManager().getEvents();
-        for (Event event: events) {
-            int count = ThoughtUtils.getEventCount(getActivity(), event.getId());
-            eventsMap.put(event, count);
-            if (!freqCount.containsKey(count)) {
-                freqCount.put(count, 1);
-            } else {
-                int freq = freqCount.get(count) + 1;
-                freqCount.put(count, freq);
-            }
-        }
-
-        ArrayList<Map.Entry<Integer, Integer>> freqCountSort = new ArrayList<>(freqCount.entrySet());
-        Collections.sort(freqCountSort, new Comparator<Map.Entry<Integer, Integer>>() {
-            @Override
-            public int compare(Map.Entry<Integer, Integer> lhs, Map.Entry<Integer, Integer> rhs) {
-                return rhs.getValue() - lhs.getValue();
-            }
-        });
-        mEvents = new ArrayList<>(eventsMap.entrySet());
-        Collections.sort(mEvents, new Comparator<Map.Entry<Event, Integer>>() {
-            @Override
-            public int compare(Map.Entry<Event, Integer> lhs, Map.Entry<Event, Integer> rhs) {
-                return rhs.getValue() - lhs.getValue();
-            }
-        });
-
-        // 获取流水帐数目 fix bug4.
-        if (!freqCount.isEmpty() && freqCount.containsKey(1)) {
-            mWasteBookCount = freqCount.get(1);
-        } else {
-            mWasteBookCount = 0;
-        }
-        ArrayList<String> xVals = new ArrayList<>();
-        ArrayList<Entry> yVals = new ArrayList<>();
-        int distributionCount =
-                freqCountSort.size() < DISTRIBUTION_COUNT ? freqCountSort.size() : DISTRIBUTION_COUNT;
-        for (int i=0; i<distributionCount; i++) {
-            if (1.0f * freqCountSort.get(i).getValue() / mEventCount < 0.1) {
-                xVals.add(String.valueOf(freqCountSort.get(i).getKey()));
-            } else {
-                xVals.add(String.valueOf(freqCountSort.get(i).getKey()) + getString(R.string.thought_count_pie));
-            }
-            yVals.add(new Entry(freqCountSort.get(i).getValue(), i));
-        }
-        PieDataSet set = new PieDataSet(yVals, "事件数目");
-        set.setSliceSpace(3f);
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-
-        set.setColors(colors);
-        PieData d =  new PieData(xVals, set);
-        d.setValueFormatter(new PercentFormatter());
-        d.setValueTextSize(11f);
-        d.setValueTextColor(mPrimaryColorDark);
-        mPieData =  d;
-    }
-
-    private void showDistriHint() {
-        String averageHead = getString(R.string.distri_hint_average_head);
-        float averageCountV = 1f * mThoughtCount / mEventCount;
-        if (mThoughtCount == 0) averageCountV = 0;
-        String averageCount = String.valueOf(averageCountV);
-        String averageTail = getString(R.string.distri_hint_average_tail);
-        String wasteBook = getString(R.string.disti_hint_waste_book);
-        String wasteCount = String.valueOf(mWasteBookCount);
-        if (averageCount.length()>3) {
-            averageCount = averageCount.substring(0, 3);
-        }
-        mTvDistriHint.setText(averageHead + averageCount + averageTail + wasteBook +wasteCount);
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mUpdateCountTask != null && mUpdateCountTask.getStatus() == AsyncTask.Status.RUNNING)
+            mUpdateCountTask.cancel(true);
+        if (mUpdateChartTask != null && mUpdateChartTask.getStatus() == AsyncTask.Status.RUNNING)
+            mUpdateChartTask.cancel(true);
+        if (mUpdatePieChartTask != null && mUpdatePieChartTask.getStatus() == AsyncTask.Status.RUNNING)
+            mUpdatePieChartTask.cancel(true);
     }
 
     private class IntValueFormatter implements ValueFormatter {
-
         @Override
         public String getFormattedValue(float value) {
             return String.valueOf((int) value);
@@ -334,7 +245,17 @@ public class StatisticsFragment extends Fragment{
 
         @Override
         protected void onPreExecute() {
-            initPieChart();
+            mPieChart.setTouchEnabled(false);
+            mPieChart.setUsePercentValues(true);
+            mPieChart.setDescription("");
+            mPieChart.setDrawHoleEnabled(true);
+            mPieChart.setHoleColorTransparent(true);
+            mPieChart.setTransparentCircleColor(Color.WHITE);
+            mPieChart.setHoleRadius(40f);
+            mPieChart.setTransparentCircleRadius(45f);
+            mPieChart.setDrawCenterText(false);
+            Legend legend = mPieChart.getLegend();
+            legend.setEnabled(false);
         }
 
         @Override
@@ -349,7 +270,87 @@ public class StatisticsFragment extends Fragment{
         protected void onPostExecute(Void aVoid) {
             mPieChart.setData(mPieData);
             mPieChart.invalidate();
-            showDistriHint();
+            String averageHead = getString(R.string.distri_hint_average_head);
+            float averageCountV = 1f * mThoughtCount / mEventCount;
+            if (mThoughtCount == 0) averageCountV = 0;
+            String averageCount = String.valueOf(averageCountV);
+            String averageTail = getString(R.string.distri_hint_average_tail);
+            String wasteBook = getString(R.string.disti_hint_waste_book);
+            String wasteCount = String.valueOf(mWasteBookCount);
+            if (averageCount.length()>3) {
+                averageCount = averageCount.substring(0, 3);
+            }
+            mTvDistriHint.setText(averageHead + averageCount + averageTail + wasteBook +wasteCount);
+        }
+
+        private void getDistributionData() {
+            Map<Integer, Integer> freqCount = new TreeMap<>();
+            Map<Event, Integer> eventsMap = new HashMap<>();
+
+            ArrayList<Event> events = mDataManager.getEventManager().getEvents();
+            for (Event event: events) {
+                int count = ThoughtUtils.getEventCount(getActivity(), event.getId());
+                eventsMap.put(event, count);
+                if (!freqCount.containsKey(count)) {
+                    freqCount.put(count, 1);
+                } else {
+                    int freq = freqCount.get(count) + 1;
+                    freqCount.put(count, freq);
+                }
+            }
+
+            ArrayList<Map.Entry<Integer, Integer>> freqCountSort = new ArrayList<>(freqCount.entrySet());
+            Collections.sort(freqCountSort, new Comparator<Map.Entry<Integer, Integer>>() {
+                @Override
+                public int compare(Map.Entry<Integer, Integer> lhs, Map.Entry<Integer, Integer> rhs) {
+                    return rhs.getValue() - lhs.getValue();
+                }
+            });
+            mEvents = new ArrayList<>(eventsMap.entrySet());
+            Collections.sort(mEvents, new Comparator<Map.Entry<Event, Integer>>() {
+                @Override
+                public int compare(Map.Entry<Event, Integer> lhs, Map.Entry<Event, Integer> rhs) {
+                    return rhs.getValue() - lhs.getValue();
+                }
+            });
+
+            // 获取流水帐数目 fix bug4.
+            if (!freqCount.isEmpty() && freqCount.containsKey(1)) {
+                mWasteBookCount = freqCount.get(1);
+            } else {
+                mWasteBookCount = 0;
+            }
+            ArrayList<String> xVals = new ArrayList<>();
+            ArrayList<Entry> yVals = new ArrayList<>();
+            int distributionCount =
+                    freqCountSort.size() < DISTRIBUTION_COUNT ? freqCountSort.size() : DISTRIBUTION_COUNT;
+            for (int i=0; i<distributionCount; i++) {
+                if (1.0f * freqCountSort.get(i).getValue() / mEventCount < 0.1) {
+                    xVals.add(String.valueOf(freqCountSort.get(i).getKey()));
+                } else {
+                    xVals.add(String.valueOf(freqCountSort.get(i).getKey()) + getString(R.string.thought_count_pie));
+                }
+                yVals.add(new Entry(freqCountSort.get(i).getValue(), i));
+            }
+            PieDataSet set = new PieDataSet(yVals, "事件数目");
+            set.setSliceSpace(3f);
+
+            ArrayList<Integer> colors = new ArrayList<Integer>();
+
+            for (int c : ColorTemplate.VORDIPLOM_COLORS)    colors.add(c);
+            for (int c : ColorTemplate.JOYFUL_COLORS)       colors.add(c);
+            for (int c : ColorTemplate.COLORFUL_COLORS)     colors.add(c);
+            for (int c : ColorTemplate.LIBERTY_COLORS)      colors.add(c);
+            for (int c : ColorTemplate.PASTEL_COLORS)       colors.add(c);
+
+            colors.add(ColorTemplate.getHoloBlue());
+
+            set.setColors(colors);
+            PieData d =  new PieData(xVals, set);
+            d.setValueFormatter(new PercentFormatter());
+            d.setValueTextSize(11f);
+            d.setValueTextColor(mPrimaryColorDark);
+            mPieData =  d;
         }
     }
 }
