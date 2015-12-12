@@ -250,7 +250,6 @@ public class EventDetailActivity extends BaseActivity {
     }
 
     private class LongImageTask extends AsyncTask<Void, Integer, Void> {
-        private FrameLayout mFl;
         private ProgressDialog progressDialog;
         private Canvas mBitmapHolder;
         private int mWidth;
@@ -271,28 +270,41 @@ public class EventDetailActivity extends BaseActivity {
             progressDialog.setMessage(getString(R.string.generating));
             progressDialog.setCancelable(false);
             progressDialog.show();
-            mFl = new FrameLayout(EventDetailActivity.this);
+
+//            mCardEvent.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, android.support.v7.cardview.R.color.cardview_light_background));
+
+            // create a parent layout of time-axis item
+            FrameLayout mFl = new FrameLayout(EventDetailActivity.this);
             mFl.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
-            mCardEvent.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, android.support.v7.cardview.R.color.cardview_light_background));
+
+            // get display width
             DisplayMetrics displaymetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             mWidth = displaymetrics.widthPixels;
 
+            // create time-axis item view from layout
             mView = getLayoutInflater().inflate(R.layout.item_thought_timeaxis, mFl);
-
             mTv = (TextView) mView.findViewById(R.id.tv_thought);
             mIv = (ImageView) mView.findViewById(R.id.image_thought);
             mTvOrder = (TextView) mView.findViewById(R.id.tv_order);
             mTvTime = (TextView) mView.findViewById(R.id.tv_time);
             mPoint = mView.findViewById(R.id.time_point);
 
+            setPointColor();
+
+            createBottomLogoLayout();
+        }
+
+        private void setPointColor() {
             final TypedValue typedValue = new TypedValue();
             getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
             int color = typedValue.data;
             Drawable d = ContextCompat.getDrawable(EventDetailActivity.this, R.drawable.circle_timeaxis);
             d.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
             mPoint.setBackgroundDrawable(d);
+        }
 
+        private void createBottomLogoLayout() {
             mLL = new LinearLayout(EventDetailActivity.this);
             mLL.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
             ViewGroup.LayoutParams LLParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
@@ -313,13 +325,13 @@ public class EventDetailActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            mHeight += measureViews(mView, mWidth);
+            mHeight += measureViewsHeight(mWidth);
 
             Log.d("maxiee", "生成Bitmap:" + String.valueOf(mWidth) + "," + String.valueOf(mHeight));
             mBitmap = Bitmap.createBitmap(
                     mWidth,
                     mHeight,
-                    Bitmap.Config.ARGB_8888);
+                    Bitmap.Config.RGB_565);
             mBitmapHolder = new Canvas(mBitmap);
 
             if (mImage != null) publishProgress(-2);//backdrop
@@ -371,28 +383,28 @@ public class EventDetailActivity extends BaseActivity {
                 Bitmap itemBitmap;
                 int childHeight;
 
-                    mTv.setText(mThoughts.get(progress).getThought());
-                    mTvOrder.setText(getOrder(progress, mThoughts.length()));
-                    long time = mThoughts.get(progress).getTimeStamp();
-                    mTvTime.setText(TimeUtils.parseTime(EventDetailActivity.this, time));
-                    if (mThoughts.get(progress).hasImage()) {
-                        mIv.setVisibility(View.VISIBLE);
-                        Bitmap bmp = loadBitmap(mTv.getMeasuredWidth(), LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(progress).getPath());
-                        mIv.setImageBitmap(bmp);
-                    } else {
-                        mIv.setVisibility(View.GONE);
-                    }
-                    mView.measure(View.MeasureSpec.makeMeasureSpec(mWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-                    childHeight = mView.getMeasuredHeight();
-                    mView.layout(0, 0, mWidth, childHeight);
-                    mView.buildDrawingCache();
-                    itemBitmap = mView.getDrawingCache();
-                    if (itemBitmap != null) {
-                        mBitmapHolder.drawBitmap(itemBitmap, 0, mYPos, null);
-                    }
-                    mView.destroyDrawingCache();
-                    mYPos += childHeight;
-            }
+                mTv.setText(mThoughts.get(progress).getThought());
+                mTvOrder.setText(getOrder(progress, mThoughts.length()));
+                long time = mThoughts.get(progress).getTimeStamp();
+                mTvTime.setText(TimeUtils.parseTime(EventDetailActivity.this, time));
+                if (mThoughts.get(progress).hasImage()) {
+                    mIv.setVisibility(View.VISIBLE);
+                    Bitmap bmp = loadBitmap(mTv.getMeasuredWidth(), LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(progress).getPath());
+                    mIv.setImageBitmap(bmp);
+                } else {
+                    mIv.setVisibility(View.GONE);
+                }
+                mView.measure(View.MeasureSpec.makeMeasureSpec(mWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                childHeight = mView.getMeasuredHeight();
+                mView.layout(0, 0, mWidth, childHeight);
+                mView.buildDrawingCache();
+                itemBitmap = mView.getDrawingCache();
+                if (itemBitmap != null) {
+                    mBitmapHolder.drawBitmap(itemBitmap, 0, mYPos, null);
+                }
+                mView.destroyDrawingCache();
+                mYPos += childHeight;
+        }
         }
 
         @Override
@@ -433,101 +445,97 @@ public class EventDetailActivity extends BaseActivity {
                 Toast.makeText(EventDetailActivity.this, getString(R.string.add_failed), Toast.LENGTH_LONG).show();
             }
         }
-    }
 
-    private int measureViews(View item, int width) {
-        int height = 0;
+        private int measureViewsHeight(int width) {
+            int height = 0;
 
-        if (mImage != null) {
-            height += mImageBackDrop.getMeasuredHeight();
-        }
+            if (mImage != null) height += mImageBackDrop.getMeasuredHeight();
 
-        height += mCardEvent.getMeasuredHeight();
+            height += mCardEvent.getMeasuredHeight();
 
-        TextView tv = (TextView) item.findViewById(R.id.tv_thought);
-        ImageView iv = (ImageView) item.findViewById(R.id.image_thought);
-        item.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        int screenWidth = tv.getMeasuredWidth();
-        iv.setVisibility(View.GONE);
+            mView.measure(View.MeasureSpec.makeMeasureSpec(mWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            int screenWidth = mTv.getMeasuredWidth();
+            mIv.setVisibility(View.GONE);
 
-        // 尺寸获取
-        int rvItemNum = mThoughts.length();
-        for (int i=0; i<rvItemNum; i++) {
-            tv.setText(mThoughts.get(i).getThought());
-            if (mThoughts.get(i).hasImage()) {
-                iv.setVisibility(View.VISIBLE);
-                Bitmap bmp = loadBitmap(screenWidth, LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(i).getPath());
-                iv.setImageBitmap(bmp);
-            } else {
-                iv.setVisibility(View.GONE);
+            // get Size
+            int rvItemNum = mThoughts.length();
+            for (int i=0; i<rvItemNum; i++) {
+                mTv.setText(mThoughts.get(i).getThought());
+                if (mThoughts.get(i).hasImage()) {
+                    mIv.setVisibility(View.VISIBLE);
+                    Bitmap bmp = loadBitmap(screenWidth, LONG_IMAGE_IMAGE_MAX_HEIGHT, mThoughts.get(i).getPath());
+                    mIv.setImageBitmap(bmp);
+                } else {
+                    mIv.setVisibility(View.GONE);
+                }
+                mView.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                height += mView.getMeasuredHeight();
             }
-            item.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            height += item.getMeasuredHeight();
+            return height;
         }
-        return height;
-    }
 
-    private static Bitmap loadBitmap(int reqWidth, int reqHeight, String path) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        int imageWidth = options.outWidth;;
-        int imageHeight = options.outHeight;
-        int inSampleSize = 1;
+        private Bitmap loadBitmap(int reqWidth, int reqHeight, String path) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, options);
+            int imageWidth = options.outWidth;;
+            int imageHeight = options.outHeight;
+            int inSampleSize = 1;
 
-        if (imageWidth > reqWidth) {
+            if (imageWidth > reqWidth) {
 
-            final int halfHeight = imageHeight / 2;
-            final int halfWidth = imageWidth / 2;
+                final int halfHeight = imageHeight / 2;
+                final int halfWidth = imageWidth / 2;
 
-            while ((halfHeight / inSampleSize) > reqHeight) {
-                inSampleSize *= 2;
+                while ((halfHeight / inSampleSize) > reqHeight) {
+                    inSampleSize *= 2;
+                }
             }
-        }
-        options.inJustDecodeBounds = false;
-        options.inSampleSize = inSampleSize;
-        Bitmap b =  BitmapFactory.decodeFile(path, options);
-        int orientation = 1;
-        try {
-            ExifInterface exif = new ExifInterface(path);
-            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-        } catch (Exception e) {e.printStackTrace();}
-        Matrix matrix = new Matrix();
-        switch (orientation) {
-            case 2:
-                matrix.setScale(-1, 1);
-                break;
-            case 3:
-                matrix.setRotate(180);
-                break;
-            case 4:
-                matrix.setRotate(180);
-                matrix.postScale(-1, 1);
-                break;
-            case 5:
-                matrix.setRotate(90);
-                matrix.postScale(-1, 1);
-                break;
-            case 6:
-                matrix.setRotate(90);
-                break;
-            case 7:
-                matrix.setRotate(-90);
-                matrix.postScale(-1, 1);
-                break;
-            case 8:
-                matrix.setRotate(-90);
-                break;
-            default:
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = inSampleSize;
+            Bitmap b =  BitmapFactory.decodeFile(path, options);
+            int orientation = 1;
+            try {
+                ExifInterface exif = new ExifInterface(path);
+                orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+            } catch (Exception e) {e.printStackTrace();}
+            Matrix matrix = new Matrix();
+            switch (orientation) {
+                case 2:
+                    matrix.setScale(-1, 1);
+                    break;
+                case 3:
+                    matrix.setRotate(180);
+                    break;
+                case 4:
+                    matrix.setRotate(180);
+                    matrix.postScale(-1, 1);
+                    break;
+                case 5:
+                    matrix.setRotate(90);
+                    matrix.postScale(-1, 1);
+                    break;
+                case 6:
+                    matrix.setRotate(90);
+                    break;
+                case 7:
+                    matrix.setRotate(-90);
+                    matrix.postScale(-1, 1);
+                    break;
+                case 8:
+                    matrix.setRotate(-90);
+                    break;
+                default:
+                    return b;
+            }
+            try {
+                Bitmap oriented = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+                b.recycle();
+                return oriented;
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
                 return b;
-        }
-        try {
-            Bitmap oriented = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
-            b.recycle();
-            return oriented;
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            return b;
+            }
         }
     }
 
