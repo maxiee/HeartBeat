@@ -271,7 +271,7 @@ public class EventDetailActivity extends BaseActivity {
             progressDialog.setMessage(getString(R.string.generating));
             progressDialog.setCancelable(false);
             progressDialog.show();
-            FrameLayout mFl = new FrameLayout(EventDetailActivity.this);
+            mFl = new FrameLayout(EventDetailActivity.this);
             mFl.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.window_background));
             mCardEvent.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, android.support.v7.cardview.R.color.cardview_light_background));
             DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -284,7 +284,7 @@ public class EventDetailActivity extends BaseActivity {
             mIv = (ImageView) mView.findViewById(R.id.image_thought);
             mTvOrder = (TextView) mView.findViewById(R.id.tv_order);
             mTvTime = (TextView) mView.findViewById(R.id.tv_time);
-            mPoint = (View) mView.findViewById(R.id.time_point);
+            mPoint = mView.findViewById(R.id.time_point);
 
             final TypedValue typedValue = new TypedValue();
             getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
@@ -464,7 +464,6 @@ public class EventDetailActivity extends BaseActivity {
             item.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             height += item.getMeasuredHeight();
         }
-        height += 100; // logo
         return height;
     }
 
