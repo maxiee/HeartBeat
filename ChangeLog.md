@@ -1,5 +1,21 @@
 #心动 ChangeLog
 
+## v0.8.9
+
+发布日期: 20151214
+
+1. 大幅提升统计页面加载速度
+2. APP 整体性能小幅度提升 
+3. 修复生成长微博底部黑条
+4. 修复搜索栏提示文字
+
+Release date: 20151214
+
+1. Speed up the loading time of the statistics page.
+2. App performance improve.
+3. Bug fix: size problem in the long image.
+4. Bug fix: hint text in search box. 
+
 ##v0.8.8
 
 发布日期: 20151205
