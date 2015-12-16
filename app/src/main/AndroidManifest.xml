@@ -40,6 +40,7 @@
             android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".ui.AddEditThoughtActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" />
+        <activity android:name=".ui.HelpCenterActivity" />
     </application>
 
 </manifest>

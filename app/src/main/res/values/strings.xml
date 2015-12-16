@@ -130,6 +130,7 @@
     <string name="morning">Morning</string>
     <string name="grape">Grape</string>
     <string name="burberry">Burberry</string>
+    <string name="helpcenter">Help Center (Chinese)</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
