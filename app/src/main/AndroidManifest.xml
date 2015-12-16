@@ -41,6 +41,7 @@
         <activity android:name=".ui.AddEditThoughtActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity android:name=".ui.HelpCenterActivity" />
+        <activity android:name=".ui.HelpCenterDetailActivity" />
     </application>
 
 </manifest>
