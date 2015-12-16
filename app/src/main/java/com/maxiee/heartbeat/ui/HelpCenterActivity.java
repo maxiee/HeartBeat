@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class HelpCenterActivity extends BaseActivity {
 
     public static final String[] TITLES = new String[] {
-            /*1: */ "开启心动之旅"
+            /*1: */ "心动是一款怎样的记录软件"
     };
 
     public static final String[] DESCRIPTIONS = new String[] {
@@ -28,7 +28,7 @@ public class HelpCenterActivity extends BaseActivity {
     };
 
     public static final String[] FILENAMES = new String[] {
-            /*1: */ "2333.html"
+            /*1: */ "what_heartbeat_is.html"
     };
 
     @Bind(R.id.toolbar)         Toolbar         mToolbar;
