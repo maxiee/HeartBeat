@@ -194,6 +194,11 @@ public class MainActivity extends BaseActivity {
 
         }
 
+        if (id == R.id.action_helpcenter) {
+            Intent i = new Intent(this, HelpCenterActivity.class);
+            startActivity(i);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

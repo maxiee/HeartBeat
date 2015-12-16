@@ -12,6 +12,11 @@
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="99"
         app:showAsAction="never" />
+
+    <item android:id="@+id/action_helpcenter"
+        android:title="@string/helpcenter"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
 </menu>
