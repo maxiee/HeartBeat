@@ -17,18 +17,18 @@ import java.util.ArrayList;
 public class EventUtils {
     public static final String TAG = EventUtils.class.getSimpleName();
 
-    public static Event addEvent(Context context, String content) {
-        long timeStamp = System.currentTimeMillis();
+    public static Event addEvent(Context context, String content, long timestamp) {
         ContentValues values = new ContentValues();
         values.put(EventsTable.EVENT, content);
-        values.put(EventsTable.TIMESTAMP, timeStamp);
+        values.put(EventsTable.TIMESTAMP, timestamp);
         long key = DatabaseUtils.add(context, EventsTable.NAME, values);
-        return new Event(key, content, timeStamp);
+        return new Event(key, content, timestamp);
     }
 
     public static void updateEvent(Context context, Event event) {
         ContentValues values = new ContentValues();
         values.put(EventsTable.EVENT, event.getEvent());
+        values.put(EventsTable.TIMESTAMP, event.getTimestamp());
         DatabaseUtils.update(
                 context, EventsTable.NAME,
                 values, EventsTable.ID + "=?",
@@ -68,24 +68,26 @@ public class EventUtils {
     }
 
     public static ArrayList<Event> getToday(Context context) {
-        Cursor cursor = DatabaseUtils.query(
+        Cursor cursor = DatabaseUtils.queryOrderDesc(
                 context, EventsTable.NAME,
                 new String[]{EventsTable.ID, EventsTable.EVENT, EventsTable.TIMESTAMP},
                 EventsTable.TIMESTAMP + ">?",
-                new String[] {String.valueOf(TimeUtils.getTodayMillis())});
+                new String[] {String.valueOf(TimeUtils.getTodayMillis())},
+                EventsTable.TIMESTAMP);
         ArrayList<Event> ret = new ArrayList<>();
         if (cursor.getCount() < 1) {
             cursor.close();
             return ret;
         }
         while (cursor.moveToNext()) {
-            ret.add(0, queryEvent(cursor));
+            ret.add(queryEvent(cursor));
         }
         cursor.close();
         return ret;
     }
 
     public static ArrayList<Event> getEvents(Context context, Label label) {
+        // Todo use sqlite query to fix time order
         long[] ids = LabelUtils.getRelativedEventIds(context, label);
         ArrayList<Event> ret = new ArrayList<>();
         for (long id : ids) {
@@ -96,16 +98,17 @@ public class EventUtils {
     }
 
     public static ArrayList<Event> getAllEvents(Context context) {
-        Cursor cursor = DatabaseUtils.queryAll(
+        Cursor cursor = DatabaseUtils.queryAllOrderDesc(
                 context, EventsTable.NAME,
-                new String[]{EventsTable.ID, EventsTable.EVENT, EventsTable.TIMESTAMP});
+                new String[]{EventsTable.ID, EventsTable.EVENT, EventsTable.TIMESTAMP},
+                EventsTable.TIMESTAMP);
         ArrayList<Event> eventList = new ArrayList<>();
         if (cursor.getCount() < 1) {
             cursor.close();
             return eventList;
         }
         while (cursor.moveToNext()) {
-            eventList.add(0, queryEvent(cursor));
+            eventList.add(queryEvent(cursor));
         }
         cursor.close();
         return eventList;
