@@ -45,8 +45,16 @@ public class DatabaseUtils {
         return getReadableDatabase(context).query(table, columns, null, null, null, null, null);
     }
 
+    public static Cursor queryAllOrderDesc(Context context, String table, String[] columns, String orderBy) {
+        return getReadableDatabase(context).query(table, columns, null, null, null, null, orderBy + " DESC");
+    }
+
     public static Cursor query(Context context, String table, String[] columns, String selection, String[] args) {
         return getReadableDatabase(context).query(table, columns, selection, args, null, null, null);
+    }
+
+    public static Cursor queryOrderDesc(Context context, String table, String[] columns, String selection, String[] args, String orderBy) {
+        return getReadableDatabase(context).query(table, columns, selection, args, null, null, orderBy + " DESC");
     }
 
     public static int getInt(Cursor cursor, String column) {
