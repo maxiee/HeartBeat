@@ -36,4 +36,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.wdullaer:materialdatetimepicker:2.1.0'
 }
