@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
+import com.maxiee.heartbeat.model.Event;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,16 @@ public class TodayManager extends BaseEventManager{
     void reload() {
         if (mEventList != null) mEventList.clear();
         mEventList.addAll(EventUtils.getToday(mContext));
+    }
+
+    @Override
+    public void addEvent(Event event) {
+        reload();
+    }
+
+    @Override
+    public void updateEvent(Event e) {
+        reload();
     }
 
     public int countTodayThought() {
