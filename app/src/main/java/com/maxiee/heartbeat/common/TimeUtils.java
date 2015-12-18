@@ -50,6 +50,18 @@ public class TimeUtils {
         return String.valueOf(count) + timeUnit;
     }
 
+    public static String parseDateDate(final Context context, final long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        return DateFormat.format("yyyy-MM-dd", cal).toString();
+    }
+
+    public static String parseDateTime(final Context context, final long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        return DateFormat.format("HH:mm:ss", cal).toString();
+    }
+
     public static Calendar calendarDaysBefore(int days) {
         Calendar curDate = Calendar.getInstance();
         curDate.set(
@@ -91,5 +103,21 @@ public class TimeUtils {
             date.get(Calendar.DAY_OF_MONTH),
             0, 0);
         return date.getTimeInMillis();
+    }
+
+    public static long updateTimestampWithDate(int year, int monthOfYear, int dayOfMonth, long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        cal.set(year, monthOfYear, dayOfMonth);
+        return cal.getTimeInMillis();
+    }
+
+    public static long updateTimestampWithTime(int hourOfDay, int minute, int second, long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        cal.set(Calendar.MINUTE, minute);
+        cal.set(Calendar.SECOND, second);
+        return cal.getTimeInMillis();
     }
 }
