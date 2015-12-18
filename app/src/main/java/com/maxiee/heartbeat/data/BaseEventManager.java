@@ -25,7 +25,14 @@ abstract class BaseEventManager {
     }
 
     public void addEvent(Event event) {
-        mEventList.add(0, event);
+        for (int i=0; i<mEventList.size(); i++) {
+            Event e = mEventList.get(i);
+            if (event.getTimestamp() > e.getTimestamp()) {
+                mEventList.add(i, event);
+                return;
+            }
+        }
+        mEventList.add(event);
     }
 
     public void deleteEvent(long key) {
@@ -35,7 +42,8 @@ abstract class BaseEventManager {
 
     public void updateEvent(Event e) {
         int indexEvent = findFromList(e.getId(), mEventList);
-        if (indexEvent >= 0) mEventList.set(indexEvent, e);
+        mEventList.remove(indexEvent);
+        addEvent(e);
     }
 
     public boolean isEmpty() {
