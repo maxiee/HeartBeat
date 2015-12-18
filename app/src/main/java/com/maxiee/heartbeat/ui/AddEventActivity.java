@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.FileUtils;
+import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
 import com.maxiee.heartbeat.data.DataManager;
@@ -35,8 +36,12 @@ import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 import com.maxiee.heartbeat.ui.dialog.NewLabelDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -59,14 +64,16 @@ public class AddEventActivity extends BaseActivity{
     public final static int ADD_EVENT_REQUEST = 100;
     public final static int EVENT_NO_ID = -1;
 
-    @Bind(R.id.edit_event)              EditText mEditEvent;
+    @Bind(R.id.edit_event)              EditText        mEditEvent;
     @Bind(R.id.first_thought_layout)    TextInputLayout mLayoutFirstThought;
-    @Bind(R.id.first_thought)           EditText mEditFirstThought;
-    @Bind(R.id.tagview_added)           TagView mTagViewRecent;
-    @Bind(R.id.tagview_to_add)          TagView mTagViewToAdd;
-    @Bind(R.id.add_imgae)               TextView mTvAddImage;
-    @Bind(R.id.backdrop)                ImageView mImageBackDrop;
-    @Bind(R.id.header)                  View mHeaderView;
+    @Bind(R.id.first_thought)           EditText        mEditFirstThought;
+    @Bind(R.id.tagview_added)           TagView         mTagViewRecent;
+    @Bind(R.id.tagview_to_add)          TagView         mTagViewToAdd;
+    @Bind(R.id.add_imgae)               TextView        mTvAddImage;
+    @Bind(R.id.backdrop)                ImageView       mImageBackDrop;
+    @Bind(R.id.header)                  View            mHeaderView;
+    @Bind(R.id.current_date)            TextView        mCurrentDate;
+    @Bind(R.id.current_time)            TextView        mCurrentTime;
 
     private String mStrEvent;
     private String mStrFirstThought;
@@ -84,6 +91,9 @@ public class AddEventActivity extends BaseActivity{
     private String mImagePathBackup;
     private boolean mHasImage = false;
 
+    private long mTimestamp;
+    private long mTimestampBackup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +106,9 @@ public class AddEventActivity extends BaseActivity{
         setTitle("");
 
         Intent i = getIntent();
+        // new event or edit event?
         mEventId = i.getLongExtra(ID_EVENT_MODIFY, EVENT_NO_ID);
-        if (mEventId != EVENT_NO_ID) {
+        if (mEventId != EVENT_NO_ID) { // edit event
             mIsModify = true;
             Event e = EventUtils.getEvent(this, mEventId);
             mStrEventBackup = e.getEvent();
@@ -117,7 +128,15 @@ public class AddEventActivity extends BaseActivity{
             } else {
                 mHasImage = false;
             }
+
+            mTimestamp = e.getTimestamp();
+            mTimestampBackup = mTimestamp;
+        } else { // new event
+            mTimestamp = System.currentTimeMillis();
+            mTimestampBackup = mTimestamp;
         }
+
+        initDate();
 
         if (mIsModify) mLayoutFirstThought.setVisibility(View.GONE);
 
@@ -200,6 +219,56 @@ public class AddEventActivity extends BaseActivity{
             }
         });
 
+    }
+
+    private void initDate() {
+        updateDate();
+        mCurrentDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(mTimestamp);
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                                mTimestamp = TimeUtils.updateTimestampWithDate(year, monthOfYear, dayOfMonth, mTimestamp);
+                                updateDate();
+                            }
+                        },
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.show(getFragmentManager(), getString(R.string.date));
+            }
+        });
+
+        mCurrentTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(mTimestamp);
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+                                mTimestamp = TimeUtils.updateTimestampWithTime(hourOfDay, minute, second, mTimestamp);
+                                updateDate();
+                            }
+                        },
+                        cal.get(Calendar.HOUR_OF_DAY),
+                        cal.get(Calendar.MINUTE),
+                        cal.get(Calendar.SECOND),
+                        true);
+                tpd.show(getFragmentManager(), getString(R.string.date));
+            }
+        });
+    }
+
+    private void updateDate() {
+        mCurrentDate.setText(TimeUtils.parseDateDate(this, mTimestamp));
+        mCurrentTime.setText(TimeUtils.parseDateTime(this, mTimestamp));
     }
 
     @Override
@@ -308,7 +377,7 @@ public class AddEventActivity extends BaseActivity{
         protected Void doInBackground(Void... params) {
 
             // add event
-            Event newEvent = EventUtils.addEvent(AddEventActivity.this, mStrEvent);
+            Event newEvent = EventUtils.addEvent(AddEventActivity.this, mStrEvent, mTimestamp);
             mEventKey = newEvent.getId();
 
             // add thought
@@ -346,9 +415,9 @@ public class AddEventActivity extends BaseActivity{
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (!mStrEventBackup.equals(mStrEvent)) {
+            if (!mStrEventBackup.equals(mStrEvent) || mTimestamp != mTimestampBackup) {
                 // TODO temp Event
-                Event e = new Event(mEventId, mStrEvent, 0);
+                Event e = new Event(mEventId, mStrEvent, mTimestamp);
                 EventUtils.updateEvent(AddEventActivity.this, e);
             }
             if (mHasImage && !mImagePath.equals(mImagePathBackup)) {
