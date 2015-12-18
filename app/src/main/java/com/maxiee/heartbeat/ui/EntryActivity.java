@@ -68,7 +68,7 @@ public class EntryActivity extends Activity {
         long eventKey;
 
         // Tut4
-        eventKey = EventUtils.addEvent(this, getString(R.string.tut_4_event)).getId();
+        eventKey = EventUtils.addEvent(this, getString(R.string.tut_4_event), System.currentTimeMillis()).getId();
         LabelUtils.addRelation(this, eventKey, label.getId());
         ThoughtUtils.addThought(
                 this, eventKey,
@@ -96,7 +96,7 @@ public class EntryActivity extends Activity {
         );
 
         // Tut3
-        eventKey = EventUtils.addEvent(this, getString(R.string.tut_3_event)).getId();
+        eventKey = EventUtils.addEvent(this, getString(R.string.tut_3_event), System.currentTimeMillis()).getId();
         LabelUtils.addRelation(this, eventKey, label.getId());
         ThoughtUtils.addThought(
                 this, eventKey,
@@ -112,7 +112,7 @@ public class EntryActivity extends Activity {
         );
 
         // Tut2
-        eventKey = EventUtils.addEvent(this, getString(R.string.tut_2_event)).getId();
+        eventKey = EventUtils.addEvent(this, getString(R.string.tut_2_event), System.currentTimeMillis()).getId();
         LabelUtils.addRelation(this, eventKey, label.getId());
         ThoughtUtils.addThought(
                 this, eventKey,
@@ -128,7 +128,7 @@ public class EntryActivity extends Activity {
         );
 
         // Tut1
-        eventKey = EventUtils.addEvent(this, getString(R.string.tut_1_event)).getId();
+        eventKey = EventUtils.addEvent(this, getString(R.string.tut_1_event), System.currentTimeMillis()).getId();
         LabelUtils.addRelation(this, eventKey, label.getId());
         ThoughtUtils.addThought(
                 this, eventKey,
