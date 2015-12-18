@@ -155,6 +155,7 @@ public class EventDetailActivity extends BaseActivity {
         super.onResume();
         mEvent = EventUtils.getEvent(this, mId);
         mTvEvent.setText(mEvent.getEvent());
+        mTvTime.setText(TimeUtils.parseTime(this, mEvent.getTimestamp()));
         mThoughts = ThoughtUtils.getThoughtsByEventId(this, mEvent.getId());
         mAdapter.setData(mThoughts);
         mAdapter.notifyDataSetChanged();
