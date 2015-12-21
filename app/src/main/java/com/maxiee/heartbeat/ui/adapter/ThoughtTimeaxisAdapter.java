@@ -106,6 +106,7 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
                 i.putExtra(AddEditThoughtActivity.THOUGHT, mThoughtList.get(position).getThought());
                 i.putExtra(Thoughts.Thought.THOUGHT_RES, mThoughtList.get(position).getResType());
                 i.putExtra(Thoughts.Thought.THOUGHT_PATH, mThoughtList.get(position).getPath());
+                i.putExtra(AddEditThoughtActivity.TIMESTAMP, mThoughtList.get(position).getTimeStamp());
                 holder.mContext.startActivity(i);
                 return true;
             }
