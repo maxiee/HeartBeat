@@ -36,6 +36,13 @@ public class Thoughts {
     }
 
     public void add(Thought thought) {
+        for (int i=0; i<mThoughts.size(); i++) {
+            Thought t = mThoughts.get(i);
+            if (thought.getTimeStamp() < t.getTimeStamp()) {
+                mThoughts.add(i, thought);
+                return;
+            }
+        }
         mThoughts.add(thought);
     }
 
