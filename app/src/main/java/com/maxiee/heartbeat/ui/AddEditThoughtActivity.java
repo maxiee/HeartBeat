@@ -14,17 +14,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.FileUtils;
+import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by maxiee on 15-9-15.
@@ -36,18 +45,21 @@ public class AddEditThoughtActivity extends BaseActivity {
     public static final String EVENT_KEY = "event_key";
     public static final String THOUGHT_ID = "thought_id";
     public static final String THOUGHT = "thought";
+    public static final String TIMESTAMP = "timestamp";
     public static final int MODE_NEW = 0;
     public static final int MODE_EDIT = 1;
     public static final int INVALID_EVENT_KEY = -1;
     public static final long INVALID_THOUGHT_KEY = -1;
     private static final int ADD_IMAGE = 1127;
 
-    private Toolbar mToolbar;
-    private EditText mEditThought;
-    private ImageView mImage;
-    private String mTextThought;
+    @Bind(R.id.toolbar)         Toolbar         mToolbar;
+    @Bind(R.id.edit_thought)    EditText        mEditThought;
+    @Bind(R.id.image)           ImageView       mImage;
+    @Bind(R.id.add_imgae)       ImageButton     mAddImageButton;
+    @Bind(R.id.current_date)    TextView        mCurrentDate;
+    @Bind(R.id.current_time)    TextView        mCurrentTime;
 
-    private ImageButton mAddImageButton;
+    private String mTextThought;
 
     private int mMode;
     private long mEventKey = INVALID_EVENT_KEY;
@@ -60,16 +72,22 @@ public class AddEditThoughtActivity extends BaseActivity {
 
     private boolean mExitEnsure = false;
 
+    private long mTimestamp;
+    private long mTimestampBackup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_thought);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         mMode = intent.getIntExtra(MODE, MODE_NEW);
 
         if (mMode == MODE_NEW) {
             mEventKey = intent.getLongExtra(EVENT_KEY, INVALID_EVENT_KEY);
+            mTimestamp = System.currentTimeMillis();
+            mTimestampBackup = mTimestamp;
         }
 
         if (mMode == MODE_EDIT) {
@@ -82,16 +100,14 @@ public class AddEditThoughtActivity extends BaseActivity {
             mResPath = intent.getStringExtra(Thoughts.Thought.THOUGHT_PATH);
             mResTypeOld = mResType;
             mResPathOld = mResPath;
+            mTimestamp = intent.getLongExtra(TIMESTAMP, System.currentTimeMillis());
+            mTimestampBackup = mTimestamp;
         }
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mImage = (ImageView) findViewById(R.id.image);
-        mEditThought = (EditText) findViewById(R.id.edit_thought);
 
-        mAddImageButton = (ImageButton) findViewById(R.id.add_imgae);
         mAddImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +133,60 @@ public class AddEditThoughtActivity extends BaseActivity {
         if (mMode == MODE_EDIT) setTitle(getString(R.string.dialog_edit_thought));
 
         if (mMode == MODE_EDIT) initEditView();
+
+        initDate();
     }
+
+    private void initDate() {
+        updateDate();
+        mCurrentDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(mTimestamp);
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                                mTimestamp = TimeUtils.updateTimestampWithDate(year, monthOfYear, dayOfMonth, mTimestamp);
+                                updateDate();
+                            }
+                        },
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.show(getFragmentManager(), getString(R.string.date));
+            }
+        });
+
+        mCurrentTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(mTimestamp);
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+                                mTimestamp = TimeUtils.updateTimestampWithTime(hourOfDay, minute, second, mTimestamp);
+                                updateDate();
+                            }
+                        },
+                        cal.get(Calendar.HOUR_OF_DAY),
+                        cal.get(Calendar.MINUTE),
+                        cal.get(Calendar.SECOND),
+                        true);
+                tpd.show(getFragmentManager(), getString(R.string.date));
+            }
+        });
+    }
+
+    private void updateDate() {
+        mCurrentDate.setText(TimeUtils.parseDateDate(this, mTimestamp));
+        mCurrentTime.setText(TimeUtils.parseDateTime(this, mTimestamp));
+    }
+
 
     private void initEditView() {
         mEditThought.setText(mTextThought);
@@ -239,7 +308,7 @@ public class AddEditThoughtActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            ThoughtUtils.addThought(AddEditThoughtActivity.this, mEventKey, mTextThought, mResType, mResPath);
+            ThoughtUtils.addThought(AddEditThoughtActivity.this, mEventKey, mTextThought, mTimestamp, mResType, mResPath);
             return null;
         }
 
@@ -260,7 +329,7 @@ public class AddEditThoughtActivity extends BaseActivity {
             int state = params[0];
             Log.d(TAG, "thoughtKey:" + String.valueOf(mThoughtKey));
             Log.d(TAG, "thought:" + mTextThought);
-            ThoughtUtils.updateThought(AddEditThoughtActivity.this, mThoughtKey, mTextThought);
+            ThoughtUtils.updateThought(AddEditThoughtActivity.this, mThoughtKey, mTextThought, mTimestamp);
             if (state == RES_DO_NOTHING) return null;
             if (state == RES_INSERT) {
                 ThoughtUtils.addRes(AddEditThoughtActivity.this, mThoughtKey, mResType, mResPath);
