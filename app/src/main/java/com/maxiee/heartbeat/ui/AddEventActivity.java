@@ -382,7 +382,7 @@ public class AddEventActivity extends BaseActivity{
 
             // add thought
             if (!mStrFirstThought.isEmpty()) {
-                ThoughtUtils.addThought(AddEventActivity.this, mEventKey, mStrFirstThought, Thoughts.Thought.HAS_NO_RES, Thoughts.Thought.HAS_NO_PATH);
+                ThoughtUtils.addThought(AddEventActivity.this, mEventKey, mStrFirstThought, mTimestamp, Thoughts.Thought.HAS_NO_RES, Thoughts.Thought.HAS_NO_PATH);
             }
 
             // add labels
