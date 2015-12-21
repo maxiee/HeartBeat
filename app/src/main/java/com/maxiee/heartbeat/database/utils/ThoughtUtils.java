@@ -133,9 +133,28 @@ public class ThoughtUtils {
         addRelation(context, eventId, id);
     }
 
+    public static void addThought(Context context, long eventId, String thought, long timestamp, int resType, String path) {
+        ContentValues values = new ContentValues();
+        values.put(ThoughtsTable.THOUGHT, thought);
+        values.put(ThoughtsTable.TIMESTAMP, timestamp);
+        long id = DatabaseUtils.add(context, ThoughtsTable.NAME, values);
+        addRes(context, id, resType, path);
+        addRelation(context, eventId, id);
+    }
+
     public static void updateThought(Context context, long thoughtId, String thought) {
         ContentValues values = new ContentValues();
         values.put(ThoughtsTable.THOUGHT, thought);
+        DatabaseUtils.update(
+                context, ThoughtsTable.NAME, values,
+                ThoughtsTable.ID + "=?",
+                new String[]{String.valueOf(thoughtId)});
+    }
+
+    public static void updateThought(Context context, long thoughtId, String thought, long timestamp) {
+        ContentValues values = new ContentValues();
+        values.put(ThoughtsTable.THOUGHT, thought);
+        values.put(ThoughtsTable.TIMESTAMP, timestamp);
         DatabaseUtils.update(
                 context, ThoughtsTable.NAME, values,
                 ThoughtsTable.ID + "=?",
