@@ -1,0 +1,225 @@
+<!DOCTYPE html><html>
+
+<head>
+<meta charset="utf-8">
+<title></title>
+<style>
+*{margin:0;padding:0}
+body{
+  min-width: 200px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 30px;
+
+	font-family:"Nunito","HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;font-size:14px;background:#fff;color:#333}
+.markdown-body{line-height:1.5em;font-size:1.3em}
+h1{font-size:1.8em}
+h2{font-size:1.5em}
+h3{font-size:1.3em}
+a{text-decoration:none;outline-width:0;color:#258fb8}
+a:hover{color:#2571B8}
+
+.markdown-body img.left,.markdown-body video.left{float:left;margin-right:1.5em}
+
+
+.markdown-body img.right, .markdown-body video.right{float:right;margin-left:1.5em}
+
+.markdown-body img.center,.markdown-body video.center{display:block;margin:0 auto 1.5em}
+
+.markdown-body img.left, .markdown-body video.left, .markdown-body img.right, .markdown-body video.right{margin-bottom:.8em}
+
+.alignleft{float:left}
+.alignright{float:right}
+.clearfix{*zoom:1}
+.clearfix:after{content:"";display:table;clear:both}
+
+
+.markdown-body h1{font-weight:300;line-height:35px;margin-bottom:20px}
+.markdown-body h1 a{color:#666}
+.markdown-body a:hover{text-decoration:underline}
+.markdown-body .more-link{display:block;margin-top:16px;padding-left:30px;position:relative}
+.markdown-body p,.markdown-body blockquote,.markdown-body ul,.markdown-body ol,.markdown-body dl,.markdown-body table,.markdown-body iframe,.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6,.markdown-body .video-container{margin-top:20px}
+.markdown-body ul,.markdown-body ol,.markdown-body dl{margin-left:20px}
+.markdown-body ul ul,.markdown-body ul ol,.markdown-body ul dl,.markdown-body ol ul,.markdown-body ol ol,.markdown-body ol dl,.markdown-body dl ul,.markdown-body dl ol,.markdown-body dl dl{margin-top:0}
+.markdown-body strong{font-weight:bold}
+.markdown-body em{font-style:italic}
+.markdown-body p{margin-top:10px}
+.markdown-body h2{font-weight:300;border-bottom:1px solid #ddd;position:relative}
+.markdown-body h2:before{content:"";position:absolute;bottom:-2px;border-bottom:1px solid #fff;width:100%}
+.markdown-body img,.markdown-body video{max-width:100%;height:auto}
+.markdown-body blockquote{background:#ddd;border-left:5px solid #ccc;padding:15px 20px;margin-top:10px}
+.markdown-body blockquote>p:first-of-type{margin-top:0}
+.markdown-body iframe{border:none}
+.markdown-body table{background:#ddd;border:1px solid #ccc;border-spacing:0;margin-top:10px}
+.markdown-body table th{background:#ccc;padding:0 15px}
+.markdown-body table td{text-align:center}
+.markdown-body table tr:nth-of-type(2n){background:#d5d5d5}
+.markdown-body .caption{display:block;font-size:0.9em;color:#999;padding-left:25px;position:relative}
+.markdown-body .caption:before{content:"\f040";color:#ccc;font:1.3em FontAwesome;line-height:1.6em;position:absolute;left:0}
+.markdown-body .video-container{position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden}
+.markdown-body .video-container iframe,.markdown-body .video-container object,.markdown-body .video-container embed{position:absolute;top:0;left:0;width:100%;height:100%;margin-top:0}
+
+.markdown-body footer{padding:15px 0;border-top:1px solid #fff;text-align:center;font-size:0.9em}
+code,pre{background:#ddd;border:1px solid #ccc;font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace; font-size: 0.9em;}
+code{font-size:0.9em;padding:1px 3px;margin:0 3px}
+pre code{background:none;border:none;padding:0;margin:0}
+
+
+.markdown-body p{margin-top:10px}
+.markdown-body h2{font-size:1.3em;color:#333;margin-top:30px;font-weight:bold}
+.markdown-body h2::before{border-bottom:none}
+.markdown-body blockquote{border-left:5px solid #2571B8;background:#F7F7F7}
+.markdown-body blockquote p{margin-top:0px}
+.markdown-body table{line-height:1.2em}
+.markdown-body table td{text-align:left}
+
+
+.markdown-body pre{ background: none; border: none; padding: 0; margin: 4px 0px;}
+.markdown-body{text-align: left;}
+.markdown-body table th,.markdown-body table td{ padding: 4px;border-collapse: collapse; border:solid 1px #ddd;}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6{ line-height: 1.2em;}
+	
+.markdown-body{border: none;}
+.markdown-body	hr{ margin: 20px 0px;border: 0; border-top:solid 1px #ddd;}
+
+/*
+
+Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmail.com>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #002b36;
+  color: #839496;
+  -webkit-text-size-adjust: none;
+}
+
+.hljs-comment,
+.diff .hljs-header,
+.hljs-doctype,
+.hljs-pi,
+.lisp .hljs-string {
+  color: #586e75;
+}
+
+/* Solarized Green */
+.hljs-keyword,
+.hljs-winutils,
+.method,
+.hljs-addition,
+.css .hljs-tag,
+.hljs-request,
+.hljs-status,
+.nginx .hljs-title {
+  color: #859900;
+}
+
+/* Solarized Cyan */
+.hljs-number,
+.hljs-command,
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-rule .hljs-value,
+.hljs-doctag,
+.tex .hljs-formula,
+.hljs-regexp,
+.hljs-hexcolor,
+.hljs-link_url {
+  color: #2aa198;
+}
+
+/* Solarized Blue */
+.hljs-title,
+.hljs-localvars,
+.hljs-chunk,
+.hljs-decorator,
+.hljs-built_in,
+.hljs-identifier,
+.vhdl .hljs-literal,
+.hljs-id,
+.css .hljs-function,
+.hljs-name {
+  color: #268bd2;
+}
+
+/* Solarized Yellow */
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body,
+.smalltalk .hljs-number,
+.hljs-constant,
+.hljs-class .hljs-title,
+.hljs-parent,
+.hljs-type,
+.hljs-link_reference {
+  color: #b58900;
+}
+
+/* Solarized Orange */
+.hljs-preprocessor,
+.hljs-preprocessor .hljs-keyword,
+.hljs-pragma,
+.hljs-shebang,
+.hljs-symbol,
+.hljs-symbol .hljs-string,
+.diff .hljs-change,
+.hljs-special,
+.hljs-attr_selector,
+.hljs-subst,
+.hljs-cdata,
+.css .hljs-pseudo,
+.hljs-header {
+  color: #cb4b16;
+}
+
+/* Solarized Red */
+.hljs-deletion,
+.hljs-important {
+  color: #dc322f;
+}
+
+/* Solarized Violet */
+.hljs-link_label {
+  color: #6c71c4;
+}
+
+.tex .hljs-formula {
+  background: #073642;
+}
+
+
+</style>
+
+<style> @media print{ .hljs{overflow: visible; word-wrap: break-word !important;} }</style></head><body><div class="markdown-body">
+<h1 id="toc_0">捐赠感谢名单</h1>
+
+<h2 id="toc_1">名单</h2>
+
+<blockquote>1. 世纪：“感谢开发者”</blockquote>
+
+<blockquote>2. 过雨：“谢谢做出这么棒的应用”</blockquote>
+
+<blockquote>3. 卤卤卤卤：“加油，看好你们呦”</blockquote>
+
+<h2 id="toc_2">说明</h2>
+
+<p>心动是一款开源APP，用户无需付费即可自由使用所有功能。心动唯一的盈利渠道就是接受用户的自愿捐赠。如果您喜欢心动这款应用，并且想要给予支持，可以向我进行捐赠。</p>
+
+<p>为了表达我的感谢，我建立了这个捐赠感谢名单，每一位捐赠用户的 id 和留言都会按照<strong>先后顺序</strong>永远地记录下来。</p>
+
+<p>如果您想向我进行捐赠，可以在设置页面中找到捐赠地址。在捐赠的同时，您可以向我留言，具体包括：</p>
+
+<ol>
+<li>您的名字（可以附带链接，若未留下名字默认使用支付时的名字）。</li>
+<li>您的留言（这句话将记录在名单中）。</li>
+</ol>
+
+<p>上榜的最低额度定为¥0.9，名单将在每次心动更新时更新。</p>
+
+</div></body>
+
+</html>

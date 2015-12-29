@@ -1,0 +1,250 @@
+<!DOCTYPE html><html>
+
+<head>
+<meta charset="utf-8">
+<title></title>
+<style>
+html,body{ font-family: "SF UI Display", ".PingFang SC","PingFang SC", "Neue Haas Grotesk Text Pro", "Arial Nova", "Segoe UI", "Microsoft YaHei", "Microsoft JhengHei", "Helvetica Neue", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "Hiragino Sans GB", sans-serif;
+  font-size: 16px;
+  color:#222
+  -webkit-text-size-adjust:none;  min-width: 200px;
+  max-width: 760px;
+  margin: 0 auto; padding: 1rem;
+  line-height: 1.5rem;
+
+}
+h1,h2,h3,h4,h5,h6{font-family: "PT Sans","SF UI Display", ".PingFang SC","PingFang SC", "Neue Haas Grotesk Text Pro", "Arial Nova", "Segoe UI", "Microsoft YaHei", "Microsoft JhengHei", "Helvetica Neue", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "Hiragino Sans GB", sans-serif;
+text-rendering:optimizelegibility;margin-bottom:1em;font-weight:bold; line-height: 1.8rem;
+
+}
+h1,h2{position:relative;padding-top:1rem;padding-bottom:0.2rem;margin-bottom:1rem;background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAABCAYAAACsXeyTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAFUlEQVQIHWNIS0sr/v//PwMMDzY+ADqMahlW4J91AAAAAElFTkSuQmCC') bottom left repeat-x;}
+h2{padding-top:0.8rem;padding-bottom:0.2rem;}
+h1{ font-size: 1.6rem;}
+h2{ font-size: 1.4rem;}
+h3{ font-size: 1.2rem;}
+h4{ font-size: 1.1rem;}
+h5{ font-size: 1.0rem;}
+h6{ font-size: 0.9rem;}
+
+table{border-collapse:collapse;border-spacing:0;
+  margin-top: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+tr{  background-color: #fff;
+  border-top: 1px solid #ccc;}
+th,td{padding: 5px 14px;
+  border: 1px solid #ddd;}
+
+blockquote{font-style:italic;font-size:1.1em;line-height:1.5em;padding-left:1em; border-left:4px solid #D5D5D5;    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1.5rem; }
+
+a{color:#1863a1}
+
+pre,code,p code,li code{font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace}
+
+pre{-webkit-border-radius:0.4em;-moz-border-radius:0.4em;-ms-border-radius:0.4em;-o-border-radius:0.4em;border-radius:0.4em;border:1px solid #e7dec3;line-height:1.45em;font-size:0.9rem;margin-bottom:2.1em;padding:.8em 1em;color:#586e75;overflow:auto; background-color:#fdf6e3;}
+
+p code,li code{display:inline-block;white-space:no-wrap;background:#fff;font-size:0.9rem;line-height:1.5em;color:#555;border:1px solid #ddd;-webkit-border-radius:0.4em;-moz-border-radius:0.4em;-ms-border-radius:0.4em;-o-border-radius:0.4em;border-radius:0.4em;padding:0 .3em;margin:-1px 4px;}
+p pre code,li pre code{font-size:1em !important;background:none;border:none}
+
+img{max-width:100%;-webkit-border-radius:0.3em;-moz-border-radius:0.3em;-ms-border-radius:0.3em;-o-border-radius:0.3em;border-radius:0.3em;-webkit-box-shadow:rgba(0,0,0,0.15) 0 1px 4px;-moz-box-shadow:rgba(0,0,0,0.15) 0 1px 4px;box-shadow:rgba(0,0,0,0.15) 0 1px 4px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:#fff 0.5em solid}
+
+
+hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+
+/*
+
+Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmail.com>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #fdf6e3;
+  color: #657b83;
+  -webkit-text-size-adjust: none;
+}
+
+.hljs-comment,
+.diff .hljs-header,
+.hljs-doctype,
+.hljs-pi,
+.lisp .hljs-string {
+  color: #93a1a1;
+}
+
+/* Solarized Green */
+.hljs-keyword,
+.hljs-winutils,
+.method,
+.hljs-addition,
+.css .hljs-tag,
+.hljs-request,
+.hljs-status,
+.nginx .hljs-title {
+  color: #859900;
+}
+
+/* Solarized Cyan */
+.hljs-number,
+.hljs-command,
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-rule .hljs-value,
+.hljs-doctag,
+.tex .hljs-formula,
+.hljs-regexp,
+.hljs-hexcolor,
+.hljs-link_url {
+  color: #2aa198;
+}
+
+/* Solarized Blue */
+.hljs-title,
+.hljs-localvars,
+.hljs-chunk,
+.hljs-decorator,
+.hljs-built_in,
+.hljs-identifier,
+.vhdl .hljs-literal,
+.hljs-id,
+.css .hljs-function,
+.hljs-name {
+  color: #268bd2;
+}
+
+/* Solarized Yellow */
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body,
+.smalltalk .hljs-number,
+.hljs-constant,
+.hljs-class .hljs-title,
+.hljs-parent,
+.hljs-type,
+.hljs-link_reference {
+  color: #b58900;
+}
+
+/* Solarized Orange */
+.hljs-preprocessor,
+.hljs-preprocessor .hljs-keyword,
+.hljs-pragma,
+.hljs-shebang,
+.hljs-symbol,
+.hljs-symbol .hljs-string,
+.diff .hljs-change,
+.hljs-special,
+.hljs-attr_selector,
+.hljs-subst,
+.hljs-cdata,
+.css .hljs-pseudo,
+.hljs-header {
+  color: #cb4b16;
+}
+
+/* Solarized Red */
+.hljs-deletion,
+.hljs-important {
+  color: #dc322f;
+}
+
+/* Solarized Violet */
+.hljs-link_label {
+  color: #6c71c4;
+}
+
+.tex .hljs-formula {
+  background: #eee8d5;
+}
+
+
+</style>
+
+<style> @media print{ .hljs{overflow: visible; word-wrap: break-word !important;} }</style></head><body><div class="markdown-body">
+<h1 id="toc_0">三级信息结构：标签－事件－感想</h1>
+
+<p>正如前文中说的，心动改进了传统日记的信息组织方式，也就是心动所特有的<strong>标签－事件－感想</strong>三级结构。</p>
+
+<h2 id="toc_1">事件</h2>
+
+<p>我们的生活就是由大大小小的<strong>事件</strong>组成的。解出一道难题、完成一项工作、学会一个知识，都是我们经常遇到的并且颇具成就的事情。</p>
+
+<p>每当这些有意义的事情发生的时候，我们都会怦然心动，伴随着激动的心情和许多感触。</p>
+
+<p>每当有怦然心动的事情发生时，点击主界面右下角的加号按钮，就可以将其添加之心动中。</p>
+
+<p>在事件添加页面中，我们记录下当前发生了什么事，自己的感想如何，如果有照片还可以添加作为事件的封面。</p>
+
+<p>这样，这件生活中有价值的事件就永远保留下来了。</p>
+
+<p>与此同时，在事件添加页面中我们也可以创建新标签，也可以从常用的标签中选择。</p>
+
+<h2 id="toc_2">标签</h2>
+
+<p>那么，标签代表什么意思呢？<strong>标签实现了对事件的分类。</strong></p>
+
+<p>以 Maxiee 自己为例，于<strong>心动</strong>开发有关的事件，我都将它们添加到名为<code>心动</code>的标签下。同时我还创建了<code>Android</code>与<code>开发</code>两个标签，也一并加入其中。</p>
+
+<p>对与学校里的事情，我创建了一个<code>学校</code>标签，将与学校有关的事件添加进去。同样地，我创建的标签还有<code>生活</code>、<code>学习</code>、<code>家</code>、<code>求职</code>、<code>媳妇</code>、<code>读书</code>等等。</p>
+
+<p>为什么要加入这么多标签呢？<strong>标签将事件分门别类地管理起来了。</strong></p>
+
+<p>主界面有一个名为<strong>标签云</strong>分页，我们的标签都显示在里面，事件多的标签就更大、更明亮一些。</p>
+
+<p>点击标签进入<strong>标签页</strong>，顶部是纪念日，告诉我们这个标签什么时间创建，至今多长事件，发生了多少事件。它的底部是一个当前标签下事件的列表，供我们查看此标签下发生的事件。</p>
+
+<p>例如，Maxiee 只要点击自己的<code>心动</code>标签，从15年7月份开发心动到现在，所有开发中的喜怒哀乐都列在其中。每次进来看看，都会感慨万千。</p>
+
+<h2 id="toc_3">感想</h2>
+
+<p>感想就值得就是<strong>时间轴</strong>里的那些信息，指<strong>我们对于事件的感想。</strong>感想按照先后分为<code>初刻</code>、<code>此刻</code>、<code>3</code>、<code>4</code>……</p>
+
+<p>感想有什么用呢？比如我们剁手买东西的时候：</p>
+
+<pre><code>事件：双十一开始了
+
+初刻：卧槽这双新百伦打5折？
+此刻：买买买！！
+3: 尼玛怎么支付不了
+4：呼～终于买到了！😁
+</code></pre>
+
+<p>感想随时都可以追加，一周后、一月后、甚至是一年后，我们都可以添加新的感想。对于生活中那些难忘的事件，时时品味、回忆是一件幸福美好的事情。</p>
+
+<p>除了文字，<strong>感想还能够添加图片！</strong>我们可以把一日旅行、一场婚礼的照片添加进去，我们的所见、所想就原汁原味地定格下来了。未来 Maxiee 还会支持添加语音、视频，目的还是那个：<strong>将令我们怦然心动的事件感想原汁原味地保留下来。</strong></p>
+
+<h2 id="toc_4">三级结构的意义</h2>
+
+<p>三级结构使得我们能够对事情分门别类，更加清晰。可是这么做有什么意义的？</p>
+
+<p>Maxiee 以为我们的回忆就像是一个大仓库。每一件有意义的事件，不论我们记在脑中、日记中、还是心动里，这个事件都将变成我们回忆的一部分。</p>
+
+<p>如果仓库分类、管理得好、账目清晰，取货、盘点都会变得十分容易。回忆也是一样。脑中、日记中都比较混乱，当我们想了解具体某一类事情的进展，往往只能得到一个大概的认识。</p>
+
+<p>有了心动的三级结构，事情变得清晰了许多。查看某一类事件现在只要一点就能得到一个完整的认识。</p>
+
+<p><strong>找变得容易了，留给想的时间就多了。</strong>这也就是我设计的目的，<strong>能让我们更好地回忆、反思生活，不断地感悟生活、添加感想。</strong></p>
+
+<p>鞋子适合不适合脚，只有自己心里清楚。自己如果以前做得不好的地方，明白了问题出在哪里，并在未来加以改正，这就取得了巨大的进步。</p>
+
+<hr/>
+
+<p>遇到任何问题，或者有任何建议，欢迎与我联系（联系方式详见设置页面，也可在微博上 @心动小分队 心动的官方账号）。</p>
+
+<p>如果心动对您有所帮助并且您愿意给予支持，可以向我捐赠一笔小钱，我将感谢万分！（捐赠地址详见设置页面）</p>
+
+</div></body>
+
+</html>
