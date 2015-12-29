@@ -1,5 +1,23 @@
 #心动 ChangeLog
 
+## v0.9.0
+
+发布日期: 20151229
+
+1. 事件的添加、修改页面均可以设置添加时间
+2. 感想的添加、修改页面也均可以设置添加时间
+3. 添加帮助中心，位于设置菜单下方
+4. 添加两篇帮助中心教程
+5. 添加捐赠感谢名单
+
+Release date: 20151229
+
+1. The date of the event now can be modified in New Event page and Event Editing page.
+2. The date of the thought now can be modified in New Thought page and Thought Editing page.
+3. Add a help center,  located below the setting menu.(now Chinese language only.)
+4. Add 2 articles into help center.
+5. Add donations thanking list. 
+
 ## v0.8.9
 
 发布日期: 20151214
