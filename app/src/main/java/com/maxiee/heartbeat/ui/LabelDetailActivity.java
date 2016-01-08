@@ -12,11 +12,11 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.common.ThemeUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.database.utils.LabelUtils;
@@ -28,14 +28,18 @@ import com.maxiee.heartbeat.ui.common.RecyclerInsetsDecoration;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by maxiee on 15-6-27.
  */
 public class LabelDetailActivity extends BaseActivity{
 
-    private Toolbar mToolbar;
-    private RecyclerView mRecyclerView;
-    private TextView mLabelHint;
+    @Bind(R.id.toolbar)         Toolbar         mToolbar;
+    @Bind(R.id.recyclerview)    RecyclerView    mRecyclerView;
+    @Bind(R.id.label_hint)      TextView        mLabelHint;
+
     private String mLabel;
     private ArrayList<Event> mEventList;
     private int mAccentColor;
@@ -44,25 +48,19 @@ public class LabelDetailActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_label_detail);
+        ButterKnife.bind(this);
 
         Intent i = getIntent();
-
         mLabel = i.getStringExtra("tag_text");
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         setTitle("");
 
-        mLabelHint = (TextView) findViewById(R.id.label_hint);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
         mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(this));
 
-        TypedValue accentValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.colorAccent, accentValue, true);
-        mAccentColor = accentValue.data;
+        mAccentColor = ThemeUtils.getAttributeColor(this, R.attr.colorAccent);
 
         if (mLabel != null) {
             long labelKey = LabelUtils.hasLabel(this, mLabel);
