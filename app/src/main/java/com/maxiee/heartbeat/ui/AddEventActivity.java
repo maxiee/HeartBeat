@@ -1,6 +1,7 @@
 package com.maxiee.heartbeat.ui;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -8,13 +9,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.FileUtils;
+import com.maxiee.heartbeat.common.ThemeUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
@@ -35,7 +40,6 @@ import com.maxiee.heartbeat.model.Image;
 import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
-import com.maxiee.heartbeat.ui.dialog.NewLabelDialog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -166,15 +170,34 @@ public class AddEventActivity extends BaseActivity{
             @Override
             public void onTagClick(Tag tag, int position) {
                 if (tag.text.equals(getString(R.string.new_tag))) {
-                    NewLabelDialog dialog = new NewLabelDialog(AddEventActivity.this);
-                    dialog.setOnAddFinishedListener(new NewLabelDialog.OnAddFinishedListener() {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(
+                            AddEventActivity.this,
+                            ThemeUtils.getCurrentDialogTheme(AddEventActivity.this));
+                    builder.setTitle(R.string.new_tag);
+                    final EditText input = new EditText(AddEventActivity.this);
+                    final FrameLayout container = new FrameLayout(AddEventActivity.this);
+                    final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(40, 40, 40, 40);
+                    container.addView(input, params);
+                    builder.setView(container);
+                    builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                         @Override
-                        public void addLabel(String label) {
+                        public void onClick(DialogInterface dialog, int which) {
+                            String label = input.getText().toString();
+                            if (label.isEmpty()) return;
                             if (!mLabels.contains(label)) mLabels.add(label);
                             initTagsToAdd();
                         }
                     });
-                    dialog.show();
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
                 }
             }
         });
