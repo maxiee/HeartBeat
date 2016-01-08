@@ -35,6 +35,16 @@ public class ThemeUtils {
             R.style.AppTheme_burberry
     };
 
+    private static final int[] THEME_DIALOG_RES = new int[] {
+            R.style.AppTheme_Dialog,
+            R.style.AppTheme_lemon_Dialog,
+            R.style.AppTheme_strawberry_Dialog,
+            R.style.AppTheme_starry_Dialog,
+            R.style.AppTheme_morning_Dialog,
+            R.style.AppTheme_grape_Dialog,
+            R.style.AppTheme_burberry_Dialog
+    };
+
     public static void chooseThemeDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.change_theme));
@@ -60,6 +70,12 @@ public class ThemeUtils {
         SharedPreferences sp = getSharedPreference(context);
         int index = sp.getInt(CURRENT_THEME, 0);
         return THEME_ACTIVITY_RES[index];
+    }
+
+    public static int getCurrentDialogTheme(Context context) {
+        SharedPreferences sp = getSharedPreference(context);
+        int index = sp.getInt(CURRENT_THEME, 0);
+        return THEME_DIALOG_RES[index];
     }
 
     private static void setCurrentActivityTheme(Context context, int index) {
