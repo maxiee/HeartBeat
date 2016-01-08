@@ -49,14 +49,6 @@ public class LabelUtils {
         return ret;
     }
 
-    public static long[] getRelativedEventIds(Context context, Label label) {
-        return getRelativedIds(
-                context,
-                EventLabelRelationTable.LABEL_ID,
-                EventLabelRelationTable.EVENT_ID,
-                label.getId());
-    }
-
     public static long[] getRelativedLabelIds(Context context, Event event) {
         return getRelativedIds(
                 context,
