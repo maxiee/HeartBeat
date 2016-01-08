@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.database.tables.EventLabelRelationTable;
 import com.maxiee.heartbeat.database.tables.EventsTable;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.model.Label;
@@ -87,13 +88,24 @@ public class EventUtils {
     }
 
     public static ArrayList<Event> getEvents(Context context, Label label) {
-        // Todo use sqlite query to fix time order
-        long[] ids = LabelUtils.getRelativedEventIds(context, label);
+        final String rawSQL =
+                "SELECT " +  EventsTable.NAME + "." + EventsTable.ID + ", " + EventsTable.EVENT + ", " + EventsTable.TIMESTAMP + ", "
+                + EventLabelRelationTable.LABEL_ID + " FROM " + EventsTable.NAME + " JOIN " + EventLabelRelationTable.NAME
+                + " ON " + EventsTable.NAME + "." + EventsTable.ID + "=" + EventLabelRelationTable.NAME + "." + EventLabelRelationTable.EVENT_ID
+                + " WHERE " + EventLabelRelationTable.LABEL_ID + "=?"
+                + " ORDER BY " + EventsTable.TIMESTAMP + " DESC;";
+        Cursor cursor = DatabaseUtils.getReadableDatabase(context).rawQuery(
+                rawSQL,
+                new String[] { String.valueOf(label.getId())});
         ArrayList<Event> ret = new ArrayList<>();
-        for (long id : ids) {
-            Event e = EventUtils.getEvent(context, id);
-            ret.add(0, e);
+        if (cursor.getCount() < 1) {
+            cursor.close();
+            return ret;
         }
+        while (cursor.moveToNext()) {
+            ret.add(queryEvent(cursor));
+        }
+        cursor.close();
         return ret;
     }
 
