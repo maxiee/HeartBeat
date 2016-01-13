@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onSearchTermChanged() {
+            public void onSearchTermChanged(String s) {
 
             }
 
@@ -144,6 +144,11 @@ public class MainActivity extends BaseActivity {
                 i.setClass(MainActivity.this, SearchResultActivity.class);
                 i.putExtra("search", s);
                 startActivity(i);
+            }
+
+            @Override
+            public void onResultClick(SearchResult searchResult) {
+
             }
         });
     }
