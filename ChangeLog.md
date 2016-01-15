@@ -1,5 +1,19 @@
 #心动 ChangeLog
 
+## v0.9.1
+
+发布日期: 20160116
+
+1. 修复新标签对话框显示问题
+2. 修复标签详情页列表乱序
+3. 更新捐赠感谢名单
+
+Release date: 20160116
+
+1. Fix the layout of the new label dialog
+2. Fix the wrong order of the list in label detail page
+3. Update the donation thanking list
+
 ## v0.9.0
 
 发布日期: 20151229
