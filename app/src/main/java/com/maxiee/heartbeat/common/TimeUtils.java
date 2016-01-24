@@ -62,6 +62,18 @@ public class TimeUtils {
         return DateFormat.format("HH:mm:ss", cal).toString();
     }
 
+    public static String parseHour(final Context context, final long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        return DateFormat.format("HH", cal).toString();
+    }
+
+    public static String parseMinute(final Context context, final long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        return DateFormat.format("mm", cal).toString();
+    }
+
     public static Calendar calendarDaysBefore(int days) {
         Calendar curDate = Calendar.getInstance();
         curDate.set(
@@ -90,9 +102,24 @@ public class TimeUtils {
         return (int) (diff / MS_ONE_DAY);
     }
 
+    public static boolean isInSameDay(long dayStart, long eventTime) {
+        return eventTime > dayStart;
+    }
+
     public static int getToday() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static long getDayStart(long timestamp) {
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(timestamp);
+        date.set(
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH),
+                0, 0);
+        return date.getTimeInMillis();
     }
 
     public static long getTodayMillis() {
