@@ -8,7 +8,7 @@ import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.database.utils.ImageUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Event;
-import com.maxiee.heartbeat.ui.adapter.EventListAdapter;
+import com.maxiee.heartbeat.ui.adapter.DayCardEventAdapter;
 import com.maxiee.heartbeat.ui.adapter.TodayEventAdapter;
 
 /**
@@ -20,7 +20,8 @@ public class DataManager {
     private Context mContext;
     private EventManager mEventManager;
     private TodayManager mTodayManager;
-    private EventListAdapter mEventAdapter;
+//    private EventListAdapter mEventAdapter;
+    private DayCardEventAdapter mEventAdapter;
     private TodayEventAdapter mTodayAdapter;
     private int mToday;
     private static DataManager mInstance;
@@ -36,7 +37,8 @@ public class DataManager {
         mContext = context;
         mEventManager = new EventManager(mContext);
         mTodayManager = new TodayManager(mContext);
-        mEventAdapter = new EventListAdapter(mEventManager.getEvents());
+//        mEventAdapter = new EventListAdapter(mEventManager.getEvents());
+        mEventAdapter = new DayCardEventAdapter(mEventManager.getDayCardData());
         mTodayAdapter = new TodayEventAdapter(mTodayManager.getEvents());
         mToday = TimeUtils.getToday();
     }
@@ -44,13 +46,17 @@ public class DataManager {
     public void reload() {
         mEventManager.reload();
         mTodayManager.reload();
-        mEventAdapter.setData(mEventManager.getEvents());
+        mEventAdapter.setData(mEventManager.getDayCardData());
         mTodayAdapter.setData(mTodayManager.getEvents());
     }
 
     public EventManager getEventManager() {return  mEventManager;}
 
-    public EventListAdapter getEventAdapter() {
+//    public EventListAdapter getEventAdapter() {
+//        return mEventAdapter;
+//    }
+
+    public DayCardEventAdapter getEventAdapter() {
         return mEventAdapter;
     }
 
@@ -83,6 +89,8 @@ public class DataManager {
         // TODO move the code of DB-adding here
         mEventManager.addEvent(event);
         mTodayManager.addEvent(event);
+        // TODO wtf
+        mEventManager.reloadDayCardData();
     }
 
     public void deleteEvent(long key) {
@@ -91,6 +99,8 @@ public class DataManager {
         ThoughtUtils.deleteByEventId(mContext, key);
         mEventManager.deleteEvent(key);
         mTodayManager.deleteEvent(key);
+        // TODO wtf
+        mEventManager.reloadDayCardData();
         notifyDataSetChanged();
         checkNewDay();
     }
@@ -100,6 +110,8 @@ public class DataManager {
         if (e == null) return;
         mEventManager.updateEvent(e);
         mTodayManager.updateEvent(e);
+        // TODO wtf
+        mEventManager.reloadDayCardData();
         checkNewDay();
     }
 
