@@ -111,7 +111,7 @@
     <string name="tut_1_thought_2">点击最上方的图片, 为你的心动事件添加封面图片.</string>
     <string name="tut_1_thought_3">为事件添加标签,对生活进行归类.</string>
     <string name="tut_2_event">点击我学习如何修改事件与感想.</string>
-    <string name="tut_2_thought_1">长按事件文字, 会弹出事件编辑菜单, 你可以编辑/删除事件.</string>
+    <string name="tut_2_thought_1">长按事件文字, 会弹出事件编辑界面, 你可以编辑/删除事件.</string>
     <string name="tut_2_thought_2">长按感想文字, 会弹出感想编辑界面, 你可以编辑/删除感想.</string>
     <string name="tut_2_thought_3">如果你已添加封面图片, 点击它即可更换.</string>
     <string name="tut_3_event">点击我学习如何添加带图片的感想.</string>

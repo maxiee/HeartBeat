@@ -110,7 +110,7 @@
     <string name="tut_1_thought_2" >You can add a cover image for your event by click the image on the top.</string>
     <string name="tut_1_thought_3" >Add labels to your event, to organize your life.</string>
     <string name="tut_2_event" >Click me to learn how to edit events and thoughts.</string>
-    <string name="tut_2_thought_1" >Long press the text of the event, you can edit/delete the event in a pop up dialog.</string>
+    <string name="tut_2_thought_1" >Long press the text of the event, you can edit/delete the event in a new page.</string>
     <string name="tut_2_thought_2" >Long press the text of the thought, you can edit/delete the thought in a new page.</string>
     <string name="tut_2_thought_3" >If you have added a cover image, you can change it by clicking it.</string>
     <string name="tut_3_event" >Click me to learn how to add a thought with image.</string>
