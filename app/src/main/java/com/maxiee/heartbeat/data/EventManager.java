@@ -51,9 +51,10 @@ public class EventManager extends BaseEventManager{
             } else {
                 mData.add(dayCard);
                 dayStart = TimeUtils.getDayStart(e.getTimestamp());
-                dayCard = new DayCard(dayStart, e);;
+                dayCard = new DayCard(dayStart, e);
             }
         }
+        if (dayCard != null) mData.add(dayCard);
     }
 
     public ArrayList<DayCard> getDayCardData() {return mData;}
