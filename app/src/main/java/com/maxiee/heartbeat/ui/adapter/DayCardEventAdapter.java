@@ -1,7 +1,9 @@
 package com.maxiee.heartbeat.ui.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.utils.ImageUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.DayCard;
 import com.maxiee.heartbeat.model.Event;
 import com.maxiee.heartbeat.model.Image;
+import com.maxiee.heartbeat.ui.AddEventActivity;
 import com.maxiee.heartbeat.ui.EventDetailActivity;
 
 import java.util.ArrayList;
@@ -87,6 +91,33 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
                                 EventDetailActivity.EXTRA_NAME,
                                 event.getId());
                         context.startActivity(intent);
+                    }
+                });
+
+                v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        final String[] items = new String[]{
+                                v.getContext().getString(R.string.dialog_edit_event),
+                                v.getContext().getString(R.string.delete)
+                        };
+                        final Context context = v.getContext();
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0) {
+                                    Intent i = new Intent(context, AddEventActivity.class);
+                                    i.putExtra(AddEventActivity.ID_EVENT_MODIFY, event.getId());
+                                    context.startActivity(i);
+                                }
+                                if (which == 1) {
+                                    DataManager.getInstance(context).deleteEvent(event.getId());
+                                }
+                            }
+                        });
+                        builder.show();
+                        return true;
                     }
                 });
                 TextView eventText = ButterKnife.findById(v, R.id.event_text);
