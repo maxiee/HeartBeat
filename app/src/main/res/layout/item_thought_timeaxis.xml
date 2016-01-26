@@ -45,6 +45,7 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/tag_gray"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <LinearLayout

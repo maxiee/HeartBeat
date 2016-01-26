@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.maxiee.heartbeat"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 25
         versionName "0.9.1"

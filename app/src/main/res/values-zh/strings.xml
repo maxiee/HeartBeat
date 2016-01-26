@@ -133,4 +133,6 @@
     <string name="burberry">巴宝莉</string>
     <string name="helpcenter">帮助中心</string>
     <string name="date">日期:</string>
+    <string name="time_full_format">显示完整时间格式</string>
+    <string name="time_full_format_summary">显示完整时间格式,而非几分钟/小时/天前.</string>
 </resources>
