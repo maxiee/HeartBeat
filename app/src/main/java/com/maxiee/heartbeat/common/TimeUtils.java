@@ -1,6 +1,8 @@
 package com.maxiee.heartbeat.common;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
 import com.maxiee.heartbeat.R;
@@ -25,13 +27,16 @@ public class TimeUtils {
     }
 
     public static String parseTime(final Context context, final long timestamp) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean isFullFormat = sp.getBoolean("time_full_format", false);
+
         Long timeNow = System.currentTimeMillis();
         Long delta = timeNow - timestamp;
 
-        if (delta > MS_FOUR_DAYS) {
+        if (isFullFormat || delta > MS_FOUR_DAYS) {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timestamp);
-            return DateFormat.format("yyyy-MM-dd", cal).toString();
+            return DateFormat.format("yyyy-MM-dd HH:mm", cal).toString();
         }
 
         long count = 0;
