@@ -20,6 +20,11 @@
             android:entryValues="@array/time_axis_sorting_entrie_values"
             android:defaultValue="@string/time_axis_sorting_old_to_new" />
 
+        <CheckBoxPreference
+            android:key="time_full_format"
+            android:title="@string/time_full_format"
+            android:summary="@string/time_full_format_summary" />
+
         <Preference
             android:key="crash"
             android:title="@string/settings_crash" />
