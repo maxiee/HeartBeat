@@ -1,7 +1,9 @@
 package com.maxiee.heartbeat.provider;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.maxiee.heartbeat.database.api.GetCountByNameApi;
 import com.maxiee.heartbeat.database.tables.EventsTable;
@@ -14,10 +16,14 @@ import java.util.Random;
  */
 public class ProviderEventDelegate implements IProviderEventDelegate {
     @Override
-    public Cursor dispatchQuery(int code, Context context) {
+    public Cursor dispatchQuery(int code, Context context, Uri uri) {
         switch (code) {
             case Constant.API_EVENT_RANDOM_CODE: {
                 return random(context);
+            }
+            case Constant.API_EVENT_ID_CODE: {
+                long id =  ContentUris.parseId(uri);
+                return byId(context, id);
             }
             default: {
                 return null;
@@ -32,6 +38,14 @@ public class ProviderEventDelegate implements IProviderEventDelegate {
         Cursor cursor = DatabaseUtils.getReadableDatabase(context).rawQuery(
                 "SELECT " + EventsTable.ID + ", " + EventsTable.EVENT + ", " + EventsTable.TIMESTAMP
                 + " FROM " + EventsTable.NAME + " LIMIT 1 OFFSET " + String.valueOf(randIndex), null);
+        return cursor;
+    }
+
+    @Override
+    public Cursor byId(Context context, long id) {
+        Cursor cursor = DatabaseUtils.getReadableDatabase(context).rawQuery(
+                "SELECT " + EventsTable.ID + ", " + EventsTable.EVENT + ", " + EventsTable.TIMESTAMP
+                        + " FROM " + EventsTable.NAME + " LIMIT 1 OFFSET " + String.valueOf(id), null);
         return cursor;
     }
 }

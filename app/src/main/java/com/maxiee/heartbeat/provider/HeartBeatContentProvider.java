@@ -24,7 +24,7 @@ public class HeartBeatContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int code = mMatcher.match(uri);
         Cursor cursor = null;
-        cursor = mEventDelegate.dispatchQuery(code, getContext());
+        cursor = mEventDelegate.dispatchQuery(code, getContext(), uri);
         if (cursor != null) return cursor;
         return null;
     }
@@ -52,5 +52,6 @@ public class HeartBeatContentProvider extends ContentProvider {
     private void initMatcher() {
         mMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         mMatcher.addURI(Constant.BASE_URI, Constant.API_EVENT_RANDOM, Constant.API_EVENT_RANDOM_CODE);
+        mMatcher.addURI(Constant.BASE_URI, Constant.API_EVENT_ID, Constant.API_EVENT_ID_CODE);
     }
 }
