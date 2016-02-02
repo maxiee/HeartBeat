@@ -1,93 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <FrameLayout
+    android:layout_height="@dimen/day_card_item_height"
+    android:foreground="?attr/selectableItemBackground">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_marginRight="5dp">
-                <TextView
-                    android:id="@+id/time_hour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="?attr/colorPrimaryDark"
-                    android:fontFamily="sans-serif-light" />
-                <TextView
-                    android:id="@+id/time_minute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-10dp"
-                    android:textSize="18sp"
-                    android:textColor="?attr/colorPrimary"
-                    android:fontFamily="sans-serif-thin" />
-            </LinearLayout>
-            <TextView
-                android:id="@+id/event_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textSize="18sp"
-                android:paddingTop="5dp"
-                android:paddingBottom="15dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"/>
-            <FrameLayout
-                android:id="@+id/image_container"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="gone">
-                <ImageView
-                    android:id="@+id/event_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#7dffffff" />
-            </FrameLayout>
-        </LinearLayout>
+        android:orientation="horizontal"
+        android:paddingLeft="5dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom|right"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="3dp">
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:src="@drawable/ic_action_messenger"
-                android:layout_alignBottom="@id/tv_thought_count"/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp">
             <TextView
+                android:id="@+id/time_hour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_marginLeft="2dp"
-                android:id="@+id/tv_thought_count"
-                android:layout_marginRight="5dp"
-                android:text="1"/>
+                android:textSize="18sp"
+                android:textColor="?attr/colorPrimaryDark"
+                android:fontFamily="sans-serif-light" />
+            <TextView
+                android:id="@+id/time_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:textSize="18sp"
+                android:textColor="?attr/colorPrimary"
+                android:fontFamily="sans-serif-thin" />
         </LinearLayout>
-    </FrameLayout>
+        <TextView
+            android:id="@+id/event_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="18sp"
+            android:paddingTop="5dp"
+            android:paddingBottom="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:ellipsize="end"/>
+        <FrameLayout
+            android:id="@+id/image_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/event_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#7dffffff" />
+        </FrameLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|right"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="3dp">
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_action_messenger"
+            android:layout_alignBottom="@id/tv_thought_count"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginLeft="2dp"
+            android:id="@+id/tv_thought_count"
+            android:layout_marginRight="5dp"
+            android:text="1"/>
+    </LinearLayout>
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_gravity="bottom"
         android:background="@color/separator" />
-</LinearLayout>
+</FrameLayout>

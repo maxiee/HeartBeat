@@ -57,6 +57,7 @@ public class EventListFragment extends Fragment {
         if (mViewMode == VIEW_MODE_STAGGERED) mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
         if (mViewMode == VIEW_MODE_LIST) mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(getContext()));
+        mRecyclerView.setHasFixedSize(true);
         mDataManager = DataManager.getInstance(getContext());
         updateEventList();
         setHasOptionsMenu(true);

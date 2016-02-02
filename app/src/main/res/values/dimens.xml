@@ -6,4 +6,5 @@
     <dimen name="item_event_has_image_margin_tb">5dp</dimen>
     <dimen name="item_event_image_margin_lr">10dp</dimen>
     <dimen name="insets">2dp</dimen>
+    <dimen name="day_card_item_height">60dp</dimen>
 </resources>
