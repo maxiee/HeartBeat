@@ -3,6 +3,7 @@ package com.maxiee.heartbeat.ui.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,6 +59,12 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
     }
 
     @Override
+    public void onViewRecycled(DayCardHolder holder) {
+        holder.onViewRecycled();
+        super.onViewRecycled(holder);
+    }
+
+    @Override
     public int getItemCount() {
         return mDayCardData.size();
     }
@@ -67,6 +74,7 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
         Context context;
         @Bind(R.id.day_card_head_date) TextView headerDate;
         @Bind(R.id.item_layout) LinearLayout itemLayout;
+        private ArrayList<AsyncTask> mTasks = new ArrayList<>();
 
         DayCardHolder(View itemView) {
             super(itemView);
@@ -78,18 +86,52 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
             DayCard dayCard = mDayCardData.get(position);
             headerDate.setText(
                     TimeUtils.parseDateDate(context, dayCard.getTimeStamp()));
+
+            float itemHeight = context.getResources().getDimension(R.dimen.day_card_item_height);
+            int eventCount = dayCard.getEventList().size();
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    (int) itemHeight * eventCount);
+            itemLayout.setLayoutParams(lp);
             itemLayout.removeAllViewsInLayout();
             for (Event e: dayCard.getEventList()) {
-                View v = LayoutInflater.from(context)
+                boolean drawSeparator = e.equals(dayCard.getEventList().get(dayCard.getEventList().size() - 1));
+                DayCardItemTask task = new DayCardItemTask(e, drawSeparator);
+                mTasks.add(task);
+                task.execute();
+            }
+        }
+
+        void onViewRecycled() {
+            for (AsyncTask t: mTasks) t.cancel(true);
+        }
+
+        class DayCardItemTask extends AsyncTask<Void, Void, View> {
+
+            private Event mEvent;
+            private boolean mDrawSeparator;
+
+            public  DayCardItemTask (Event event, boolean drawSeparator) {
+                mEvent = event;
+                mDrawSeparator = drawSeparator;
+            }
+
+
+            @Override
+            protected View doInBackground(Void... params) {
+                return LayoutInflater.from(context)
                         .inflate(R.layout.item_day_card_item, itemLayout, false);
-                final Event event = e;
+            }
+
+            @Override
+            protected void onPostExecute(View v) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, EventDetailActivity.class);
                         intent.putExtra(
                                 EventDetailActivity.EXTRA_NAME,
-                                event.getId());
+                                mEvent.getId());
                         context.startActivity(intent);
                     }
                 });
@@ -108,11 +150,11 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 0) {
                                     Intent i = new Intent(context, AddEventActivity.class);
-                                    i.putExtra(AddEventActivity.ID_EVENT_MODIFY, event.getId());
+                                    i.putExtra(AddEventActivity.ID_EVENT_MODIFY, mEvent.getId());
                                     context.startActivity(i);
                                 }
                                 if (which == 1) {
-                                    DataManager.getInstance(context).deleteEvent(event.getId());
+                                    DataManager.getInstance(context).deleteEvent(mEvent.getId());
                                 }
                             }
                         });
@@ -128,18 +170,16 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
                 FrameLayout imageContainer = ButterKnife.findById(v, R.id.image_container);
                 View separator = ButterKnife.findById(v, R.id.separator);
 
-                eventText.setText(e.getEvent());
-                timeHour.setText(TimeUtils.parseHour(context, e.getTimestamp()));
-                timeMinute.setText(TimeUtils.parseMinute(context, e.getTimestamp()));
-                thoughtCount.setText(String.valueOf(ThoughtUtils.getEventCount(context, e.getId())));
-                Image i = ImageUtils.getImageByEventId(context, e.getId());
+                eventText.setText(mEvent.getEvent());
+                timeHour.setText(TimeUtils.parseHour(context, mEvent.getTimestamp()));
+                timeMinute.setText(TimeUtils.parseMinute(context, mEvent.getTimestamp()));
+                thoughtCount.setText(String.valueOf(ThoughtUtils.getEventCount(context, mEvent.getId())));
+                Image i = ImageUtils.getImageByEventId(context, mEvent.getId());
                 if (i != null) {
                     imageContainer.setVisibility(View.VISIBLE);
                     Glide.with(context).load(i.getPath()).centerCrop().into(eventImage);
                 } else eventImage.setVisibility(View.GONE);
-                if (e.equals(dayCard.getEventList().get(dayCard.getEventList().size() - 1)))
-                    separator.setVisibility(View.GONE);
-
+                if (mDrawSeparator) separator.setVisibility(View.GONE);
                 itemLayout.addView(v);
             }
         }
