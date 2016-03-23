@@ -1,5 +1,21 @@
 #心动 ChangeLog
 
+## v0.9.2
+
+发布日期: 20160323
+
+1. 全新设计的事件列表
+2. 改正教程中的错误
+3. 设置选项：显示完整时间格式
+4. 更新捐赠感谢名单
+
+Release date: 20160323
+
+1. New event list
+2. Fix tutorial
+3. New setting option: show full time format
+4. Update the donation thanking list
+
 ## v0.9.1
 
 发布日期: 20160116
