@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -81,7 +82,7 @@ public class MainActivity extends BaseActivity {
                 tab.setContentDescription(
                         mViewPagerAdapter.getPageIcon(
                                 tab.getPosition(),
-                                getResources().getColor(R.color.tab_white_trans)
+                                ContextCompat.getColor(getApplicationContext(), R.color.tab_white_trans)
                         )
                 );
             }
@@ -236,7 +237,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return getPageIcon(position, getResources().getColor(R.color.tab_white_trans));
+            return getPageIcon(position, ContextCompat.getColor(getApplicationContext(), R.color.tab_white_trans));
         }
 
         public CharSequence getPageIcon(int position, int filterColor) {
