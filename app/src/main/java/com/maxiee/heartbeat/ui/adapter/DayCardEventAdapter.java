@@ -163,16 +163,12 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
                     }
                 });
                 TextView eventText = ButterKnife.findById(v, R.id.event_text);
-                TextView timeHour = ButterKnife.findById(v, R.id.time_hour);
-                TextView timeMinute = ButterKnife.findById(v, R.id.time_minute);
                 TextView thoughtCount = ButterKnife.findById(v, R.id.tv_thought_count);
                 ImageView eventImage = ButterKnife.findById(v, R.id.event_image);
                 FrameLayout imageContainer = ButterKnife.findById(v, R.id.image_container);
                 View separator = ButterKnife.findById(v, R.id.separator);
 
                 eventText.setText(mEvent.getEvent());
-                timeHour.setText(TimeUtils.parseHour(context, mEvent.getTimestamp()));
-                timeMinute.setText(TimeUtils.parseMinute(context, mEvent.getTimestamp()));
                 thoughtCount.setText(String.valueOf(ThoughtUtils.getEventCount(context, mEvent.getId())));
                 Image i = ImageUtils.getImageByEventId(context, mEvent.getId());
                 if (i != null) {

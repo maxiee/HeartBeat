@@ -8,29 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="5dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_marginRight="5dp">
-            <TextView
-                android:id="@+id/time_hour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="?attr/colorPrimaryDark"
-                android:fontFamily="sans-serif-light" />
-            <TextView
-                android:id="@+id/time_minute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-10dp"
-                android:textSize="18sp"
-                android:textColor="?attr/colorPrimary"
-                android:fontFamily="sans-serif-thin" />
-        </LinearLayout>
+        android:paddingLeft="15dp">
         <TextView
             android:id="@+id/event_text"
             android:layout_width="0dp"
