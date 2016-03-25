@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.database.api.GetCountByNameApi;
+import com.maxiee.heartbeat.database.tables.EventsTable;
 import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.database.utils.ImageUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
@@ -64,8 +66,8 @@ public class DataManager {
         return mTodayAdapter;
     }
 
-    public boolean isEventEmpty() {
-        return mEventManager.isEmpty();
+    public static boolean isEventEmpty(Context context) {
+        return new GetCountByNameApi(context).exec(EventsTable.NAME) == 0;
     }
 
     public boolean isTodayEmpty() {
