@@ -46,6 +46,9 @@
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity android:name=".ui.HelpCenterActivity" />
         <activity android:name=".ui.HelpCenterDetailActivity" />
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
     </application>
 
 </manifest>
