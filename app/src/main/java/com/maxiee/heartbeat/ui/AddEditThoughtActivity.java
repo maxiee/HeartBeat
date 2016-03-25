@@ -1,9 +1,7 @@
 package com.maxiee.heartbeat.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,7 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.common.FileUtils;
+import com.maxiee.heartbeat.common.GalleryUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Thoughts;
@@ -111,21 +109,7 @@ public class AddEditThoughtActivity extends BaseActivity {
         mAddImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT < 19) {
-                    Intent i = new Intent();
-                    i.setType("image/*");
-                    i.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(
-                            Intent.createChooser(i, getString(R.string.add_image)),
-                            ADD_IMAGE);
-                } else {
-                    Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("image/*");
-                    startActivityForResult(
-                            Intent.createChooser(i, getString(R.string.add_image)),
-                            ADD_IMAGE);
-                }
+                GalleryUtils.openGallery(AddEditThoughtActivity.this);
             }
         });
 
@@ -206,12 +190,12 @@ public class AddEditThoughtActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
-            mImage.setVisibility(View.VISIBLE);
-            Glide.with(this).load(data.getData()).into(mImage);
-            mResType = Thoughts.Thought.RES_IMAGE;
-            mResPath = FileUtils.uriToPath(this, data.getData());
-        }
+        String path = GalleryUtils.onActivityResult(this, requestCode, resultCode, data);
+        if (path == null) return;
+        mImage.setVisibility(View.VISIBLE);
+        Glide.with(this).load(path).into(mImage);
+        mResType = Thoughts.Thought.RES_IMAGE;
+        mResPath = path;
     }
 
     @Override
