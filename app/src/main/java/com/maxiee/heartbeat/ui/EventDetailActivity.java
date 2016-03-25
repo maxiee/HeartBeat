@@ -223,7 +223,8 @@ public class EventDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        GalleryUtils.onActivityResult(this, requestCode, resultCode, data, mEvent.getId());
+        String path = GalleryUtils.onActivityResult(this, requestCode, resultCode, data);
+        if (path != null) ImageUtils.addImage(this, mEvent.getId(), path);
         initImage();
     }
 
