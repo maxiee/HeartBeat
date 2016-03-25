@@ -9,7 +9,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.database.utils.ImageUtils;
 
 import java.util.List;
 
@@ -60,8 +59,7 @@ public class GalleryUtils {
         ((Activity) context).startActivityForResult(i, ADD_IMAGE);
     }
 
-    public static void onActivityResult(Context context, int requestCode, int resultCode,
-                                        Intent data, long eventId) {
+    public static String onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
             String path;
             if (useInternalGallery(context)) {
@@ -69,8 +67,9 @@ public class GalleryUtils {
             } else {
                 path = onSystemResult(context, data);
             }
-            if (path != null) ImageUtils.addImage(context, eventId, path);
+            return path;
         }
+        return null;
     }
 
     private static String onSystemResult(Context context, Intent data) {
