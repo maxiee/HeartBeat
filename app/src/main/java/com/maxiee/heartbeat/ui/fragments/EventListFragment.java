@@ -2,9 +2,12 @@ package com.maxiee.heartbeat.ui.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -35,9 +38,10 @@ public class EventListFragment extends Fragment {
     private static final int VIEW_MODE_LIST = 0;
     private static final int VIEW_MODE_STAGGERED = 1;
 
-    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
-    @Bind(R.id.empty) RelativeLayout mEmptyLayout;
-    @Bind(R.id.image_empty) ImageView mImageEmpty;
+    @Bind(R.id.refresher)       SwipeRefreshLayout  mRefresher;
+    @Bind(R.id.recyclerview)    RecyclerView        mRecyclerView;
+    @Bind(R.id.empty)           RelativeLayout      mEmptyLayout;
+    @Bind(R.id.image_empty)     ImageView           mImageEmpty;
     private int mViewMode;
     private MenuItem mViewModeMenu;
     private LinearLayoutManager mLinearLayoutManager;
@@ -58,8 +62,12 @@ public class EventListFragment extends Fragment {
         if (mViewMode == VIEW_MODE_LIST) mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(getContext()));
         mRecyclerView.setHasFixedSize(true);
-        mDataManager = DataManager.getInstance(getContext());
-        updateEventList();
+
+        mRefresher.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
+        mRefresher.setEnabled(true);
+
+        new DataLoadTask().execute();
+
         setHasOptionsMenu(true);
         return v;
     }
@@ -91,23 +99,13 @@ public class EventListFragment extends Fragment {
         return false;
     }
 
-    public void updateEventList() {
-        if (!mDataManager.isEventEmpty()) {
-            mRecyclerView.setVisibility(View.VISIBLE);
-            mEmptyLayout.setVisibility(View.GONE);
-            mRecyclerView.setAdapter(mDataManager.getEventAdapter());
-        } else {
-            mRecyclerView.setVisibility(View.GONE);
-            mEmptyLayout.setVisibility(View.VISIBLE);
-            Glide.with(getActivity()).load(R.drawable.empty_bg).into(mImageEmpty);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        mDataManager.notifyDataSetChanged();
-        mDataManager.checkNewDay();
+        if (mDataManager != null) {
+            mDataManager.notifyDataSetChanged();
+            mDataManager.checkNewDay();
+        }
         if (mViewMode == VIEW_MODE_STAGGERED) {
             new Handler().post(new Runnable() {
                 @Override
@@ -131,5 +129,28 @@ public class EventListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    private class DataLoadTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            mDataManager = DataManager.getInstance(getContext());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            mRefresher.setEnabled(false);
+            if (!DataManager.isEventEmpty(getContext())) {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mEmptyLayout.setVisibility(View.GONE);
+                mRecyclerView.setAdapter(mDataManager.getEventAdapter());
+            } else {
+                mRecyclerView.setVisibility(View.GONE);
+                mEmptyLayout.setVisibility(View.VISIBLE);
+                Glide.with(getActivity()).load(R.drawable.empty_bg).into(mImageEmpty);
+            }
+        }
     }
 }
