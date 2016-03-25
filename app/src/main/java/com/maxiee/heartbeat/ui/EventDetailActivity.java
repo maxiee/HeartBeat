@@ -1,6 +1,5 @@
 package com.maxiee.heartbeat.ui;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -40,6 +38,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.FileUtils;
+import com.maxiee.heartbeat.common.GalleryUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.common.tagview.Tag;
 import com.maxiee.heartbeat.common.tagview.TagView;
@@ -170,17 +169,7 @@ public class EventDetailActivity extends BaseActivity {
             mAddImageText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Build.VERSION.SDK_INT < 19) {
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
-                        intent.setType("image/*");
-                        startActivityForResult(Intent.createChooser(intent, getString(R.string.add_image)), ADD_IMAGE);
-                    }
+                    GalleryUtils.openGallery(EventDetailActivity.this);
                 }
             });
         } else {
@@ -234,20 +223,8 @@ public class EventDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
-            Uri mImageUri = data.getData();
-            if (Build.VERSION.SDK_INT >= 19) {
-                final int takeFlags = data.getFlags()
-                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                //noinspection ResourceType
-                getContentResolver().takePersistableUriPermission(mImageUri, takeFlags);
-            }
-            // convert uri to path
-            String path = FileUtils.uriToPath(this, mImageUri);
-            ImageUtils.addImage(EventDetailActivity.this, mEvent.getId(), path);
-            initImage();
-        }
+        GalleryUtils.onActivityResult(this, requestCode, resultCode, data, mEvent.getId());
+        initImage();
     }
 
     private class LongImageTask extends AsyncTask<Void, Integer, Void> {
