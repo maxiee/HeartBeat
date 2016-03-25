@@ -1,6 +1,5 @@
 package com.maxiee.heartbeat.ui;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -286,15 +285,13 @@ public class AddEventActivity extends BaseActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_IMAGE && resultCode == Activity.RESULT_OK) {
-            String path = GalleryUtils.onActivityResult(this, requestCode, resultCode, data);
-            if (path == null) return;
-            Glide.with(this).load(path).into(mImageBackDrop);
-            mHasImage = true;
-            changeHeaderToImage();
-            mTvAddImage.setText(R.string.change_image);
-            mImagePath = path;
-        }
+        String path = GalleryUtils.onActivityResult(this, requestCode, resultCode, data);
+        if (path == null) return;
+        Glide.with(this).load(path).into(mImageBackDrop);
+        mHasImage = true;
+        changeHeaderToImage();
+        mTvAddImage.setText(R.string.change_image);
+        mImagePath = path;
     }
 
     @Override
