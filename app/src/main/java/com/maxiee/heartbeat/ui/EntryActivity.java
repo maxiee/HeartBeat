@@ -22,15 +22,12 @@ public class EntryActivity extends Activity {
 
     public static final String IS_FIRST_USE = "is_first";
 
-    private DataManager mDataManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mDataManager = DataManager.getInstance(this);
         // 首次使用添加引导教程
-        if (mDataManager.isEventEmpty() && isFirstUse()) {
+        if (DataManager.isEventEmpty(this) && isFirstUse()) {
             Log.d("maxiee", "捕捉到一只新用户!生成引导教程...");
             addTutorial();
         }
@@ -148,7 +145,5 @@ public class EntryActivity extends Activity {
                 Thoughts.Thought.HAS_NO_RES,
                 Thoughts.Thought.HAS_NO_PATH
         );
-        mDataManager.reload();
-        mDataManager.logInfo();
     }
 }
