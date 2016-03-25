@@ -135,4 +135,5 @@
     <string name="date">日期:</string>
     <string name="time_full_format">显示完整时间格式</string>
     <string name="time_full_format_summary">显示完整时间格式,而非几分钟/小时/天前.</string>
+    <string name="use_internal_gallery">使用内置图库</string>
 </resources>

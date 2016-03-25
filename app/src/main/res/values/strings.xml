@@ -134,6 +134,7 @@
     <string name="date">Date:</string>
     <string name="time_full_format">Show full time format</string>
     <string name="time_full_format_summary">Show full time format istead of ... minutes/hours/days ago.</string>
+    <string name="use_internal_gallery">Use build-in gallery</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

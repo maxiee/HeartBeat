@@ -25,6 +25,10 @@
             android:title="@string/time_full_format"
             android:summary="@string/time_full_format_summary" />
 
+        <CheckBoxPreference
+            android:key="use_internal_gallery"
+            android:title="@string/use_internal_gallery"/>
+
         <Preference
             android:key="crash"
             android:title="@string/settings_crash" />
