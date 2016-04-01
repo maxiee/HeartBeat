@@ -94,7 +94,7 @@
     <string name="filetype_error">Filetype error, please choose the right back up file</string>
     <string name="attention">Attention</string>
     <string name="backup_attention">Images aren\'t backed up, please use the specialized image back up services.</string>
-    <string name="backup_sd_summary">The back up files are in HeartBeat directory of your external storage.</string>
+    <string name="backup_sd_summary">The back up files are in HeartBeat/Backup directory of your external storage.</string>
     <string name="thought_count_pie">\u0020thought(s)</string>
     <string name="uri_parse_filed">Image path parsing failed.\nPlease re-add images.</string>
     <string name="dataerror">Data error. Try to close this window and add again.</string>

@@ -13,7 +13,7 @@
     <string name="backup_attention">备份功能不对添加的图片进行备份，请使用专门的图片备份服务进行单独备份。</string>
     <string name="backup_failed">备份失败</string>
     <string name="backup_ok">备份成功</string>
-    <string name="backup_sd_summary">位于外部储存的 HeartBeat 目录下</string>
+    <string name="backup_sd_summary">位于外部储存的 HeartBeat/Backup 目录下</string>
     <string name="cancel">取消</string>
     <string name="category_about">关于</string>
     <string name="change_image">更换图片...</string>
