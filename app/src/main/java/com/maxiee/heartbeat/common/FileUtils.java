@@ -26,6 +26,7 @@ public class FileUtils {
     private final static String DB = "heartbeat";
     private final static String BACKUP_PATH = "Backup";
     private final static String BACKUP_PREFIX = "[Backup]";
+    public static final String IMAGE_PATH = "Image";
 
 
     public static String saveLongImage(Context context, Bitmap bitmap) {
@@ -109,6 +110,12 @@ public class FileUtils {
         File rootDir = getHeartbeatDir();
         File bakDir = new File(rootDir, BACKUP_PATH);
         return createDirIfNotExist(bakDir);
+    }
+
+    public static File getImageDir() {
+        File rootDir = getHeartbeatDir();
+        File imageDir = new File(rootDir, IMAGE_PATH);
+        return createDirIfNotExist(imageDir);
     }
 
     public static File generateBackupFile(Context context) throws IOException {
