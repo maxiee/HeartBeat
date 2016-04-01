@@ -14,6 +14,7 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by maxiee on 15-9-5.
@@ -21,6 +22,11 @@ import java.io.FileOutputStream;
 public class FileUtils {
     private final static String HB_PATH = "HeartBeat";
     public static final String LONG_IMAGE_PATH = "LongImage";
+
+    private final static String DB = "heartbeat";
+    private final static String BACKUP_PATH = "Backup";
+    private final static String BACKUP_PREFIX = "[Backup]";
+
 
     public static String saveLongImage(Context context, Bitmap bitmap) {
         try {
@@ -87,5 +93,30 @@ public class FileUtils {
             if (cursor != null) cursor.close();
         }
         return null;
+    }
+
+    private static File createDirIfNotExist(File dir) {
+        if (!dir.exists()) dir.mkdir();
+        return dir;
+    }
+
+    public static File getHeartbeatDir() {
+        File rootDir = new File(Environment.getExternalStorageDirectory(), HB_PATH);
+        return createDirIfNotExist(rootDir);
+    }
+
+    public static File getBackupDir() {
+        File rootDir = getHeartbeatDir();
+        File bakDir = new File(rootDir, BACKUP_PATH);
+        return createDirIfNotExist(bakDir);
+    }
+
+    public static File generateBackupFile(Context context) throws IOException {
+        File bakDir = getBackupDir();
+        File bakFile = new File(
+                bakDir,
+                BACKUP_PREFIX + String.format("[%s][%s]", DB, TimeUtils.getDate(context)));
+        bakFile.createNewFile();
+        return bakFile;
     }
 }
