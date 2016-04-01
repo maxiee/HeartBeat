@@ -1,5 +1,21 @@
 #心动 ChangeLog
 
+## v0.9.3
+
+发布日期: 20160401
+
+1. 小幅提高启动速度
+2. 内置图片选择图库，无法打开系统图库的用户可使用内置图库（在设置中勾选）
+3. 更新捐赠感谢名单
+4. 建议在更新前备份数据库
+
+Release date: 20160401
+
+1. Speed up the app starting
+2. Build-in gallery to select images for the users can't open the system one. (set in in settings)
+3. Update the donation thanking list
+4. We recommend that you back up your data before using the new version
+
 ## v0.9.2
 
 发布日期: 20160323
