@@ -3,10 +3,9 @@ package com.maxiee.heartbeat.backup;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.common.TimeUtils;
+import com.maxiee.heartbeat.common.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,18 +22,10 @@ public class BackupManager {
 
     public static String backupSD(Context context) {
         try {
-            File curDB = context.getDatabasePath(DB);
-            File backupPath = new File(Environment.getExternalStorageDirectory(), BACKUP_PATH);
-            if (!backupPath.exists()) {
-                backupPath.mkdir();
-            }
-            File bakDB = new File(
-                    backupPath,
-                    BACKUP_PREFIX + "[" + DB + "]" + "[" + TimeUtils.getDate(context) + "]");
-            bakDB.createNewFile();
-            // 使用加密
-            FileDES.doEncryptFile(curDB, bakDB);
-            return bakDB.toString();
+            File curDb = context.getDatabasePath(DB);
+            File bakFile = FileUtils.generateBackupFile(context);
+            FileDES.doEncryptFile(curDb, bakFile);
+            return bakFile.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
