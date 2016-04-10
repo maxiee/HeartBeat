@@ -1,13 +1,18 @@
 package com.maxiee.heartbeat.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -43,10 +48,12 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int SEARCH_HISTORY_SIZE = 5;
+    private static final int PERMISSION_REQUEST_STORAGE = 27;
 
-    @Bind(R.id.toolbar)     Toolbar mToolbar;
-    @Bind(R.id.fab)         FloatingActionButton mFab;
-    @Bind(R.id.searchbox)   HintSearchBox mSearchBox;
+    @Bind(R.id.toolbar)         Toolbar mToolbar;
+    @Bind(R.id.fab)             FloatingActionButton mFab;
+    @Bind(R.id.searchbox)       HintSearchBox mSearchBox;
+    @Bind(R.id.main_content)    CoordinatorLayout mMainContent;
 
     private ViewPagerAdapter mViewPagerAdapter;
     private ArrayList<String> mSearchHistory;
@@ -152,6 +159,32 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                showPermissionInfo();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSION_REQUEST_STORAGE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                return;
+            } else {
+                showPermissionInfo();
+            }
+        }
+    }
+
+    private void showPermissionInfo() {
+        Snackbar.make(mMainContent, getString(R.string.permission_storage), Snackbar.LENGTH_LONG).show();
     }
 
     private static int getThemeAccentColor (final Context context) {
