@@ -1,5 +1,6 @@
 package com.maxiee.heartbeat.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,6 +74,8 @@ public class AddEditThoughtActivity extends BaseActivity {
 
     private long mTimestamp;
     private long mTimestampBackup;
+
+    private Toast mExitToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,7 +241,7 @@ public class AddEditThoughtActivity extends BaseActivity {
         }
         if (id == R.id.delete) {
             ThoughtUtils.deleteByThoughtId(this, mThoughtKey);
-            finish();
+            closeIMEAndFinish(500);
         }
         if (id == android.R.id.home) {
             ensureExit();
@@ -258,7 +262,8 @@ public class AddEditThoughtActivity extends BaseActivity {
     private void ensureExit() {
         if (!mExitEnsure) {
             mExitEnsure = true;
-            Toast.makeText(this, getString(R.string.exit_next_time), Toast.LENGTH_SHORT).show();
+            mExitToast = Toast.makeText(getApplicationContext(), getString(R.string.exit_next_time), Toast.LENGTH_SHORT);
+            mExitToast.show();
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -266,8 +271,20 @@ public class AddEditThoughtActivity extends BaseActivity {
                 }
             }, 2000);
         } else {
-            this.onBackPressed();
+            if (mExitToast != null) mExitToast.cancel();
+            closeIMEAndFinish(550);
         }
+    }
+
+    private void closeIMEAndFinish(int delay) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, delay);
     }
 
     private boolean checkThoughtValid() {
@@ -298,7 +315,7 @@ public class AddEditThoughtActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            finish();
+            closeIMEAndFinish(300);
         }
     }
 
@@ -326,7 +343,7 @@ public class AddEditThoughtActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            finish();
+            closeIMEAndFinish(300);
         }
     }
 }

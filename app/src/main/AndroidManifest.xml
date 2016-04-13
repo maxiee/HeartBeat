@@ -25,6 +25,7 @@
             android:launchMode="singleTask"
             android:parentActivityName="com.maxiee.heartbeat.ui.MainActivity" />
         <activity android:name="com.maxiee.heartbeat.ui.EventDetailActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
             android:parentActivityName="com.maxiee.heartbeat.ui.MainActivity" />
         <activity
             android:name="com.maxiee.heartbeat.ui.LabelDetailActivity"
