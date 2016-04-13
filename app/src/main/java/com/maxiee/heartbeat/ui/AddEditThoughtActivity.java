@@ -180,7 +180,7 @@ public class AddEditThoughtActivity extends BaseActivity {
         mEditThought.setText(mTextThought);
         if (mResType == Thoughts.Thought.RES_IMAGE) {
             mImage.setVisibility(View.VISIBLE);
-            Glide.with(this).load(mResPath).into(mImage);
+            Glide.with(this).load(GalleryUtils.getImagePath(mResPath)).into(mImage);
         }
     }
 
@@ -197,7 +197,7 @@ public class AddEditThoughtActivity extends BaseActivity {
         String path = GalleryUtils.onActivityResult(this, requestCode, resultCode, data);
         if (path == null) return;
         mImage.setVisibility(View.VISIBLE);
-        Glide.with(this).load(path).into(mImage);
+        Glide.with(this).load(GalleryUtils.getImagePath(path)).into(mImage);
         mResType = Thoughts.Thought.RES_IMAGE;
         mResPath = path;
     }

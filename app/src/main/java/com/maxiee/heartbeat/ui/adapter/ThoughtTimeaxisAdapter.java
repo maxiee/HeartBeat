@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.common.GalleryUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.model.Thoughts;
 import com.maxiee.heartbeat.ui.AddEditThoughtActivity;
@@ -84,7 +85,9 @@ public class ThoughtTimeaxisAdapter extends RecyclerView.Adapter<ThoughtTimeaxis
 
         if (mThoughtList.get(position).hasImage()) {
             holder.mImage.setVisibility(View.VISIBLE);
-            Glide.with(holder.mContext).load(mThoughtList.get(position).getPath()).into(holder.mImage);
+            Glide.with(holder.mContext).load(
+                    GalleryUtils.getImagePath(
+                            mThoughtList.get(position).getPath())).into(holder.mImage);
             holder.mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

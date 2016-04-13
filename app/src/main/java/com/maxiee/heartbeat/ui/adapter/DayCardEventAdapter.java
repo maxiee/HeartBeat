@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.common.GalleryUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.utils.ImageUtils;
@@ -173,7 +174,9 @@ public class DayCardEventAdapter extends RecyclerView.Adapter<DayCardEventAdapte
                 Image i = ImageUtils.getImageByEventId(context, mEvent.getId());
                 if (i != null) {
                     imageContainer.setVisibility(View.VISIBLE);
-                    Glide.with(context).load(i.getPath()).centerCrop().into(eventImage);
+                    Glide.with(context).load(
+                            GalleryUtils.getImagePath(
+                                    i.getPath())).centerCrop().into(eventImage);
                 } else eventImage.setVisibility(View.GONE);
                 if (mDrawSeparator) separator.setVisibility(View.GONE);
                 itemLayout.addView(v);

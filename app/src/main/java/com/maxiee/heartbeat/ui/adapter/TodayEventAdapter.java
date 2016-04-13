@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.common.GalleryUtils;
 import com.maxiee.heartbeat.common.TimeUtils;
 import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.utils.ImageUtils;
@@ -122,7 +123,7 @@ public class TodayEventAdapter extends RecyclerView.Adapter<TodayEventAdapter.Vi
             if (i != null) {
                 holder.mCoverImage.setVisibility(View.VISIBLE);
                 Glide.with(holder.mContext)
-                        .load(i.getPath())
+                        .load(GalleryUtils.getImagePath(i.getPath()))
                         .centerCrop()
                         .into(holder.mCoverImage);
                 params.setMargins(marginLR, marginTBHasImage, marginLR, marginTBHasImage);

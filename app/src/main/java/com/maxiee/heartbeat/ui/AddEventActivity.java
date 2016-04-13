@@ -123,7 +123,7 @@ public class AddEventActivity extends BaseActivity{
             if (image != null) {
                 mImagePath = image.getPath();
                 mTvAddImage.setText(R.string.change_image);
-                Glide.with(this).load(mImagePath).into(mImageBackDrop);
+                Glide.with(this).load(GalleryUtils.getImagePath(mImagePath)).into(mImageBackDrop);
                 changeHeaderToImage();
                 mImagePathBackup = mImagePath;
                 mHasImage = true;
@@ -287,7 +287,7 @@ public class AddEventActivity extends BaseActivity{
         super.onActivityResult(requestCode, resultCode, data);
         String path = GalleryUtils.onActivityResult(this, requestCode, resultCode, data);
         if (path == null) return;
-        Glide.with(this).load(path).into(mImageBackDrop);
+        Glide.with(this).load(GalleryUtils.getImagePath(path)).into(mImageBackDrop);
         mHasImage = true;
         changeHeaderToImage();
         mTvAddImage.setText(R.string.change_image);

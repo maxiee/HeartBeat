@@ -176,7 +176,7 @@ public class EventDetailActivity extends BaseActivity {
             changeHeaderToImage();
             mAddImageText.setVisibility(View.INVISIBLE);
             Glide.with(this)
-                    .load(mImage.getPath())
+                    .load(GalleryUtils.getImagePath(mImage.getPath()))
                     .into(mImageBackDrop);
             mImageBackDrop.setOnClickListener(new View.OnClickListener() {
                 @Override

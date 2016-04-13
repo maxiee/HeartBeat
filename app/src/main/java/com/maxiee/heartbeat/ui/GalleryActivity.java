@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.common.GalleryUtils;
 import com.maxiee.heartbeat.database.utils.ImageUtils;
 import com.maxiee.heartbeat.ui.common.BaseActivity;
 
@@ -51,9 +52,9 @@ public class GalleryActivity extends BaseActivity {
 
         if (eventId != -1) {
             String imagePath = ImageUtils.getImageByEventId(this, eventId).getPath();
-            Glide.with(this).load(imagePath).into(mImage);
+            Glide.with(this).load(GalleryUtils.getImagePath(imagePath)).into(mImage);
         } else {
-            Glide.with(this).load(path).into(mImage);
+            Glide.with(this).load(GalleryUtils.getImagePath(path)).into(mImage);
         }
     }
 
