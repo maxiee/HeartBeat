@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 
 import com.maxiee.heartbeat.R;
 
+import java.io.File;
 import java.util.List;
 
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -88,5 +89,14 @@ public class GalleryUtils {
     private static String onInternalResult(Context context, Intent data) {
         List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
         return path.get(0);
+    }
+
+    public static String getImagePath(String oldPath) {
+        // old format
+        if (oldPath.contains("/")) {
+            return oldPath;
+        }
+        // new format
+        return new File(FileUtils.getImageDir(), oldPath).toString();
     }
 }
