@@ -73,12 +73,13 @@ public class GalleryUtils {
                 path = onSystemResult(context, data);
             }
             File fileToMove = new File(path);
-            File fileMoved = new File(FileUtils.getImageDir(), fileToMove.getName());
+            String fileName = fileToMove.getName();
+            File fileMoved = new File(FileUtils.getImageDir(), fileName);
             try {
                 FileChannel toMove = new FileInputStream(fileToMove).getChannel();
                 FileChannel moved = new FileOutputStream(fileMoved).getChannel();
                 moved.transferFrom(toMove, 0, toMove.size());
-                path = fileMoved.getPath();
+                path = fileName;
             } catch (IOException e) {
                 e.printStackTrace();
             }
