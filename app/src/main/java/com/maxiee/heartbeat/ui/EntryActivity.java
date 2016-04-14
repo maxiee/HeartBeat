@@ -15,6 +15,9 @@ import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.model.Thoughts;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by maxiee on 15-7-29.
  */
@@ -25,26 +28,33 @@ public class EntryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_entry);
 
-        // 首次使用添加引导教程
-        if (DataManager.isEventEmpty(this) && isFirstUse()) {
-            Log.d("maxiee", "捕捉到一只新用户!生成引导教程...");
-            addTutorial();
-        }
+        new Timer().schedule(new TimerTask() {
 
-        // 手势解锁
-        SharedPreferences sp = getSharedPreferences("hb", Context.MODE_PRIVATE);
-        String pattern = sp.getString("pattern", "");
-        if (pattern.isEmpty()) {
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
-            finish();
-        } else {
-            Intent i = new Intent(this, PatternActivity.class);
-            i.putExtra(PatternActivity.ACTION, PatternActivity.VERIFY);
-            startActivity(i);
-            finish();
-        }
+            @Override
+            public void run() {
+                // 首次使用添加引导教程
+                if (DataManager.isEventEmpty(EntryActivity.this) && isFirstUse()) {
+                    Log.d("maxiee", "捕捉到一只新用户!生成引导教程...");
+                    addTutorial();
+                }
+
+                // 手势解锁
+                SharedPreferences sp = getSharedPreferences("hb", Context.MODE_PRIVATE);
+                String pattern = sp.getString("pattern", "");
+                if (pattern.isEmpty()) {
+                    Intent i = new Intent(EntryActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent i = new Intent(EntryActivity.this, PatternActivity.class);
+                    i.putExtra(PatternActivity.ACTION, PatternActivity.VERIFY);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        }, 800);
     }
 
     private boolean isFirstUse() {
