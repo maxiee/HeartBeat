@@ -13,8 +13,10 @@ import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 /**
  * Created by maxiee on 15-9-5.
@@ -125,5 +127,17 @@ public class FileUtils {
                 BACKUP_PREFIX + String.format("[%s][%s]", DB, TimeUtils.getDate(context)));
         bakFile.createNewFile();
         return bakFile;
+    }
+
+    public static String copyImageToHeartBeat(String path) throws IOException {
+        File fileToMove = new File(path);
+        String fileName = fileToMove.getName();
+        File fileMoved = new File(FileUtils.getImageDir(), fileName);
+        FileChannel toMove = new FileInputStream(fileToMove).getChannel();
+        FileChannel moved = new FileOutputStream(fileMoved).getChannel();
+        moved.transferFrom(toMove, 0, toMove.size());
+        toMove.close();
+        moved.close();
+        return fileName;
     }
 }
