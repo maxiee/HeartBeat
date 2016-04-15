@@ -39,6 +39,14 @@ public class ThoughtUtils {
         return new Thoughts.Thought(queryThoughtId(cursor), queryThoughtStr(cursor), queryTiemStamp(cursor));
     }
 
+    public static ThoughtRes queryThoughtRes(Cursor cursor) {
+        return new ThoughtRes(
+                DatabaseUtils.getLong(cursor, ThoughtResTable.ID),
+                DatabaseUtils.getInt(cursor, ThoughtResTable.TYPE),
+                DatabaseUtils.getString(cursor, ThoughtResTable.PATH),
+                DatabaseUtils.getLong(cursor, ThoughtResTable.THOUGHT_ID));
+    }
+
     public static void addRelation(Context context, long eventId, long thoughtId) {
         ContentValues values = new ContentValues();
         values.put(EventThoughtRelationTable.EVENT_ID, eventId);
@@ -188,11 +196,7 @@ public class ThoughtUtils {
             return null;
         }
         cursor.moveToFirst();
-        ThoughtRes ret =  new ThoughtRes(
-                DatabaseUtils.getLong(cursor, ThoughtResTable.ID),
-                DatabaseUtils.getInt(cursor, ThoughtResTable.TYPE),
-                DatabaseUtils.getString(cursor, ThoughtResTable.PATH),
-                DatabaseUtils.getLong(cursor, ThoughtResTable.THOUGHT_ID));
+        ThoughtRes ret =  queryThoughtRes(cursor);
         cursor.close();
         return ret;
     }
