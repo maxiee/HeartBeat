@@ -25,7 +25,7 @@ public class ImageUtils {
         return DatabaseUtils.getString(cursor, ImageTable.URI);
     }
 
-    private static Image queryImage(Cursor cursor) {
+    public static Image queryImage(Cursor cursor) {
         return new Image(queryIamgeId(cursor), queryPath(cursor));
     }
 
@@ -92,14 +92,18 @@ public class ImageUtils {
         return getImageByImageId(context, imageIds[0]);
     }
 
-    public static void updateImageByEventId(Context context, long eventId, String path) {
-        Image i = getImageByEventId(context, eventId);
-        if (i == null) return;
+    public static void updateImageByImageId(Context context, long imageId, String path) {
         ContentValues values = new ContentValues();
         values.put(ImageTable.URI, path);
         DatabaseUtils.update(
                 context, ImageTable.NAME, values,
-                ImageTable.ID + "=?", new String[] {String.valueOf(i.getId())});
+                ImageTable.ID + "=?", new String[] {String.valueOf(imageId)});
+    }
+
+    public static void updateImageByEventId(Context context, long eventId, String path) {
+        Image i = getImageByEventId(context, eventId);
+        if (i == null) return;
+        updateImageByImageId(context, i.getId(), path);
     }
 
     public static void deleteByImageId(Context context, long imageId) {
