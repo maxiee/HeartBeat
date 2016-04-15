@@ -65,6 +65,7 @@ public class EntryActivity extends Activity {
 
         @Override
         protected Void doInBackground(Void... params) {
+            BackupManager.backupSD(EntryActivity.this);
             BackupManager.transGallery(EntryActivity.this);
             return null;
         }
