@@ -11,10 +11,7 @@ import android.preference.PreferenceManager;
 import com.maxiee.heartbeat.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.List;
 
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -72,14 +69,8 @@ public class GalleryUtils {
             } else {
                 path = onSystemResult(context, data);
             }
-            File fileToMove = new File(path);
-            String fileName = fileToMove.getName();
-            File fileMoved = new File(FileUtils.getImageDir(), fileName);
             try {
-                FileChannel toMove = new FileInputStream(fileToMove).getChannel();
-                FileChannel moved = new FileOutputStream(fileMoved).getChannel();
-                moved.transferFrom(toMove, 0, toMove.size());
-                path = fileName;
+                path = FileUtils.copyImageToHeartBeat(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
