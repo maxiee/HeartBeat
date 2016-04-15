@@ -1,13 +1,16 @@
 package com.maxiee.heartbeat.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.backup.BackupManager;
 import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.database.utils.EventUtils;
 import com.maxiee.heartbeat.database.utils.LabelUtils;
@@ -15,14 +18,12 @@ import com.maxiee.heartbeat.database.utils.ThoughtUtils;
 import com.maxiee.heartbeat.model.Label;
 import com.maxiee.heartbeat.model.Thoughts;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Created by maxiee on 15-7-29.
  */
 public class EntryActivity extends Activity {
 
+    public static final String TAG = EntryActivity.class.getSimpleName();
     public static final String IS_FIRST_USE = "is_first";
 
     @Override
@@ -30,31 +31,13 @@ public class EntryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
 
-        new Timer().schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                // 首次使用添加引导教程
-                if (DataManager.isEventEmpty(EntryActivity.this) && isFirstUse()) {
-                    Log.d("maxiee", "捕捉到一只新用户!生成引导教程...");
-                    addTutorial();
-                }
-
-                // 手势解锁
-                SharedPreferences sp = getSharedPreferences("hb", Context.MODE_PRIVATE);
-                String pattern = sp.getString("pattern", "");
-                if (pattern.isEmpty()) {
-                    Intent i = new Intent(EntryActivity.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Intent i = new Intent(EntryActivity.this, PatternActivity.class);
-                    i.putExtra(PatternActivity.ACTION, PatternActivity.VERIFY);
-                    startActivity(i);
-                    finish();
-                }
-            }
-        }, 800);
+        if (BackupManager.needTransGallery(EntryActivity.this)) {
+            Log.d(TAG, "Need trans!");
+            new TransGalleryTask().execute();
+        } else {
+            Log.d(TAG, "Need not trans!");
+            new StartTask().execute();
+        }
     }
 
     private boolean isFirstUse() {
@@ -67,6 +50,60 @@ public class EntryActivity extends Activity {
             return true;
         }
         return false;
+    }
+
+    private class TransGalleryTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(EntryActivity.this);
+            progressDialog.setMessage(getString(R.string.trans_gallery));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            BackupManager.transGallery(EntryActivity.this);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            progressDialog.cancel();
+            new StartTask().execute();
+        }
+    }
+
+    private class StartTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // 首次使用添加引导教程
+            if (DataManager.isEventEmpty(EntryActivity.this) && isFirstUse()) {
+                Log.d("maxiee", "捕捉到一只新用户!生成引导教程...");
+                addTutorial();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // 手势解锁
+            SharedPreferences sp = getSharedPreferences("hb", Context.MODE_PRIVATE);
+            String pattern = sp.getString("pattern", "");
+            if (pattern.isEmpty()) {
+                Intent i = new Intent(EntryActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            } else {
+                Intent i = new Intent(EntryActivity.this, PatternActivity.class);
+                i.putExtra(PatternActivity.ACTION, PatternActivity.VERIFY);
+                startActivity(i);
+                finish();
+            }
+        }
     }
 
     private void addTutorial() {
