@@ -13,15 +13,15 @@ import com.maxiee.heartbeat.database.DatabaseHelper;
 public class DatabaseUtils {
 
     public static DatabaseHelper getDatabaseHelper(Context context) {
-        return DatabaseHelper.instance(context);
+        return DatabaseHelper.instance(context.getApplicationContext());
     }
 
     public static SQLiteDatabase getWritableDatabase(Context context) {
-        return getDatabaseHelper(context).getWritableDatabase();
+        return getDatabaseHelper(context.getApplicationContext()).getWritableDatabase();
     }
 
     public static SQLiteDatabase getReadableDatabase(Context context) {
-        return getDatabaseHelper(context).getReadableDatabase();
+        return getDatabaseHelper(context.getApplicationContext()).getReadableDatabase();
     }
 
     public static long add(Context context, String table, ContentValues values) {
