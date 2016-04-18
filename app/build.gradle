@@ -39,4 +39,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.wdullaer:materialdatetimepicker:2.1.0'
     compile project(':multi-image-selector')
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }
