@@ -137,6 +137,9 @@
     <string name="use_internal_gallery">Use build-in gallery</string>
     <string name="permission_storage">HeartBeat needs the Storage permission to read and save image from your phone./n Please granted it, otherwise the app will crash sometimes.</string>
     <string name="trans_gallery">Transfering Gallery.\nPlease wait for a moment…</string>
+    <string name="backup_all_title">Backup All</string>
+    <string name="backup_all_summary">Backup all the data, both text and images. It will take several minutes…</string>
+    <string name="backuping">Backuping…</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

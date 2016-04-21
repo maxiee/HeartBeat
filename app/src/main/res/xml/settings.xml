@@ -55,6 +55,11 @@
             android:title="@string/attention"
             android:summary="@string/backup_attention"/>
 
+        <Preference
+            android:key="backup_all"
+            android:title="@string/backup_all_title"
+            android:summary="@string/backup_all_summary"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
