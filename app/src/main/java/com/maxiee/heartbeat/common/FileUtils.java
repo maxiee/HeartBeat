@@ -28,6 +28,7 @@ public class FileUtils {
     private final static String DB = "heartbeat";
     private final static String BACKUP_PATH = "Backup";
     private final static String BACKUP_PREFIX = "[Backup]";
+    private final static String BACKUP_ZIP_PREFIX = "[AllBackup]";
     public static final String IMAGE_PATH = "Image";
 
 
@@ -127,6 +128,14 @@ public class FileUtils {
                 BACKUP_PREFIX + String.format("[%s][%s]", DB, TimeUtils.getDate(context)));
         bakFile.createNewFile();
         return bakFile;
+    }
+
+    public static File generateBackupAllZip(Context context) throws IOException {
+        File bakDir = getBackupDir();
+        File bakZip = new File(
+                bakDir,
+                BACKUP_ZIP_PREFIX + String.format("[%s][%s]", DB, TimeUtils.getDate(context)) + ".zip");
+        return bakZip;
     }
 
     public static String copyImageToHeartBeat(String path) throws IOException {
