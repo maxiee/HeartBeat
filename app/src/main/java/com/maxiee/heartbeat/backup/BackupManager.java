@@ -17,11 +17,18 @@ import com.maxiee.heartbeat.model.Image;
 import com.maxiee.heartbeat.model.ThoughtRes;
 import com.maxiee.heartbeat.model.Thoughts;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by maxiee on 15-8-10.
@@ -31,6 +38,7 @@ public class BackupManager {
     private final static String DB = "heartbeat";
     private final static String BACKUP_PATH = "HeartBeat";
     private final static String BACKUP_PREFIX = "[Backup]";
+    private static final int BUFFER_SIZE = 2048;
 
     public static String backupSD(Context context) {
         try {
@@ -65,13 +73,6 @@ public class BackupManager {
             File curDB = context.getDatabasePath(DB);
             OutputStream out = new FileOutputStream(curDB);
             InputStream in = context.getContentResolver().openInputStream(data.getData());
-//            byte[] buf = new byte[1024];
-//            int len;
-//            while ((len=in.read(buf)) > 0) {
-//                out.write(buf, 0, len);
-//            }
-//            out.close();
-//            in.close();
             // 使用解密
             if (!FileDES.doDecryptFile(in, out)) {
                 return context.getString(R.string.restore_failed);
@@ -82,6 +83,37 @@ public class BackupManager {
             return context.getString(R.string.restore_failed);
         }
     }
+
+    public static String backupAll(Context context) {
+        String dbPath = backupSD(context);
+        if (dbPath == null) return null;
+        try {
+            File zipFile = FileUtils.generateBackupAllZip(context);
+            FileOutputStream dest = new FileOutputStream(zipFile);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+            byte data[] = new byte[BUFFER_SIZE];
+            File f = FileUtils.getImageDir();
+            ArrayList<File> files = new ArrayList<>(Arrays.asList(f.listFiles()));
+            files.add(new File(dbPath));
+            for (File file : files) {
+                FileInputStream fi = new FileInputStream(file);
+                BufferedInputStream origin = new BufferedInputStream(fi, BUFFER_SIZE);
+                ZipEntry entry = new ZipEntry(file.getName());
+                out.putNextEntry(entry);
+                int count;
+                while ((count = origin.read(data,0, BUFFER_SIZE)) != -1) {
+                    out.write(data, 0, count);
+                }
+                origin.close();
+            }
+            out.close();
+            return zipFile.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public static boolean needTransGallery(Context context) {
         boolean ret = false;
