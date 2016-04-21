@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 
 import com.maxiee.heartbeat.R;
+import com.maxiee.heartbeat.backup.BackupAllTask;
 import com.maxiee.heartbeat.backup.BackupManager;
 import com.maxiee.heartbeat.common.ThemeUtils;
 import com.maxiee.heartbeat.data.DataManager;
@@ -44,6 +45,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mThanksXXXXL;
     private Preference mBackupSDPref;
     private Preference mBackupCloudPref;
+    private Preference mBackupAllPref;
     private Preference mRestorePref;
     private Preference mDonatePref;
     private SharedPreferences mPrefs;
@@ -65,6 +67,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mThanksXXXXL =      findPreference("icon_thanks");
         mBackupSDPref =     findPreference("backup_sd");
         mBackupCloudPref =  findPreference("backup_cloud");
+        mBackupAllPref =    findPreference("backup_all");
         mRestorePref =      findPreference("restore");
         mDonatePref =       findPreference("donate");
 
@@ -89,6 +92,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mThanksXXXXL.setOnPreferenceClickListener(this);
         mBackupSDPref.setOnPreferenceClickListener(this);
         mBackupCloudPref.setOnPreferenceClickListener(this);
+        mBackupAllPref.setOnPreferenceClickListener(this);
         mRestorePref.setOnPreferenceClickListener(this);
         mThemePref.setOnPreferenceClickListener(this);
         initPattern();
@@ -140,6 +144,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             String ret = BackupManager.backupCloud(getActivity());
             if (ret != null) Snackbar.make(getView(), ret, Snackbar.LENGTH_LONG).show();
             return true;
+        }
+        if (preference == mBackupAllPref) {
+            new BackupAllTask(getActivity()).execute();
         }
         if (preference == mRestorePref) {
             Intent i = new Intent();
