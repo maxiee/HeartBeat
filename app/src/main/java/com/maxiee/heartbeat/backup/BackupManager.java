@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -77,6 +78,8 @@ public class BackupManager {
             if (!FileDES.doDecryptFile(in, out)) {
                 return context.getString(R.string.restore_failed);
             }
+            in.close();
+            out.close();
             return context.getString(R.string.restore_ok);
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,6 +117,42 @@ public class BackupManager {
         return null;
     }
 
+    public static String restoreAll(Context context, Intent data) {
+        String path = data.getData().getPath();
+        if (!path.contains(FileUtils.BACKUP_ZIP_PREFIX)) return context.getString(R.string.restore_failed);
+        try {
+            InputStream is = context.getContentResolver().openInputStream(data.getData());
+            ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                int count;
+                byte d[] = new byte[BUFFER_SIZE];
+                String entryName = entry.getName();
+                int entryType = FileUtils.detectFileType(entryName);
+                if (entryType == FileUtils.FILE_TYPE_DB) {
+                    File curDB = context.getDatabasePath(DB);
+                    OutputStream out = new FileOutputStream(curDB);
+                    // 使用解密
+                    FileDES.doDecryptFileNotClose(zis, out);
+                    out.close();
+                }
+                else if (entryType == FileUtils.FILE_TYPE_IMAGE) {
+                    OutputStream out = new FileOutputStream(new File(FileUtils.getImageDir(), entryName));
+                    BufferedOutputStream dest = new BufferedOutputStream(out, BUFFER_SIZE);
+                    while ((count = zis.read(d, 0, BUFFER_SIZE)) != -1) {
+                        dest.write(d, 0, count);
+                    }
+                    dest.flush();
+                    dest.close();
+                }
+            }
+            zis.close();
+            return context.getString(R.string.restore_ok);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return context.getString(R.string.restore_failed);
+    }
 
     public static boolean needTransGallery(Context context) {
         boolean ret = false;
