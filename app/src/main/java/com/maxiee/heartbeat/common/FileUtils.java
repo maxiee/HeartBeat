@@ -28,8 +28,12 @@ public class FileUtils {
     private final static String DB = "heartbeat";
     private final static String BACKUP_PATH = "Backup";
     private final static String BACKUP_PREFIX = "[Backup]";
-    private final static String BACKUP_ZIP_PREFIX = "[AllBackup]";
+    public final static String BACKUP_ZIP_PREFIX = "[AllBackup]";
     public static final String IMAGE_PATH = "Image";
+
+    public final static int FILE_TYPE_DB = 0;
+    public final static int FILE_TYPE_UNKNOWN = 1;
+    public final static int FILE_TYPE_IMAGE = 2;
 
 
     public static String saveLongImage(Context context, Bitmap bitmap) {
@@ -148,5 +152,18 @@ public class FileUtils {
         toMove.close();
         moved.close();
         return fileName;
+    }
+
+    public static int detectFileType(String filename) {
+        if (filename.endsWith(".png") ||
+                filename.endsWith(".JPG") ||
+                filename.endsWith(".jpg") ||
+                filename.endsWith(".PNG") ||
+                filename.endsWith(".gif") ||
+                filename.endsWith(".GIF")) {
+            return FILE_TYPE_IMAGE;
+        }
+        if (filename.contains(BACKUP_PREFIX)) return FILE_TYPE_DB;
+        return FILE_TYPE_UNKNOWN;
     }
 }
