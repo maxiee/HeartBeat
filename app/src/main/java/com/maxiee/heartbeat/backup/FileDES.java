@@ -1,6 +1,5 @@
 package com.maxiee.heartbeat.backup;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -58,8 +57,19 @@ public class FileDES {
             os.write(buffer, 0, len);
         }
         cin.close();
-        in.close();
-        os.close();
+        return true;
+    }
+
+    public static boolean doDecryptFileNotClose (InputStream in, OutputStream os) throws Exception{
+        if (in == null) return false;
+        Cipher decryptCipher = Cipher.getInstance("DES");
+        decryptCipher.init(Cipher.DECRYPT_MODE, initKey());
+        CipherInputStream cin = new CipherInputStream(in, decryptCipher);
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len=cin.read(buffer)) > 0) {
+            os.write(buffer, 0, len);
+        }
         return true;
     }
 }
