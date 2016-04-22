@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.backup.BackupAllTask;
 import com.maxiee.heartbeat.backup.BackupManager;
+import com.maxiee.heartbeat.backup.RestoreAllTask;
 import com.maxiee.heartbeat.common.ThemeUtils;
 import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.ui.CrashListActivity;
@@ -29,6 +30,7 @@ import com.maxiee.heartbeat.ui.PatternActivity;
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener{
 
     private final static int RESTORE_REQUEST = 1127;
+    private final static int RESTORE_ALL_REQUEST = 1128;
     private final static String GITHUB_URL = "https://github.com/maxiee/HeartBeat";
     private final static String Weibo_URL = "http://weibo.com/maxiee";
     private final static String EMAIL = "maxieewong@gmail.com";
@@ -47,6 +49,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mBackupCloudPref;
     private Preference mBackupAllPref;
     private Preference mRestorePref;
+    private Preference mRestoreAllPref;
     private Preference mDonatePref;
     private SharedPreferences mPrefs;
 
@@ -69,6 +72,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mBackupCloudPref =  findPreference("backup_cloud");
         mBackupAllPref =    findPreference("backup_all");
         mRestorePref =      findPreference("restore");
+        mRestoreAllPref =   findPreference("restore_all");
         mDonatePref =       findPreference("donate");
 
         String version = "Unknown";
@@ -94,6 +98,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mBackupCloudPref.setOnPreferenceClickListener(this);
         mBackupAllPref.setOnPreferenceClickListener(this);
         mRestorePref.setOnPreferenceClickListener(this);
+        mRestoreAllPref.setOnPreferenceClickListener(this);
         mThemePref.setOnPreferenceClickListener(this);
         initPattern();
     }
@@ -153,6 +158,13 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             i.setAction(Intent.ACTION_GET_CONTENT);
             i.setType("file/*");
             startActivityForResult(i, RESTORE_REQUEST);
+            return true;
+        }
+        if (preference == mRestoreAllPref) {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_GET_CONTENT);
+            i.setType("file/*");
+            startActivityForResult(i, RESTORE_ALL_REQUEST);
             return true;
         }
         if (preference == mEmailPref) {
@@ -235,6 +247,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             DataManager dm = DataManager.getInstance(getActivity());
             dm.reload();
             Snackbar.make(getView(), ret, Snackbar.LENGTH_LONG).show();
+        }
+        if (requestCode == RESTORE_ALL_REQUEST && resultCode == Activity.RESULT_OK) {
+            new RestoreAllTask(getActivity()).execute(data);
         }
     }
 }
