@@ -141,4 +141,7 @@
     <string name="backup_all_title">整体备份</string>
     <string name="backup_all_summary">备份所有数据,包括文本和图片. 备份需要花费几分钟时间…</string>
     <string name="backuping">备份中</string>
+    <string name="restore_all_title">整体恢复</string>
+    <string name="restore_all_summary">注意: 整体备份文件的文件名以 "[AllBackup]" 开头. 恢复过程需要几分钟时间.</string>
+    <string name="restoring">恢复中…</string>
 </resources>

@@ -60,6 +60,11 @@
             android:title="@string/backup_all_title"
             android:summary="@string/backup_all_summary"/>
 
+        <Preference
+            android:key="restore_all"
+            android:title="@string/restore_all_title"
+            android:summary="@string/restore_all_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

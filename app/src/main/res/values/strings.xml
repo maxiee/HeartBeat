@@ -140,6 +140,9 @@
     <string name="backup_all_title">Backup All</string>
     <string name="backup_all_summary">Backup all the data, both text and images. It will take several minutes…</string>
     <string name="backuping">Backuping…</string>
+    <string name="restore_all_title">Restore All</string>
+    <string name="restore_all_summary">Note: the name of all-data backup file starts with \"[AllBackup]\". It will takes several minutes…</string>
+    <string name="restoring">Restoring…</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>
