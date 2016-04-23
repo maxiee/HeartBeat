@@ -3,7 +3,6 @@ package com.maxiee.heartbeat.ui.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +21,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.google.android.agera.rvadapter.RepositoryAdapter;
 import com.maxiee.heartbeat.R;
-import com.maxiee.heartbeat.data.DataManager;
+import com.maxiee.heartbeat.data.EventStore;
+import com.maxiee.heartbeat.ui.adapter.EventPresenter;
 import com.maxiee.heartbeat.ui.common.RecyclerInsetsDecoration;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.google.android.agera.rvadapter.RepositoryAdapter.repositoryAdapter;
 
 /**
  * Created by maxiee on 15-6-12.
@@ -47,7 +51,10 @@ public class EventListFragment extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private SharedPreferences mPrefs;
-    private DataManager mDataManager;
+//    private DataManager mDataManager;
+
+    private RepositoryAdapter mAdapter;
+    private EventStore mEventStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,10 +70,26 @@ public class EventListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
+        mEventStore = EventStore.eventStore(getContext());
+        mAdapter = repositoryAdapter()
+                .add(mEventStore.getEventRepository(), new EventPresenter())
+                .build();
+
         mRefresher.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
         mRefresher.setEnabled(true);
 
-        new DataLoadTask().execute();
+        mRefresher.setEnabled(false);
+        Log.d("maxiee", String.valueOf(mAdapter.getItemCount()));
+        if (true) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+//                mRecyclerView.setAdapter(mDataManager.getEventAdapter());
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+            Glide.with(getActivity()).load(R.drawable.empty_bg).into(mImageEmpty);
+        }
 
         setHasOptionsMenu(true);
         return v;
@@ -102,10 +125,11 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mDataManager != null) {
-            mDataManager.notifyDataSetChanged();
-            mDataManager.checkNewDay();
-        }
+        mAdapter.startObserving();
+//        if (mDataManager != null) {
+//            mDataManager.notifyDataSetChanged();
+//            mDataManager.checkNewDay();
+//        }
         if (mViewMode == VIEW_MODE_STAGGERED) {
             new Handler().post(new Runnable() {
                 @Override
@@ -114,6 +138,12 @@ public class EventListFragment extends Fragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdapter.stopObserving();
     }
 
     private int getViewModeIconRes() {
@@ -129,28 +159,5 @@ public class EventListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    private class DataLoadTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            mDataManager = DataManager.getInstance(getContext());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            mRefresher.setEnabled(false);
-            if (!DataManager.isEventEmpty(getContext())) {
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mEmptyLayout.setVisibility(View.GONE);
-                mRecyclerView.setAdapter(mDataManager.getEventAdapter());
-            } else {
-                mRecyclerView.setVisibility(View.GONE);
-                mEmptyLayout.setVisibility(View.VISIBLE);
-                Glide.with(getActivity()).load(R.drawable.empty_bg).into(mImageEmpty);
-            }
-        }
     }
 }
