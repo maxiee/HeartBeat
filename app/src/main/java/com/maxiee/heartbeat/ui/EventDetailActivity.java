@@ -383,7 +383,7 @@ public class EventDetailActivity extends BaseActivity {
                 }
                 mView.destroyDrawingCache();
                 mYPos += childHeight;
-        }
+            }
         }
 
         @Override
@@ -454,10 +454,11 @@ public class EventDetailActivity extends BaseActivity {
         }
 
         private Bitmap loadBitmap(int reqWidth, int reqHeight, String path) {
+            path = GalleryUtils.getImagePath(path);
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(path, options);
-            int imageWidth = options.outWidth;;
+            int imageWidth = options.outWidth;
             int imageHeight = options.outHeight;
             int inSampleSize = 1;
 
