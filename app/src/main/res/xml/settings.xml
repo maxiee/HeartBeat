@@ -91,6 +91,10 @@
             android:title="@string/email" />
 
         <Preference
+            android:key="licenses"
+            android:title="@string/licenses" />
+
+        <Preference
             android:key="icon_thanks"
             android:title="@string/icon_thanks_title"/>
 

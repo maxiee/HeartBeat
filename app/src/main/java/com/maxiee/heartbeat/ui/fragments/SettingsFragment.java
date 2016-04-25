@@ -51,6 +51,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mRestorePref;
     private Preference mRestoreAllPref;
     private Preference mDonatePref;
+    private Preference mLicensesPref;
     private SharedPreferences mPrefs;
 
     private String mPattern;
@@ -74,6 +75,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mRestorePref =      findPreference("restore");
         mRestoreAllPref =   findPreference("restore_all");
         mDonatePref =       findPreference("donate");
+        mLicensesPref =     findPreference("licenses");
 
         String version = "Unknown";
         try {
@@ -100,6 +102,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mRestorePref.setOnPreferenceClickListener(this);
         mRestoreAllPref.setOnPreferenceClickListener(this);
         mThemePref.setOnPreferenceClickListener(this);
+        mLicensesPref.setOnPreferenceClickListener(this);
         initPattern();
     }
 
@@ -186,6 +189,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         if (preference == mThemePref) {
             ThemeUtils.chooseThemeDialog(getActivity());
             return true;
+        }
+        if (preference == mLicensesPref) {
+
         }
         return false;
     }
