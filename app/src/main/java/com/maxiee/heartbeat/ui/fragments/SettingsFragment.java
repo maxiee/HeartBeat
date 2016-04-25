@@ -13,6 +13,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.webkit.WebView;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.backup.BackupAllTask;
@@ -191,7 +192,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             return true;
         }
         if (preference == mLicensesPref) {
-
+            WebView webView = new WebView(getActivity());
+            webView.loadUrl("file:///android_asset/licenses.html");
+            new AlertDialog.Builder(getActivity())
+                    .setView(webView)
+                    .setCancelable(true)
+                    .show();
         }
         return false;
     }
