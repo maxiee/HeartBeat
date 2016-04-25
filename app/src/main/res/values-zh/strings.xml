@@ -138,10 +138,10 @@
     <string name="use_internal_gallery">使用内置图库</string>
     <string name="permission_storage">心动需要访问储存权限来访问/保存图片./n为保证心动正常工作请允许权限.</string>
     <string name="trans_gallery">图库迁移中,\n请稍作等候…</string>
-    <string name="backup_all_title">整体备份</string>
+    <string name="backup_all_title">整体备份 (测试功能)</string>
     <string name="backup_all_summary">备份所有数据,包括文本和图片. 备份需要花费几分钟时间…</string>
     <string name="backuping">备份中</string>
-    <string name="restore_all_title">整体恢复</string>
+    <string name="restore_all_title">整体恢复 (测试功能)</string>
     <string name="restore_all_summary">注意: 整体备份文件的文件名以 "[AllBackup]" 开头. 恢复过程需要几分钟时间.</string>
     <string name="restoring">恢复中…</string>
     <string name="licenses">许可信息</string>
