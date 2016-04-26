@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.common.ThemeUtils;
+import com.maxiee.heartbeat.data.DataManager;
 import com.maxiee.heartbeat.ui.AddEventActivity;
 import com.maxiee.heartbeat.ui.EntryActivity;
 
@@ -51,6 +52,10 @@ public class HeartBeatWidgetProvider extends AppWidgetProvider {
             views.setTextColor(R.id.event_count, colorAccent);
             views.setTextColor(R.id.thought_text, colorPrimaryDark);
             views.setTextColor(R.id.thought_count, colorAccent);
+
+            DataManager dm = DataManager.getInstance(context);
+            views.setTextViewText(R.id.event_count, String.valueOf(dm.getTodayEventCount()));
+            views.setTextViewText(R.id.thought_count, String.valueOf(dm.getTodayThoughtCount()));
 
             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
         }
