@@ -144,6 +144,7 @@
     <string name="restore_all_summary">Note: the name of all-data backup file starts with \"[AllBackup]\". It will takes several minutes…</string>
     <string name="restoring">Restoring…</string>
     <string name="licenses">Licenses</string>
+    <string name="add_event_widget">New Event</string>
     <array name="time_axis_sorting_entrie_values" >
         <item>@string/time_axis_sorting_old_to_new</item>
         <item>@string/time_axis_sorting_new_to_old</item>

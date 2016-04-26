@@ -145,4 +145,5 @@
     <string name="restore_all_summary">注意: 整体备份文件的文件名以 "[AllBackup]" 开头. 恢复过程需要几分钟时间.</string>
     <string name="restoring">恢复中…</string>
     <string name="licenses">许可信息</string>
+    <string name="add_event_widget">新事件</string>
 </resources>
