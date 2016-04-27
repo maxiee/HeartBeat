@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -147,6 +148,10 @@ public class EventDetailActivity extends BaseActivity {
         mThoughts = ThoughtUtils.getThoughtsByEventId(this, mId);
         mAdapter = new ThoughtTimeaxisAdapter(mThoughts);
         mRecyclerView.setAdapter(mAdapter);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.transparent));
+        }
     }
 
     @Override
