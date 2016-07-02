@@ -18,6 +18,7 @@ import com.google.android.agera.database.SqlRequest;
 import com.google.android.agera.database.SqlUpdateRequest;
 import com.maxiee.heartbeat.database.HBSqlDatabaseSupplier;
 import com.maxiee.heartbeat.database.utils.EventsDBUtils;
+import com.maxiee.heartbeat.model.DayCard;
 import com.maxiee.heartbeat.model.Event;
 
 import java.util.List;
@@ -44,17 +45,21 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
  */
 public class EventStore {
     private static final List<Event> INITIAL_VALUE = emptyList();
+    private static final List<DayCard> INITIAL_DAYCARD = emptyList();
 
 
     private static EventStore mEventStore;
 
     private final Receiver<Object> writeRequestReceiver;
     private final Repository<List<Event>> eventRepository;
+    private final Repository<List<DayCard>> dayCardRepository;
 
     private EventStore(
             final Repository<List<Event>> eventRepository,
+            final Repository<List<DayCard>> dayCardRepository,
             final Receiver<Object> writeRequestReceiver) {
         this.eventRepository = eventRepository;
+        this.dayCardRepository = dayCardRepository;
         this.writeRequestReceiver = writeRequestReceiver;
     }
 
@@ -120,12 +125,24 @@ public class EventStore {
                 .onDeactivation(SEND_INTERRUPT)
                 .compile();
 
-        mEventStore = new EventStore(eventRepository, writeRequestReservoir);
+        final Repository<List<DayCard>> dayCardRepository = repositoryWithInitialValue(INITIAL_DAYCARD)
+                .observe(eventRepository)
+                .onUpdatesPerLoop()
+                .goTo(executor)
+                .getFrom(eventRepository)
+                .thenTransform(EventsDBUtils.eventToDayCard())
+                .compile();
+
+        mEventStore = new EventStore(eventRepository, dayCardRepository, writeRequestReservoir);
         return mEventStore;
     }
 
     public Repository<List<Event>> getEventRepository() {
         return eventRepository;
+    }
+
+    public  Repository<List<DayCard>> getDayCardRepository() {
+        return dayCardRepository;
     }
 
 }
