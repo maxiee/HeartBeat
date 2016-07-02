@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.agera.rvadapter.RepositoryAdapter;
 import com.maxiee.heartbeat.R;
 import com.maxiee.heartbeat.data.EventStore;
-import com.maxiee.heartbeat.ui.adapter.EventPresenter;
+import com.maxiee.heartbeat.ui.adapter.DayCardPresenter;
 import com.maxiee.heartbeat.ui.common.RecyclerInsetsDecoration;
 
 import butterknife.Bind;
@@ -72,7 +72,7 @@ public class EventListFragment extends Fragment {
 
         mEventStore = EventStore.eventStore(getContext());
         mAdapter = repositoryAdapter()
-                .add(mEventStore.getEventRepository(), new EventPresenter())
+                .add(mEventStore.getDayCardRepository(), new DayCardPresenter())
                 .build();
 
         mRefresher.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
