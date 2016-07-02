@@ -69,24 +69,24 @@ public class EventStore {
         final HBSqlDatabaseSupplier databaseSupplier = databaseSupplier(context);
 
         final Function<SqlInsertRequest, Result<Long>>
-                insertNoteFunction = databaseInsertFunction(databaseSupplier);
+                insertEventFunction = databaseInsertFunction(databaseSupplier);
 
         final Function<SqlUpdateRequest, Result<Integer>>
-                updateNoteFunction = databaseUpdateFunction(databaseSupplier);
+                updateEventFunction = databaseUpdateFunction(databaseSupplier);
 
         final Function<SqlDeleteRequest, Result<Integer>>
-                deleteNoteFunction = databaseDeleteFunction(databaseSupplier);
+                deleteEventFunction = databaseDeleteFunction(databaseSupplier);
 
         final Function<Object, Result<? extends Number>> writeOperation =
                 input -> {
                     if (input instanceof SqlInsertRequest) {
-                        return insertNoteFunction.apply((SqlInsertRequest) input);
+                        return insertEventFunction.apply((SqlInsertRequest) input);
                     }
                     if (input instanceof SqlUpdateRequest) {
-                        return updateNoteFunction.apply((SqlUpdateRequest) input);
+                        return updateEventFunction.apply((SqlUpdateRequest) input);
                     }
                     if (input instanceof SqlDeleteRequest) {
-                        return deleteNoteFunction.apply((SqlDeleteRequest) input);
+                        return deleteEventFunction.apply((SqlDeleteRequest) input);
                     }
                     return failure();
                 };
