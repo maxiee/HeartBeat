@@ -1,4 +1,6 @@
-#心动 HeartBeat
+# 心动 HeartBeat
+
+# NOTE: **2018-10-14 HeartBeat now is no longer open sourced. Previous versions of the code will remain open source.**
 
 ![icon](icon.png)
 
@@ -6,17 +8,17 @@
 
 HeartBeat - Record your emotional moments.
 
-##截图 ScreenShots
+## 截图 ScreenShots
 
 ![screenshot](screenshot.png)
 
-##下载 Download
+## 下载 Download
 
 <a href="https://play.google.com/store/apps/details?id=com.maxiee.heartbeat"><img src="http://www.android.com/images/brand/get_it_on_play_logo_large.png"/></a>
 
 [酷市场下载地址 CoolMarket download](http://coolapk.com/apk/com.maxiee.heartbeat)
 
-##应用说明
+## 应用说明
 
 心动是一款生活日记工具，您可以用它记录生活中的心动瞬间，添加感想。回忆这些瞬间，感悟生活，添加新的感想，面对真实的自我，更好地面对未来。
 
@@ -96,7 +98,7 @@ HeartBeat is an open source APP, GitHub homepage:  https://github.com/maxiee/Hea
 
 In order to protect your privacy, HeartBeat doesn't use Internet access permission. There is no network connection. You can safely record your life.
 
-##License
+## License
 
 ```
 Copyright (c) 2015 Maxiee
@@ -114,12 +116,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-##联系方式 Contact Me
+## 联系方式 Contact Me
 
 新浪微博 Sina Weibo：[@Maxiee_Bayesian](http://weibo.com/maxiee)
 
 邮箱 Email：maxieewong@gmail.com
 
-##关于我 About me
+## 关于我 About me
 
 [我的简历 resume in Chinese](http://maxiee.github.io/static/html/resume.html)，欢迎与我联系！
